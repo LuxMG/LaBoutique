@@ -29,8 +29,8 @@ public class FotoController {
         return fotoService.guardar(archivo);
     }
     
-    @PutMapping
-    public Foto actualizar(Long id, MultipartFile archivo) throws ServiceException{
+    @PutMapping("/{id}")
+    public Foto actualizar(@PathVariable("id") Long id,@RequestParam("file") MultipartFile archivo) throws ServiceException{
         return fotoService.actualizar(id,archivo);
     }
     
