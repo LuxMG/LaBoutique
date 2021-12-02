@@ -5,6 +5,7 @@ import com.egg.laboutique.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,8 +39,13 @@ public class CategoriaController {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(@RequestParam String nombre) {
-        categoriaService.crear(nombre);
+    public RedirectView guardar(@ModelAttribute Categoria categoria) throws Exception {
+        try {
+            categoriaService.crear(categoria.getNombre());
+        }catch(Exception e) {
+            return new RedirectView("/usuarios/crear");
+        }
+        
         return new RedirectView("/categorias");
     }
 

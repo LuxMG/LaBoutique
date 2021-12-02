@@ -19,4 +19,5 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long>{
     
     // ------------------------------- busquedas ------------------------------- 
     Optional<Categoria> findByNombre(String nombre);
+    boolean existsByNombre(String nombre);
 }

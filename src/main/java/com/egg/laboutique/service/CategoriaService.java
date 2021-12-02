@@ -16,20 +16,25 @@ public class CategoriaService {
 
     // ------------------------- alta-baja-modificacion ------------------------ 
     @Transactional
-    public void crear(String nombre) {
+    public void crear(String nombre) throws Exception {
+        if (categoriaRepository.existsByNombre(nombre)) {
+            throw new Exception("Ya existe una categoria con ese nombre");
+        }
+        
         Categoria categoria = new Categoria();
         categoria.setNombre(nombre);
+        categoria.setAlta(true);
         categoriaRepository.save(categoria);
+    }
+    
+    @Transactional
+    public void eliminar(Long id) {
+        categoriaRepository.deleteById(id);
     }
 
     @Transactional
     public void modificar(Long id, String nombre) {
         categoriaRepository.modificar(id, nombre);
-    }
-
-    @Transactional
-    public void eliminar(Long id) {
-        categoriaRepository.deleteById(id);
     }
 
     // ------------------------------- busquedas ------------------------------- 
