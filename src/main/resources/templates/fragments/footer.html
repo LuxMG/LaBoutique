@@ -1,6 +1,18 @@
-<footer th:fragment="footer" class="footer py-3 bg-dark fixed-bottom">
+<footer th:fragment="footer" class="footer py-3 fixed-bottom">
   <div class="container d-flex justify-content-center text-white">
       <span class="text-muted text-reset"
-            th:text="${session.id != null} ? |${session.nombre} ${session.apellido} - ${session.rol}| : 'Biblioteca - 2021'"></span>
+            th:text="${session.id != null} ? |${session.nombre} ${session.apellido} - ${session.rol}| : 'La Boutique - 2021'"></span>
   </div>
+    <div clas="container">
+        <div class="row">
+            <div class="col">
+                <a href="#">Condiciones de uso</a>  
+                <a href="#">Políticas de privacidad</a>  
+            </div>
+            <div class="col">
+                <a href="#"> <img th:src="@{/img/email.png}" /> </a>
+                <a href="#"> <img th:src="@{/img/instagram.png}"/>  </a>
+            </div>
+        </div> 
+    </div>
 </footer>

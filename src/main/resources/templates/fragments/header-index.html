@@ -1,8 +1,9 @@
-<header th:fragment="header-index" class="header-principal">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+<header th:fragment="header-index" class="header" id="header">
+  <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">LOGO</a>
-      <button type="button" class="btn" >
+        <a class="navbar-brand" th:href="@{#}"> 
+            <img th:src="@{/img/logo_completo.png}" width="45"/></a>
+      <button type="button" class="btn btn-header-index" >
         Registrarse
       </button>
     </div>
