@@ -1,4 +1,3 @@
-
 package com.egg.laboutique.entity;
 
 import javax.persistence.*;
@@ -21,7 +20,7 @@ public class Foto {
     private String mime; // tipo de archivo / extension
     
     @Lob // indica que el archivo es pesado
-    @Basic(fetch = FetchType.LAZY)
+    @Basic(fetch = FetchType.LAZY) //Carga perezosa
     private byte[] contenido;
     
 }
