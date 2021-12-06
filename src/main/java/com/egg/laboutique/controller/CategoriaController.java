@@ -60,8 +60,8 @@ public class CategoriaController {
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam Long id, @RequestParam String nombre) {
-        categoriaService.modificar(id, nombre);
+    public RedirectView modificar(@ModelAttribute Categoria categoria) {
+        categoriaService.modificar(categoria.getId(), categoria.getNombre()                           );
         return new RedirectView("/categorias");
     }
 
