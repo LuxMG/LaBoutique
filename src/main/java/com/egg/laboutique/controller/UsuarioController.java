@@ -31,12 +31,35 @@ public class UsuarioController {
     public RedirectView guardarUsuario(@RequestBody Usuario usuario ) {
         RedirectView mav= new RedirectView("/crear"); //le digo a qué url quiero ir 
         try {
-            System.out.println("****" + usuario.getNombre() + "******");
         uService.crearUsuario(usuario);} catch(Exception e){
             System.out.println(e.getMessage());
         }
         return mav;
     }
+    
+    @PostMapping("/modificar")
+    public RedirectView modificar(@RequestBody Usuario usuario){
+        try {
+            uService.modificarUsuario(usuario.getId(), usuario);
+          
+        } catch (Exception e) {
+           System.out.println(e.getMessage());
+            return new RedirectView("/usuario");
+        }
+        return new RedirectView("/usuario");
+    }
+    
+    @PostMapping("/darDeBajaUsuario")
+    public RedirectView darDeBaja(@RequestBody Long id){
+        try {
+        uService.darDeBajaUsuario(id);
+         } catch (Exception e) {
+           System.out.println(e.getMessage());
+            return new RedirectView("/usuario");
+        }
+        return new RedirectView("/usuario");
+    }
+    
     
     
 }

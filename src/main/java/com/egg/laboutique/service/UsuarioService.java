@@ -22,7 +22,19 @@ public class UsuarioService  {
         
         //hago todas las validaciones
         if (usuario.getNombre().equals("")){
-            throw new Exception("El nombre se encuentra vacío" + usuario.getId()); 
+            throw new Exception("El nombre se encuentra vacío"); 
+        }
+          if (usuario.getDni().equals("")){
+            throw new Exception("El DNI se encuentra vacío" );     
+        }
+        if (usuario.getEmail().equals("")){
+            throw new Exception("El e-mail se encuentra vacío"); 
+        }
+        if (usuario.getTelefono().equals("")){
+            throw new Exception("El telefono se encuentra vacío" );     
+        }
+        if (usuario.getBarrio().equals("")){
+            throw new Exception("El barrio se encuentra vacío" );     
         }
         
     
@@ -34,10 +46,7 @@ public class UsuarioService  {
         usuario1.setTelefono(usuario.getTelefono());
         usuario1.setBarrio(usuario.getBarrio());
         usuario1.setRol(usuario.getRol());
-        usuario1.setAlta(usuario.getAlta());
-        usuario1.setCreacion(usuario.getCreacion());
-        usuario1.setModificacion(usuario.getModificacion());
-        System.out.println("********" + usuario.getTelefono() + "***");
+   
         usuarioRepository.save(usuario1);
     
     }
@@ -53,6 +62,19 @@ public class UsuarioService  {
         if (usuario.getNombre().equals("")){
             throw new Exception("El nombre se encuentra vacío" ); 
         }
+          if (usuario.getDni().equals("")){
+            throw new Exception("El DNI se encuentra vacío" );     
+        }
+        if (usuario.getEmail().equals("")){
+            throw new Exception("El e-mail se encuentra vacío"); 
+        }
+        if (usuario.getTelefono().equals("")){
+            throw new Exception("El telefono se encuentra vacío" );     
+        }
+        if (usuario.getBarrio().equals("")){
+            throw new Exception("El barrio se encuentra vacío" );     
+        }
+        
         Usuario usuario2= usuarioRepository.findById(usuario.getId()).get();
         usuario2.setNombre(usuario.getNombre());
         usuario2.setDni(usuario.getDni());
@@ -60,9 +82,7 @@ public class UsuarioService  {
         usuario2.setTelefono(usuario.getTelefono());
         usuario2.setBarrio(usuario.getBarrio());
         usuario2.setRol(usuario.getRol());
-        usuario2.setAlta(usuario.getAlta());
-        usuario2.setCreacion(usuario.getCreacion());
-        usuario2.setModificacion(usuario.getModificacion());
+
         usuarioRepository.save(usuario2);
         
     }
