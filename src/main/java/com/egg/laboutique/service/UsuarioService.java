@@ -21,22 +21,21 @@ public class UsuarioService  {
     public void crearUsuario(Usuario usuario) throws Exception{
         
         //hago todas las validaciones
-        if (usuario.getNombre().equals("")){
-            throw new Exception("El nombre se encuentra vacío"); 
-        }
-          if (usuario.getDni().equals("")){
-            throw new Exception("El DNI se encuentra vacío" );     
-        }
-        if (usuario.getEmail().equals("")){
-            throw new Exception("El e-mail se encuentra vacío"); 
-        }
-        if (usuario.getTelefono().equals("")){
-            throw new Exception("El telefono se encuentra vacío" );     
-        }
-        if (usuario.getBarrio().equals("")){
-            throw new Exception("El barrio se encuentra vacío" );     
-        }
-        
+//        if (usuario.getNombre().equals("")){
+//            throw new Exception("El nombre se encuentra vacío"); 
+//        }
+//          if (usuario.getDni().equals("")){
+//            throw new Exception("El DNI se encuentra vacío" );     
+//        }
+//        if (usuario.getEmail().equals("")){
+//            throw new Exception("El e-mail se encuentra vacío"); 
+//        }
+//        if (usuario.getTelefono().equals("")){
+//            throw new Exception("El telefono se encuentra vacío" );     
+//        }
+//        if (usuario.getBarrio().equals("")){
+//            throw new Exception("El barrio se encuentra vacío" );     
+//        }  
     
         Usuario usuario1= new Usuario();
         
@@ -46,7 +45,7 @@ public class UsuarioService  {
         usuario1.setTelefono(usuario.getTelefono());
         usuario1.setBarrio(usuario.getBarrio());
         usuario1.setRol(usuario.getRol());
-   
+        System.out.println("******" + usuario.getNombre() + "****");
         usuarioRepository.save(usuario1);
     
     }
