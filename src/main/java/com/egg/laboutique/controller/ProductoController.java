@@ -5,7 +5,10 @@
  */
 package com.egg.laboutique.controller;
 
+import com.egg.laboutique.entity.Categoria;
+import com.egg.laboutique.entity.Foto;
 import com.egg.laboutique.entity.Producto;
+import com.egg.laboutique.entity.Usuario;
 import com.egg.laboutique.enums.Estado;
 import com.egg.laboutique.enums.Tipo;
 import com.egg.laboutique.service.ProductoService;
@@ -42,7 +45,7 @@ public class ProductoController {
     }
     
     //Vista deseos de un usuario
-        @GetMapping("/deseos/{id}")
+    @GetMapping("/deseos/{id}")
     public ModelAndView mostrarDeseosUsuario(@PathVariable("id") Long id){
         ModelAndView mav = new ModelAndView("deseos");
         List<Producto> productos = pService.obtenerListaDeseos(id);
@@ -50,30 +53,46 @@ public class ProductoController {
         return mav;
     }
     
+    //Vista de donaciones que subio un usuario
+    @GetMapping("/donaciones/{id}")
+    public ModelAndView mostrarDonacionesUsuario(@PathVariable("id") Long id){
+        ModelAndView mav = new ModelAndView("donaciones");
+        List<Producto> productos = pService.obtenerPorDonante(id);
+        mav.addObject("productos", productos);
+        return mav;
+    }
+    
+    //Detalle de un producto
+    @GetMapping("/detalleProducto")
+    public ModelAndView verProducto(@PathVariable("id") Long id){
+        ModelAndView mav = new ModelAndView("producto-tienda");
+        Producto producto = pService.obtenerPorId(id);
+        mav.addObject("producto", producto);
+        return mav;
+    }
+    
+    //Crear un producto
     @GetMapping("/crear")
     public ModelAndView crearProducto(){
         ModelAndView mav = new ModelAndView("nuevo-producto");
         mav.addObject("producto", new Producto());
         //mav.addObject("tipo", Tipo.Deseo); Lo modifico con la sesion
-        //Pasar atributos
+        //mav.addObject("categorias", catService.obtenerTodas());
         mav.addObject("action", "guardar");
         return mav;
     }
     
+    //No tendria que pasar los atributos en el request? como paso el beneficiario o donante?
     @PostMapping("/guardar")
     public RedirectView guardar(@RequestParam Producto producto){
-       // pService.crearProducto(producto.titulo, producto.descripcion, producto.tipo, producto.estado, producto.categoria, producto.foto, producto.donante, producto.beneficiario, producto.alta, producto.getModificacion());
-        
-        //Pasar objeto
-        return new RedirectView("tienda");
+        pService.crearProducto(producto.getTitulo(), producto.getDescripcion(), producto.getTipo(), producto.getEstado(), producto.getCategoria(), producto.getFoto(), producto.getDonante(), producto.getBeneficiario(), producto.getAlta(), producto.getModificacion());
+        return new RedirectView("/tienda");
     }
     
-    @GetMapping("/modificar/{id}")
-    public ModelAndView modificarProducto(@PathVariable("id") Long id){
-        ModelAndView mav = new ModelAndView("nuevo-producto");
-        mav.addObject("producto", pService.obtenerPorId(id));
-        mav.addObject("action", "modificar");
-        return mav;
+    @GetMapping("/modificar")
+    public RedirectView modificarProducto(@RequestParam Long id,@RequestParam String titulo,@RequestParam String descripcion, @RequestParam Tipo tipo, @RequestParam Estado estado,@RequestParam Categoria categoria,@RequestParam Foto foto, @RequestParam Usuario donante,@RequestParam Usuario beneficiario,@RequestParam LocalDateTime modificacion){
+            pService.modificarProducto(id, titulo, descripcion, tipo, estado, categoria, foto, donante, beneficiario, modificacion);
+        return new RedirectView("/tienda");
     }
     
     //Trae todos los productos (Para admin)
@@ -85,7 +104,33 @@ public class ProductoController {
         return mav;
     }
     
-    //Deshabilitar desde admin
-    //Busquedas
+    //Trae todos los productos donados a la tienda (vista Beneficiario)
+    @GetMapping("/productosTienda")
+    public ModelAndView mostrarProductosTienda(){
+        ModelAndView mav = new ModelAndView("tienda");
+        List<Producto> productos = pService.obtenerDonaciones();
+        mav.addObject("productos", productos);
+        return mav;
+    }
     
+     //Trae todos los deseos de todos los usuarios a la tienda (vista Benefactor)
+    @GetMapping("/productosDeseos")
+    public ModelAndView mostrarProductosDeseos(){
+        ModelAndView mav = new ModelAndView("tienda");
+        List<Producto> productos = pService.obtenerDeseos();
+        mav.addObject("productos", productos);
+        return mav;
+    }
+    
+    //Deshabilitar desde admin
+    @PostMapping("/eliminar/{id}")
+    public RedirectView eliminar(@PathVariable Long id){
+        pService.eliminar(id);
+        return new RedirectView("todos-los-productos");
+    }
+    
+    //Cambiar estados de productos
+    //Busquedas
+    //filtros por categoria
+    //Asociar 2 usuarios, agregando el segundo usuario a la BD y trayendo los datos.
 }
