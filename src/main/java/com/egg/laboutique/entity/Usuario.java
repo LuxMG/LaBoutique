@@ -5,17 +5,19 @@ import com.egg.laboutique.enums.Rol;
 import java.time.LocalDateTime;
 import javax.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLDelete; 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE usuario SET alta = false WHERE id = ?")
+@SQLDelete(sql = "UPDATE usuario SET alta = false WHERE id = ?") 
 public class Usuario {
 
     @Id
@@ -38,10 +40,11 @@ public class Usuario {
     private String barrio;
     
     @Column
+    @Enumerated(EnumType.STRING)
     private Rol rol;
     
     @Column
-    private Boolean alta;
+    private Boolean alta=true;
     
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -49,5 +52,8 @@ public class Usuario {
 
     @LastModifiedDate
     private LocalDateTime modificacion;
+
+    
+    
     
 }
