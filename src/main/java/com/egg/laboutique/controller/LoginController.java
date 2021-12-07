@@ -1,10 +1,14 @@
 package com.egg.laboutique.controller;
 
+import com.egg.laboutique.entity.Usuario;
+import com.egg.laboutique.service.UsuarioService;
 import java.security.Principal;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +20,10 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 @RequestMapping
 public class LoginController {
+
+    @Autowired
+    UsuarioService usuarioService;
+
     @GetMapping("/login")
     public ModelAndView login(@RequestParam(required = false) String error,
             @RequestParam(required = false) String logout, Principal principal) {
@@ -36,46 +44,47 @@ public class LoginController {
 
         return modelAndView;
     }
-    
+
     @GetMapping("/signup")
     public ModelAndView signup(HttpServletRequest request, Principal principal) {
         ModelAndView modelAndView = new ModelAndView("signup");
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-
+        modelAndView.addObject("usuario", new Usuario());
         if (flashMap != null) {
+
             modelAndView.addObject("exito", flashMap.get("exito"));
             modelAndView.addObject("error", flashMap.get("error"));
-//            modelAndView.addObject("nombre", flashMap.get("nombre"));
-//            modelAndView.addObject("apellido", flashMap.get("apellido"));
-//            modelAndView.addObject("correo", flashMap.get("correo"));
-//            modelAndView.addObject("clave", flashMap.get("clave"));
+            modelAndView.addObject("nombre", flashMap.get("nombre"));
+            modelAndView.addObject("apellido", flashMap.get("apellido"));
+            modelAndView.addObject("email", flashMap.get("email"));
+            modelAndView.addObject("clave", flashMap.get("clave"));
 
         }
-        
-        if(principal!=null){
+
+        if (principal != null) {
             modelAndView.setViewName("redirect:/");
         }
-        
+
         return modelAndView;
     }
-//    @PostMapping("/registro")
-//    public RedirectView signup(@RequestParam String nombre,@RequestParam String apellido,
-//            @RequestParam String correo,@RequestParam String clave,RedirectAttributes attributtes){
-//        RedirectView redirectView = new RedirectView("/login");
-//        
-//        try{
-//            usuarioService.crear(nombre,apellido,correo,clave);
-//            attributtes.addFlashAttribute("exito", "El registro se ha realizado satisfactoriamente");
-//        }catch(Exception e){
-//           attributtes.addFlashAttribute("error", e.getMessage()); 
-//           attributtes.addFlashAttribute("nombre", nombre); 
-//           attributtes.addFlashAttribute("apellido", apellido); 
-//           attributtes.addFlashAttribute("correo", correo); 
-//           attributtes.addFlashAttribute("clave", clave); 
-//           
-//           redirectView.setUrl("/signup");
-//        }
-//        
-//        return redirectView;
-//    }
+
+    @PostMapping("/registro")
+    public RedirectView signup(@ModelAttribute Usuario usuario, RedirectAttributes attributtes) {
+        RedirectView redirectView = new RedirectView("/login");
+
+        try {
+            usuarioService.crearUsuario(usuario);
+            attributtes.addFlashAttribute("exito", "El registro se ha realizado satisfactoriamente");
+        } catch (Exception e) {
+            attributtes.addFlashAttribute("error", e.getMessage());
+            attributtes.addFlashAttribute("nombre", usuario.getNombre());
+            attributtes.addFlashAttribute("dni", usuario.getDni());
+            attributtes.addFlashAttribute("email", usuario.getEmail());
+            attributtes.addFlashAttribute("clave", usuario.getClave());
+
+            redirectView.setUrl("/signup");
+        }
+
+        return redirectView;
+    }
 }
