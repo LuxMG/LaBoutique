@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Crear rol</title>
+</head>
+<body>
+<form method="post" th:action="@{/categorias/guardar}" th:object="${categoria}">
+    
+    <input th:field="*{nombre}" type="text">
+    <input type="submit">
+   
+</form>
+</body>
+</html>
+
