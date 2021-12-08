@@ -17,11 +17,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                     .antMatchers("/**").authenticated()//.permitAll()
                 .and()
                 .formLogin()
-                    .loginPage("/login")
+                    .loginPage("/login")//página de login
                         .loginProcessingUrl("/logincheck")
                         .usernameParameter("email")
                         .passwordParameter("clave")
-                        .defaultSuccessUrl("/", true)
+                        .defaultSuccessUrl("/producto/tienda", true)//pagina que se rendiriza una vez logueado
                         .failureUrl("/login?error=true")
                         .permitAll()
                 .and()
