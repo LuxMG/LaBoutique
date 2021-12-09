@@ -13,15 +13,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         // @formatter:off
         http
                 .authorizeRequests()
-                    .antMatchers("/signup", "/registro", "/css/*", "/assets/*", "/img/*").permitAll()
+                    .antMatchers("/signup", "/registro", "/css/*", "/assets/*", "/img/*","/").permitAll()
                     .antMatchers("/**").permitAll()//.authenticated()
                 .and()
                 .formLogin()
-                    .loginPage("/login")
+                    .loginPage("/login")//página de login
                         .loginProcessingUrl("/logincheck")
-                        .usernameParameter("correo")
+                        .usernameParameter("email")
                         .passwordParameter("clave")
-                        .defaultSuccessUrl("/home", true)
+                        .defaultSuccessUrl("/producto/tienda", true)//pagina que se rendiriza una vez logueado
                         .failureUrl("/login?error=true")
                         .permitAll()
                 .and()
