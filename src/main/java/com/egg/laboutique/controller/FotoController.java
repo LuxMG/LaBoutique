@@ -36,9 +36,6 @@ public class FotoController {
     
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> obtenerPorId(@PathVariable("id") Long id){
-        System.out.println("----###----");
-        System.out.println(id);
-        System.out.println("----###----");
         byte[] foto = fotoService.obtenerPorId(id).getContenido();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);

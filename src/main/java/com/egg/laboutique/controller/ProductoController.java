@@ -13,14 +13,18 @@ import com.egg.laboutique.enums.Estado;
 import com.egg.laboutique.enums.Tipo;
 import com.egg.laboutique.service.ProductoService;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -63,7 +67,7 @@ public class ProductoController {
     }
     
     //Detalle de un producto
-    @GetMapping("/detalleProducto")
+    @GetMapping("/detalleProducto/{id}")
     public ModelAndView verProducto(@PathVariable("id") Long id){
         ModelAndView mav = new ModelAndView("producto-tienda");
         Producto producto = pService.obtenerPorId(id);
@@ -74,7 +78,7 @@ public class ProductoController {
     //Crear un producto
     @GetMapping("/crear")
     public ModelAndView crearProducto(){
-        ModelAndView mav = new ModelAndView("nuevo-producto");
+        ModelAndView mav = new ModelAndView("nuevo-producto");//refactorizar nombre de html a formulario-producto
         mav.addObject("producto", new Producto());
         //mav.addObject("tipo", Tipo.Deseo); Lo modifico con la sesion
         //mav.addObject("categorias", catService.obtenerTodas());
@@ -83,13 +87,28 @@ public class ProductoController {
     }
     
     //No tendria que pasar los atributos en el request? como paso el beneficiario o donante?
-    @PostMapping("/guardar")
-    public RedirectView guardar(@RequestParam Producto producto){
-        pService.crearProducto(producto.getTitulo(), producto.getDescripcion(), producto.getTipo(), producto.getEstado(), producto.getCategoria(), producto.getFoto(), producto.getDonante(), producto.getBeneficiario(), producto.getAlta(), producto.getModificacion());
+    @PostMapping("/guardar")//agregar id de usuario con datos de la sesión
+    public RedirectView guardar(@RequestParam("titulo") String titulo, 
+            @RequestParam("descripcion") String descripcion,
+//            @RequestParam("tipo") Tipo tipo,
+//            @RequestParam("estado") Estado estado,
+//            @RequestParam("categoria") Categoria categoria,
+            MultipartFile archivo){
+        
+        pService.crearProducto(titulo, descripcion, null, null, null, archivo);
+        
         return new RedirectView("/tienda");
     }
-    
-    @GetMapping("/modificar")
+    @GetMapping("/editar/{id}")
+    public ModelAndView editarProducto(@PathVariable Long id) {
+        ModelAndView mav = new ModelAndView("nuevo-producto");//refactorizar nombre de html a formulario-producto
+        mav.addObject("producto", pService.obtenerPorId(id));
+        mav.addObject("title", "Editar Producto");
+        mav.addObject("action", "modificar");
+        return mav;
+    }
+
+    @PostMapping("/modificar")
     public RedirectView modificarProducto(@RequestParam Long id,@RequestParam String titulo,@RequestParam String descripcion, @RequestParam Tipo tipo, @RequestParam Estado estado,@RequestParam Categoria categoria,@RequestParam Foto foto, @RequestParam Usuario donante,@RequestParam Usuario beneficiario,@RequestParam LocalDateTime modificacion){
             pService.modificarProducto(id, titulo, descripcion, tipo, estado, categoria, foto, donante, beneficiario, modificacion);
         return new RedirectView("/tienda");
