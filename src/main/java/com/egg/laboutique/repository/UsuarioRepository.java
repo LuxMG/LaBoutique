@@ -1,5 +1,3 @@
-
-
 package com.egg.laboutique.repository;
 import com.egg.laboutique.entity.Usuario;
 import java.util.List;
@@ -43,5 +41,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long >{
     @Modifying
     @Query(value= "UPDATE usuario as u SET u.alta= false WHERE id= :id",nativeQuery=true )
     void darBaja(@Param("id") Long id);
+    
+    // Retorna usuario por email
+    Optional<Usuario> findByEmail(String email);
     
 }

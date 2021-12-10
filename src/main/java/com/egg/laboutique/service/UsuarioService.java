@@ -2,31 +2,54 @@
 package com.egg.laboutique.service;
 
 import com.egg.laboutique.entity.Usuario;
+import com.egg.laboutique.enums.Rol;
 import com.egg.laboutique.repository.UsuarioRepository;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 @Service
-public class UsuarioService  {
+public class UsuarioService implements UserDetailsService {
     
     @Autowired
     private UsuarioRepository usuarioRepository;
     
-    //crear usuario
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+    
+    /**
+     * crear usuario
+     * */
     @Transactional
     public void crearUsuario(Usuario usuario) throws Exception{
         
         //hago todas las validaciones
-        if (usuario.getNombre().equals("")){
-            throw new Exception("El nombre se encuentra vacío" + usuario.getId()); 
-        }
-        
+//        if (usuario.getNombre().equals("")){
+//            throw new Exception("El nombre se encuentra vacío"); 
+//        }
+//          if (usuario.getDni().equals("")){
+//            throw new Exception("El DNI se encuentra vacío" );     
+//        }
+//        if (usuario.getEmail().equals("")){
+//            throw new Exception("El e-mail se encuentra vacío"); 
+//        }
+//        if (usuario.getTelefono().equals("")){
+//            throw new Exception("El telefono se encuentra vacío" );     
+//        }
+//        if (usuario.getBarrio().equals("")){
+//            throw new Exception("El barrio se encuentra vacío" );     
+//        }  
     
-        Usuario usuario1= new Usuario();
+        Usuario usuario1 = new Usuario();
         
         usuario1.setNombre(usuario.getNombre());
         usuario1.setDni(usuario.getDni());
@@ -34,10 +57,15 @@ public class UsuarioService  {
         usuario1.setTelefono(usuario.getTelefono());
         usuario1.setBarrio(usuario.getBarrio());
         usuario1.setRol(usuario.getRol());
-        usuario1.setAlta(usuario.getAlta());
-        usuario1.setCreacion(usuario.getCreacion());
-        usuario1.setModificacion(usuario.getModificacion());
-        System.out.println("********" + usuario.getTelefono() + "***");
+        //usuario1.setTelefono("1122223333");
+        //usuario1.setBarrio("Barrio");
+        //usuario1.setRol(Rol.ADMIN);
+        usuario1.setClave(encoder.encode(usuario.getClave()));
+        
+        System.out.println("******" + usuario1.getNombre() + "****");
+        System.out.println("******" + usuario1.getClave()+ "****");
+        System.out.println("******" + usuario1.getRol()+ "****");
+        
         usuarioRepository.save(usuario1);
     
     }
@@ -53,6 +81,19 @@ public class UsuarioService  {
         if (usuario.getNombre().equals("")){
             throw new Exception("El nombre se encuentra vacío" ); 
         }
+          if (usuario.getDni().equals("")){
+            throw new Exception("El DNI se encuentra vacío" );     
+        }
+        if (usuario.getEmail().equals("")){
+            throw new Exception("El e-mail se encuentra vacío"); 
+        }
+        if (usuario.getTelefono().equals("")){
+            throw new Exception("El telefono se encuentra vacío" );     
+        }
+        if (usuario.getBarrio().equals("")){
+            throw new Exception("El barrio se encuentra vacío" );     
+        }
+        
         Usuario usuario2= usuarioRepository.findById(usuario.getId()).get();
         usuario2.setNombre(usuario.getNombre());
         usuario2.setDni(usuario.getDni());
@@ -60,9 +101,7 @@ public class UsuarioService  {
         usuario2.setTelefono(usuario.getTelefono());
         usuario2.setBarrio(usuario.getBarrio());
         usuario2.setRol(usuario.getRol());
-        usuario2.setAlta(usuario.getAlta());
-        usuario2.setCreacion(usuario.getCreacion());
-        usuario2.setModificacion(usuario.getModificacion());
+
         usuarioRepository.save(usuario2);
         
     }
@@ -112,6 +151,16 @@ public class UsuarioService  {
          usuarioRepository.darAlta(id);
        
         
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("No existe un usuario asociado al correo ingresado"));
+        
+        //GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre());
+        
+        return new User(usuario.getEmail(), usuario.getClave(), Collections.EMPTY_LIST);
     }
     
 
