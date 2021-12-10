@@ -1,6 +1,20 @@
-<footer th:fragment="footer" class="footer py-3 bg-dark fixed-bottom">
-  <div class="container d-flex justify-content-center text-white">
-      <span class="text-muted text-reset"
-            th:text="${session.id != null} ? |${session.nombre} ${session.apellido} - ${session.rol}| : 'Biblioteca - 2021'"></span>
-  </div>
+<footer th:fragment="footer" class="footer py-3 fixed-bottom">
+    <!--Fila de politicas de privacidad y redes-->
+    <div clas="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-10 legal">
+                <a href="#">Condiciones de uso</a>  
+                <a href="#">Políticas de privacidad</a>  
+            </div>
+            <div class="col-sm-12 col-md-2 redes">
+                <a href="#"> <img th:src="@{/img/email.png}" /> </a>
+                <a href="#"> <img th:src="@{/img/instagram.png}"/>  </a>
+            </div>
+        </div> 
+    </div>
+    <!--La Boutique 2021 -->
+    <div class="container d-flex justify-content-center text-white">
+        <span class="text-muted text-reset"
+            th:text="${session.id != null} ? |${session.nombre} ${session.apellido} - ${session.rol}| : 'La Boutique - 2021'"></span>
+    </div>
 </footer>

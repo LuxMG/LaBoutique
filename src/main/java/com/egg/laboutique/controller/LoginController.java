@@ -1,6 +1,7 @@
 package com.egg.laboutique.controller;
 
 import com.egg.laboutique.entity.Usuario;
+import com.egg.laboutique.enums.Rol;
 import com.egg.laboutique.service.UsuarioService;
 import java.security.Principal;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,11 +47,13 @@ public class LoginController {
         return modelAndView;
     }
 
-    @GetMapping("/signup")
-    public ModelAndView signup(HttpServletRequest request, Principal principal) {
-        ModelAndView modelAndView = new ModelAndView("signup");
+    @GetMapping("/registrodonante")
+    public ModelAndView signupDonante(HttpServletRequest request, Principal principal) {
+
+        ModelAndView modelAndView = new ModelAndView("registro");
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
         modelAndView.addObject("usuario", new Usuario());
+        modelAndView.addObject("rol", Rol.Donante);
         if (flashMap != null) {
 
             modelAndView.addObject("exito", flashMap.get("exito"));
@@ -67,10 +71,36 @@ public class LoginController {
 
         return modelAndView;
     }
+    
+    @GetMapping("/registrobeneficiario")
+    public ModelAndView signupBeneficiario(HttpServletRequest request, Principal principal) {
 
+        ModelAndView modelAndView = new ModelAndView("registro");
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+        Usuario usuario = new Usuario();
+        usuario.setRol(Rol.Beneficiario);
+        modelAndView.addObject("usuario", usuario);
+        if (flashMap != null) {
+
+            modelAndView.addObject("exito", flashMap.get("exito"));
+            modelAndView.addObject("error", flashMap.get("error"));
+            modelAndView.addObject("nombre", flashMap.get("nombre"));
+            modelAndView.addObject("apellido", flashMap.get("apellido"));
+            modelAndView.addObject("email", flashMap.get("email"));
+            modelAndView.addObject("clave", flashMap.get("clave"));
+
+        }
+
+        if (principal != null) {
+            modelAndView.setViewName("redirect:/");
+        }
+
+        return modelAndView;
+    }
+    
     @PostMapping("/registro")
     public RedirectView signup(@ModelAttribute Usuario usuario, RedirectAttributes attributtes) {
-        RedirectView redirectView = new RedirectView("/login");
+        RedirectView redirectView = new RedirectView("/producto/productosTienda");
 
         try {
             usuarioService.crearUsuario(usuario);

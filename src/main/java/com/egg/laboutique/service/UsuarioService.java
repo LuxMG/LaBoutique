@@ -26,7 +26,9 @@ public class UsuarioService implements UserDetailsService {
     @Autowired
     private BCryptPasswordEncoder encoder;
     
-    //crear usuario
+    /**
+     * crear usuario
+     * */
     @Transactional
     public void crearUsuario(Usuario usuario) throws Exception{
         
@@ -47,17 +49,17 @@ public class UsuarioService implements UserDetailsService {
 //            throw new Exception("El barrio se encuentra vacío" );     
 //        }  
     
-        Usuario usuario1= new Usuario();
+        Usuario usuario1 = new Usuario();
         
         usuario1.setNombre(usuario.getNombre());
         usuario1.setDni(usuario.getDni());
         usuario1.setEmail(usuario.getEmail());
-        //usuario1.setTelefono(usuario.getTelefono());
-        //usuario1.setBarrio(usuario.getBarrio());
-        //usuario1.setRol(usuario.getRol());
-        usuario1.setTelefono("1122223333");
-        usuario1.setBarrio("Barrio");
-        usuario1.setRol(Rol.ADMIN);
+        usuario1.setTelefono(usuario.getTelefono());
+        usuario1.setBarrio(usuario.getBarrio());
+        usuario1.setRol(usuario.getRol());
+        //usuario1.setTelefono("1122223333");
+        //usuario1.setBarrio("Barrio");
+        //usuario1.setRol(Rol.ADMIN);
         usuario1.setClave(encoder.encode(usuario.getClave()));
         
         System.out.println("******" + usuario1.getNombre() + "****");
