@@ -120,7 +120,8 @@ public class ProductoService {
     public void buscarDeseo(String busqueda){
         repo.buscarDeseo(busqueda);
     }
-
+    
+    @Transactional
     public void crearProducto(String titulo, String descripcion, Tipo tipo, Estado estado, Categoria categoria, MultipartFile archivo) {
         
         try {

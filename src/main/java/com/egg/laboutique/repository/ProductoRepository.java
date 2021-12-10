@@ -52,7 +52,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> obtenerDonaciones(); 
     
     //Trae los productos de tipo Deseo
-    @Query("SELECT p FROM Producto p WHERE p.tipo.toString() = 'Deseo' AND p.alta = true")
+    @Query("SELECT p FROM Producto p WHERE p.tipo = 'Deseo' AND p.alta = true")
     List<Producto> obtenerDeseos(); 
     
     //Trae la lista de productos donados/ofrecidos por un usuario
@@ -60,11 +60,11 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> obtenerPorDonante(@Param("idDonante") Long idDonante); 
     
     //Trae el carrito de un beneficiario
-    @Query("SELECT p FROM Producto p WHERE p.beneficiario.id = :idBeneficiario AND p.alta = true AND p.tipo.toString() = 'Donacion'")
+    @Query("SELECT p FROM Producto p WHERE p.beneficiario.id = :idBeneficiario AND p.alta = true AND p.tipo = 'Donacion'")
     List<Producto> obtenerCarrito(@Param("idBeneficiario") Long idBeneficiario);
     
     //Trae la lista de deseos de un beneficiario
-    @Query("SELECT p FROM Producto p WHERE p.beneficiario.id = :idBeneficiario AND p.alta = true AND p.tipo.toString() = 'Deseo'")
+    @Query("SELECT p FROM Producto p WHERE p.beneficiario.id = :idBeneficiario AND p.alta = true AND p.tipo = 'Deseo'")
     List<Producto> obtenerListaDeseos(@Param("idBeneficiario") Long idBeneficiario);
     
     //Habilita un producto
@@ -73,10 +73,10 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     void habilitar(@Param("id") Long id);
     
     //Buscador Donación
-    @Query("SELECT p FROM Producto p WHERE p.titulo LIKE '%:busqueda%' AND p.alta = true AND p.tipo.toString() = 'Donacion'")
+    @Query("SELECT p FROM Producto p WHERE p.titulo LIKE '%:busqueda%' AND p.alta = true AND p.tipo = 'Donacion'")
     List<Producto> buscarDonacion(@Param("busqueda") String busqueda);
 
     //Buscador Deseo
-    @Query("SELECT p FROM Producto p WHERE p.titulo LIKE '%:busqueda%' AND p.alta = true AND p.tipo.toString() = 'Deseo'")
+    @Query("SELECT p FROM Producto p WHERE p.titulo LIKE '%:busqueda%' AND p.alta = true AND p.tipo = 'Deseo'")
     List<Producto> buscarDeseo(@Param("busqueda") String busqueda);
 }
