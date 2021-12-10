@@ -33,6 +33,9 @@ public class Usuario {
     @Column
     private String email;
     
+    @Column(nullable = false)
+    private String clave;
+    
     @Column
     private String telefono;
     

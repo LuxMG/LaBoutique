@@ -17,10 +17,11 @@ public class CategoriaService {
     // ------------------------- alta-baja-modificacion ------------------------ 
     @Transactional
     public void crear(String nombre) throws Exception {
+        System.out.println("aqui en el service creando una categoria: " + nombre);
         if (categoriaRepository.existsByNombre(nombre)) {
             throw new Exception("Ya existe una categoria con ese nombre");
         }
-        
+        System.out.println("aqui en el service creando una categoria x2: " + nombre);
         Categoria categoria = new Categoria();
         categoria.setNombre(nombre);
         categoria.setAlta(true);

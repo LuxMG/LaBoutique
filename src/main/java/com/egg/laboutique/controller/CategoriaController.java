@@ -41,6 +41,7 @@ public class CategoriaController {
     @PostMapping("/guardar")
     public RedirectView guardar(@ModelAttribute Categoria categoria) throws Exception {
         try {
+            System.out.println("se esta guardando una categoria: " + categoria.getNombre());
             categoriaService.crear(categoria.getNombre());
         }catch(Exception e) {
             return new RedirectView("/usuarios/crear");

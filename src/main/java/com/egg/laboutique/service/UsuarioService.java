@@ -2,21 +2,33 @@
 package com.egg.laboutique.service;
 
 import com.egg.laboutique.entity.Usuario;
+import com.egg.laboutique.enums.Rol;
 import com.egg.laboutique.repository.UsuarioRepository;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 @Service
-public class UsuarioService  {
+public class UsuarioService implements UserDetailsService {
     
     @Autowired
     private UsuarioRepository usuarioRepository;
     
-    //crear usuario
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+    
+    /**
+     * crear usuario
+     * */
     @Transactional
     public void crearUsuario(Usuario usuario) throws Exception{
         
@@ -37,7 +49,7 @@ public class UsuarioService  {
 //            throw new Exception("El barrio se encuentra vacío" );     
 //        }  
     
-        Usuario usuario1= new Usuario();
+        Usuario usuario1 = new Usuario();
         
         usuario1.setNombre(usuario.getNombre());
         usuario1.setDni(usuario.getDni());
@@ -45,7 +57,15 @@ public class UsuarioService  {
         usuario1.setTelefono(usuario.getTelefono());
         usuario1.setBarrio(usuario.getBarrio());
         usuario1.setRol(usuario.getRol());
-        System.out.println("******" + usuario.getNombre() + "****");
+        //usuario1.setTelefono("1122223333");
+        //usuario1.setBarrio("Barrio");
+        //usuario1.setRol(Rol.ADMIN);
+        usuario1.setClave(encoder.encode(usuario.getClave()));
+        
+        System.out.println("******" + usuario1.getNombre() + "****");
+        System.out.println("******" + usuario1.getClave()+ "****");
+        System.out.println("******" + usuario1.getRol()+ "****");
+        
         usuarioRepository.save(usuario1);
     
     }
@@ -131,6 +151,16 @@ public class UsuarioService  {
          usuarioRepository.darAlta(id);
        
         
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("No existe un usuario asociado al correo ingresado"));
+        
+        //GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre());
+        
+        return new User(usuario.getEmail(), usuario.getClave(), Collections.EMPTY_LIST);
     }
     
 
