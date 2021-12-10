@@ -77,8 +77,9 @@ public class LoginController {
 
         ModelAndView modelAndView = new ModelAndView("registro");
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-        modelAndView.addObject("usuario", new Usuario());
-        modelAndView.addObject("rol", Rol.Beneficiario );
+        Usuario usuario = new Usuario();
+        usuario.setRol(Rol.Beneficiario);
+        modelAndView.addObject("usuario", usuario);
         if (flashMap != null) {
 
             modelAndView.addObject("exito", flashMap.get("exito"));
