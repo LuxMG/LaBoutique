@@ -40,14 +40,8 @@
             <label for="barrio">Barrio</label>
             <input  id="barrio" type="text" placeholder="Contraseña" th:field="*{barrio}"/>
             <br>
-            <input name="rol" id="rol" th:field="*{rol}" type="hidden"   />
+            <input name="rol" id="rol" th:value="${rol}" type="hidden"/>
             
-
-            <!--<label for="rol">Rol</label>
-            <select id="rol" th:field="*{rol}">
-                <option selected value="">Elegir Rol</option>
-                <option th:each="rol : ${roles}" th:text="${rol}" th:value="${rol}"></option>
-            </select>-->
             <br>
             <button type="submit">Signup</button>
             <br>
