@@ -119,8 +119,8 @@ public class ProductoController {
     @GetMapping("/productosTienda")
     public ModelAndView mostrarProductosTienda(){
         ModelAndView mav = new ModelAndView("tienda");
-        List<Producto> productos = pService.obtenerDonaciones();
-        mav.addObject("productos", productos);
+        //List<Producto> productos = pService.obtenerDonaciones();
+        //mav.addObject("productos", productos);
         return mav;
     }
     

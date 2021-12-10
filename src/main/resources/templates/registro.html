@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="La Boutique " name="description"/>
+    <meta content="La Boutique" name="author"/>
+    <title>La Boutique</title>
+    <!-- Link al CSS de BOOTSTRAP -->
+    <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}"/>
+    <!-- Link a nuestro CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+  <!-- HEADER-->
+  <header th:replace="fragments/header-index :: header-index"></header>
+  <!-- MAIN-->
+  <main>
+      <h1> HACER EL FORMULARIO PARA PEDIR TODOS LOS DATOS </h1>
+       <form method="post" th:action="@{/registro}" th:object="${usuario}" class="mb-5">
+            <label for="nombre">Nombre</label>  
+            <input placeholder="Nombre" th:field="*{nombre}" type="text">
+            <br>
+            <label for="dni">DNI</label>    
+            <input  id="dni" type="text" placeholder="Dni" th:field="*{dni}"/>
+            <br>
+            <label for="email">Email</label>
+            <input  id="correo" type="email" placeholder="Email"  th:field="*{email}"/>
+            <br>
+            <label for="clave">Clave</label>
+            <input  id="clave" type="password" placeholder="Contraseña" th:field="*{clave}"/>
+            <!-- <br>
+            <label for="clave2">Repetir clave</label>
+            <input  id="clave2" type="password" placeholder="Repetir Contraseña" th:field="*{clave2}"/> -->
+            <br>
+            <label for="telefono">Telefono</label>
+            <input  id="telefono" type="text" placeholder="Contraseña" th:field="*{telefono}"/>
+            <br>
+            <label for="barrio">Barrio</label>
+            <input  id="barrio" type="text" placeholder="Contraseña" th:field="*{barrio}"/>
+            <br>
+            <input name="rol" id="rol" th:field="*{rol}" type="hidden"   />
+            
+
+            <!--<label for="rol">Rol</label>
+            <select id="rol" th:field="*{rol}">
+                <option selected value="">Elegir Rol</option>
+                <option th:each="rol : ${roles}" th:text="${rol}" th:value="${rol}"></option>
+            </select>-->
+            <br>
+            <button type="submit">Signup</button>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </form>
+
+
+  </main>
+   <!--FOOTER-->
+  <footer th:replace="fragments/footer :: footer"></footer>
+<!-- Link al JS de Bootstrap-->
+<script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

@@ -1,18 +1,38 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title>Login</title>
-        <meta charset="UTF-8">
-    </head>
-    <body>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="La Boutique " name="description"/>
+    <meta content="La Boutique" name="author"/>
+    <title>La Boutique</title>
+    <!-- Link al CSS de BOOTSTRAP -->
+    <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}"/>
+    <!-- Link a nuestro CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+  <!-- HEADER-->
+  <header th:replace="fragments/header-index :: header-index"></header>
+  <!-- MAIN-->
+  <main>
         <p th:if="${error}" th:text="${error}"></p>
         <p th:if="${logout}" th:text="${logout}"></p>
         <form th:action="@{/logincheck}" method="post">
             <input type="email" placeholder="Email" name="email">
+            <br>
             <input type="password" placeholder="Password" name="clave">
+            <br>
             <button type="submit">Login</button>
         </form>
            
-        <a th:href="@{/signup}">signup</a>
-    </body>
+        <a th:href="@{/registrodonante}" class="btn"> Registrate para dar una mano </a>
+        <a th:href="@{/registrobeneficiario}" class="btn"> Registrate para ir a tienda </a>
+  </main>
+  <!--FOOTER-->
+  <footer th:replace="fragments/footer :: footer"></footer>
+<!-- Link al JS de Bootstrap-->
+<script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
+  </body>
 </html>
