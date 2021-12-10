@@ -3,10 +3,13 @@ package com.egg.laboutique.controller;
 
 import com.egg.laboutique.entity.Usuario;
 import com.egg.laboutique.service.UsuarioService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +42,19 @@ public class UsuarioController {
             System.out.println(e.getMessage());
         }
         return mav;
+    }
+     @GetMapping("/editar/{id}")
+    public ModelAndView editarProducto(@PathVariable Long id) {
+        ModelAndView mav = new ModelAndView("nuevo-producto");//refactorizar nombre de html a formulario-producto 
+        try {
+             mav.addObject("usuario", uService.buscarPorId(id));
+             mav.addObject("title", "Editar Usuario");
+             mav.addObject("action", "modificar");
+             
+         } catch (Exception ex) {
+             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         return mav;
     }
     
     @PostMapping("/modificar")
