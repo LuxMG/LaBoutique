@@ -48,7 +48,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> obtenerTodos(); 
     
     //Trae los productos de tipo Donacion
-    @Query("SELECT p FROM Producto p WHERE p.tipo.toString() = 'Donacion' AND p.alta = true")
+    @Query("SELECT p FROM Producto p WHERE p.tipo = 'Donacion' AND p.alta = true")
     List<Producto> obtenerDonaciones(); 
     
     //Trae los productos de tipo Deseo
