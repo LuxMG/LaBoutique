@@ -8,13 +8,17 @@ import com.egg.laboutique.entity.Producto;
 import com.egg.laboutique.entity.Usuario;
 import com.egg.laboutique.enums.Estado;
 import com.egg.laboutique.enums.Tipo;
+import com.egg.laboutique.exception.ServiceException;
 import com.egg.laboutique.repository.ProductoRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -25,6 +29,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductoService {
     @Autowired
     private ProductoRepository repo;
+    
+    @Autowired
+    private FotoService fotoService;
     
     @Transactional
     public void crearProducto(String titulo, String descripcion, Tipo tipo, Estado estado, Categoria categoria, Foto foto, Usuario donante, Usuario beneficiario, Boolean alta, LocalDateTime modificacion){
@@ -112,5 +119,25 @@ public class ProductoService {
     @Transactional
     public void buscarDeseo(String busqueda){
         repo.buscarDeseo(busqueda);
+    }
+
+    public void crearProducto(String titulo, String descripcion, Tipo tipo, Estado estado, Categoria categoria, MultipartFile archivo) {
+        
+        try {
+            
+            Producto producto = new Producto();
+            producto.setTitulo(titulo);
+            producto.setDescripcion(descripcion);
+            producto.setTipo(tipo);
+            producto.setEstado(estado);
+            producto.setCategoria(categoria);
+            producto.setFoto(fotoService.guardar(archivo));
+            
+            repo.save(producto);
+            
+        } catch (ServiceException ex) {
+            Logger.getLogger(ProductoService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }

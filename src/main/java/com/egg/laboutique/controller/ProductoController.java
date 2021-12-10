@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -87,9 +88,15 @@ public class ProductoController {
     
     //No tendria que pasar los atributos en el request? como paso el beneficiario o donante?
     @PostMapping("/guardar")//agregar id de usuario con datos de la sesión
-    public RedirectView guardar(@RequestBody Producto producto){
-        System.out.println(producto.getTitulo());
-        pService.crearProducto(producto.getTitulo(), producto.getDescripcion(), producto.getTipo(), producto.getEstado(), producto.getCategoria(), producto.getFoto(), producto.getDonante(), producto.getBeneficiario(), producto.getAlta(), producto.getModificacion());
+    public RedirectView guardar(@RequestParam("titulo") String titulo, 
+            @RequestParam("descripcion") String descripcion,
+//            @RequestParam("tipo") Tipo tipo,
+//            @RequestParam("estado") Estado estado,
+//            @RequestParam("categoria") Categoria categoria,
+            MultipartFile archivo){
+        
+        pService.crearProducto(titulo, descripcion, null, null, null, archivo);
+        
         return new RedirectView("/tienda");
     }
     @GetMapping("/editar/{id}")
