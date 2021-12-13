@@ -71,7 +71,7 @@ public class LoginController {
 
         return modelAndView;
     }
-    
+
     @GetMapping("/registrobeneficiario")
     public ModelAndView signupBeneficiario(HttpServletRequest request, Principal principal) {
 
@@ -97,7 +97,7 @@ public class LoginController {
 
         return modelAndView;
     }
-    
+
     @PostMapping("/registro")
     public RedirectView signup(@ModelAttribute Usuario usuario, RedirectAttributes attributtes) {
         RedirectView redirectView = new RedirectView("/producto/productosTienda");
@@ -111,8 +111,18 @@ public class LoginController {
             attributtes.addFlashAttribute("dni", usuario.getDni());
             attributtes.addFlashAttribute("email", usuario.getEmail());
             attributtes.addFlashAttribute("clave", usuario.getClave());
+            switch (usuario.getRol()) {
+                case Beneficiario:
+                    redirectView.setUrl("/registrobeneficiario");
+                    break;
+                case Donante:
+                    redirectView.setUrl("/registrodonante");
+                    break;
+                default:
+                    redirectView.setUrl("/");
+                    break;
+            }
 
-            redirectView.setUrl("/signup");
         }
 
         return redirectView;
