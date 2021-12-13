@@ -1,4 +1,3 @@
-
 package com.egg.laboutique.controller;
 
 import com.egg.laboutique.entity.Usuario;
@@ -17,53 +16,51 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 @RequestMapping("/usuario")
 public class UsuarioController {
-    
-     @Autowired
+
+    @Autowired
     private UsuarioService uService;
-    
-     @GetMapping("/crear")
+
+    @GetMapping("/crear")
     public ModelAndView crearUsuario() {
-        ModelAndView mav= new ModelAndView("datos"); //llama al html que se llame datos
-        mav.addObject("usuario",new Usuario());
+        ModelAndView mav = new ModelAndView("datos"); //llama al html que se llame datos
+        mav.addObject("usuario", new Usuario());
         mav.addObject("action", "guardar");
         return mav;
     }
-    
-         @PostMapping("/guardar")
-    public RedirectView guardarUsuario(@ModelAttribute Usuario usuario ) {
-        RedirectView mav= new RedirectView("/usuario/crear"); //le digo a qué url quiero ir 
+
+    @PostMapping("/guardar")
+    public RedirectView guardarUsuario(@ModelAttribute Usuario usuario) {
+        RedirectView mav = new RedirectView("/usuario/crear"); //le digo a qué url quiero ir 
         try {
             System.out.println("******" + usuario.getNombre() + "****");
-        uService.crearUsuario(usuario);} 
-        catch(Exception e){
+            uService.crearUsuario(usuario);
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return mav;
     }
-    
+
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestBody Usuario usuario){
+    public RedirectView modificar(@RequestBody Usuario usuario) {
         try {
             uService.modificarUsuario(usuario.getId(), usuario);
-          
+
         } catch (Exception e) {
-           System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
             return new RedirectView("/usuario");
         }
         return new RedirectView("/usuario");
     }
-    
+
     @PostMapping("/darDeBajaUsuario")
-    public RedirectView darDeBaja(@RequestBody Long id){
+    public RedirectView darDeBaja(@RequestBody Long id) {
         try {
-        uService.darDeBajaUsuario(id);
-         } catch (Exception e) {
-           System.out.println(e.getMessage());
+            uService.darDeBajaUsuario(id);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             return new RedirectView("/usuario");
         }
         return new RedirectView("/usuario");
     }
-    
-    
-    
+
 }
