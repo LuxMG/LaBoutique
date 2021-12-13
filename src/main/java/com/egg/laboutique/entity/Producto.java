@@ -30,9 +30,11 @@ public class Producto {
     private String descripcion;
     
     @Column
+    @Enumerated(EnumType.STRING)
     private Tipo tipo; // donacion/deseo
     
     @Column
+    @Enumerated(EnumType.STRING)
     private Estado estado; // disponible/reservado/etc
     
     @OneToOne
