@@ -21,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                         .loginProcessingUrl("/logincheck")
                         .usernameParameter("email")
                         .passwordParameter("clave")
-                        .defaultSuccessUrl("/producto/tienda", true)//pagina que se rendiriza una vez logueado
+                        .defaultSuccessUrl("/tienda", true)//pagina que se rendiriza una vez logueado
                         .failureUrl("/login?error=true")
                         .permitAll()
                 .and()

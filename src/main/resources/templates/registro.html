@@ -40,7 +40,7 @@
             <label for="barrio">Barrio</label>
             <input  id="barrio" type="text" placeholder="Contraseña" th:field="*{barrio}"/>
             <br>
-            <input name="rol" id="rol" th:value="${rol}" type="hidden"/>
+            <input th:field="*{rol}" id="rol" th:value="${rol}" type="hidden"/>
             
             <br>
             <button type="submit">Signup</button>
