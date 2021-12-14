@@ -17,18 +17,21 @@
   <header th:replace="fragments/header-index :: header-index"></header>
   <!-- MAIN-->
   <main>
-        <p th:if="${error}" th:text="${error}"></p>
-        <p th:if="${logout}" th:text="${logout}"></p>
-        <form th:action="@{/logincheck}" method="post">
-            <input type="email" placeholder="Email" name="email">
-            <br>
-            <input type="password" placeholder="Password" name="clave">
-            <br>
-            <button type="submit">Login</button>
-        </form>
-           
-        <a th:href="@{/registrodonante}" class="btn"> Registrate para dar una mano </a>
-        <a th:href="@{/registrobeneficiario}" class="btn"> Registrate para ir a tienda </a>
+      <section class="container">
+            <p th:if="${error}" th:text="${error}"></p>
+            <p th:if="${logout}" th:text="${logout}"></p>
+            <form th:action="@{/logincheck}" method="post">
+                <input type="email" placeholder="Email" name="email">
+                <br>
+                <input type="password" placeholder="Password" name="clave">
+                <br>
+                <button type="submit">Login</button>
+            </form>
+
+            <a th:href="@{/registrodonante}" class="btn btn-card"> Registrate para dar una mano </a>
+            <a th:href="@{/registrobeneficiario}" class="btn btn-card"> Registrate para ir a tienda </a>
+      </section>
+        
   </main>
   <!--FOOTER-->
   <footer th:replace="fragments/footer :: footer"></footer>

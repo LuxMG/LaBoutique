@@ -53,6 +53,15 @@ header .navbar-brand img {
   width: 20%;  
 }
 
+a.btn.btn-login {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 21%;
+    background-color: var(--color-secondary);
+    font-size: 12px;
+}
+
 /****INDEX*****/
 div#carouselExampleCaptions {
     height: 280px;
