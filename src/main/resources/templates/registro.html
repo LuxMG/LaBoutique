@@ -17,7 +17,7 @@
   <header th:replace="fragments/header-index :: header-index"></header>
   <!-- MAIN-->
   <main>
-      <h1> HACER EL FORMULARIO PARA PEDIR TODOS LOS DATOS </h1>
+      <h1> Registrate </h1>
       <div class="alert alert-danger col-xl-6" th:if="${error}" th:text="${error}"></div>
        <form method="post" th:action="@{/registro}" th:object="${usuario}" class="mb-5">
             <label for="nombre">Nombre</label>  

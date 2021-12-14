@@ -14,10 +14,10 @@ body {
 
 /*para setear variables*/
 :root {
-  --color-primary: #8F07C3;
+  --color-primary: #3F0760;
   --color-secondary: #FFF212;
   --color-light-primary: #64477D;
-  --color-dark-primary: #3F0760;
+  --color-dark-primary: #8F07C3;
   --raleway: 'Raleway', sans-serif;
   --dancing: 'Dancing Script', cursive;
 }
@@ -54,12 +54,13 @@ header .navbar-brand img {
 }
 
 a.btn.btn-login {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    width: 21%;
     background-color: var(--color-secondary);
     font-size: 12px;
+    font-weight: 800;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    width: 18%;
 }
 
 /****INDEX*****/
@@ -81,6 +82,7 @@ div#carouselExampleCaptions {
 .btn-card {
     background-color: var(--color-secondary);
 }
+
 .btn-card:hover {
     background-color: var(--color-primary);
     color: var(--color-secondary);
@@ -105,16 +107,38 @@ footer {
     color: var(--color-secondary);
 }
 
+/****LOGIN****/
+.formulario {
+    margin-bottom: 1rem;
+}
+
+.formulario label,
+.formulario input {
+    display: block;
+    padding-bottom: 0.75rem;
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    text-align: center;
+}
+
+.formulario button {
+    margin: 0.5rem 0rem;
+}
+
+.links-ingreso {
+    margin-bottom: 9rem;
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+}
 /***CARRITO***/
 // gise
 
 /***DATOS****/
 // gise
 
-/****DESEOS*****/ //misma vista carrito.
-// gise
-
-/****LOGIN****/
+/****DESEOS*****/ 
 // gise
 
 /*****NUEVO PRODUCTO****/

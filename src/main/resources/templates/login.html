@@ -20,16 +20,17 @@
       <section class="container">
             <p th:if="${error}" th:text="${error}"></p>
             <p th:if="${logout}" th:text="${logout}"></p>
-            <form th:action="@{/logincheck}" method="post">
+            <form th:action="@{/logincheck}" class="formulario" method="post">
+                <label> Email: </label>
                 <input type="email" placeholder="Email" name="email">
-                <br>
+                <label> Password: </label>
                 <input type="password" placeholder="Password" name="clave">
-                <br>
-                <button type="submit">Login</button>
+                <button type="submit" class="btn btn-card">Login</button>
             </form>
-
-            <a th:href="@{/registrodonante}" class="btn btn-card"> Registrate para dar una mano </a>
-            <a th:href="@{/registrobeneficiario}" class="btn btn-card"> Registrate para ir a tienda </a>
+            <div class="links-ingreso">
+                <a th:href="@{/registrodonante}" class="btn btn-card"> Registrate para <br> dar una mano </a>
+                <a th:href="@{/registrobeneficiario}" class="btn btn-card"> Registrate para <br> ir a tienda </a>
+            </div>
       </section>
         
   </main>
