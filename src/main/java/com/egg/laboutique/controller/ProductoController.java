@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,35 +37,9 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 @RequestMapping("/producto")
 public class ProductoController {
+    
     @Autowired
     private ProductoService pService;
-    
-    //Carrito de un usuario
-    @GetMapping("/carrito/{id}")
-    public ModelAndView mostrarCarrito(@PathVariable("id") Long id){
-        ModelAndView mav = new ModelAndView("carrito");
-        List<Producto> productos = pService.obtenerCarrito(id);
-        mav.addObject("productos", productos);
-        return mav;
-    }
-    
-    //Vista deseos de un usuario
-    @GetMapping("/deseos/{id}")
-    public ModelAndView mostrarDeseosUsuario(@PathVariable("id") Long id){
-        ModelAndView mav = new ModelAndView("deseos");
-        List<Producto> productos = pService.obtenerListaDeseos(id);
-        mav.addObject("productos", productos);
-        return mav;
-    }
-    
-    //Vista de donaciones que subio un usuario
-    @GetMapping("/donaciones/{id}")
-    public ModelAndView mostrarDonacionesUsuario(@PathVariable("id") Long id){
-        ModelAndView mav = new ModelAndView("donaciones");
-        List<Producto> productos = pService.obtenerPorDonante(id);
-        mav.addObject("productos", productos);
-        return mav;
-    }
     
     //Detalle de un producto
     @GetMapping("/detalleProducto/{id}")
@@ -97,7 +72,7 @@ public class ProductoController {
         
         pService.crearProducto(titulo, descripcion, null, null, null, archivo);
         
-        return new RedirectView("/tienda");
+        return new RedirectView("/listado");
     }
     @GetMapping("/editar/{id}")
     public ModelAndView editarProducto(@PathVariable Long id) {
@@ -111,32 +86,14 @@ public class ProductoController {
     @PostMapping("/modificar")
     public RedirectView modificarProducto(@RequestParam Long id,@RequestParam String titulo,@RequestParam String descripcion, @RequestParam Tipo tipo, @RequestParam Estado estado,@RequestParam Categoria categoria,@RequestParam Foto foto, @RequestParam Usuario donante,@RequestParam Usuario beneficiario,@RequestParam LocalDateTime modificacion){
             pService.modificarProducto(id, titulo, descripcion, tipo, estado, categoria, foto, donante, beneficiario, modificacion);
-        return new RedirectView("/tienda");
+        return new RedirectView("/listado");
     }
     
     //Trae todos los productos (Para admin)
-    @GetMapping("/productos")
+    @GetMapping("/listado")
     public ModelAndView mostrarProductos(){
         ModelAndView mav = new ModelAndView("todos-los-productos");
         List<Producto> productos = pService.obtenerTodos();
-        mav.addObject("productos", productos);
-        return mav;
-    }
-    
-    //Trae todos los productos donados a la tienda (vista Beneficiario)
-    @GetMapping("/productosTienda")
-    public ModelAndView mostrarProductosTienda(){
-        ModelAndView mav = new ModelAndView("tienda");
-        List<Producto> productos = pService.obtenerDonaciones();
-        mav.addObject("productos", productos);
-        return mav;
-    }
-    
-     //Trae todos los deseos de todos los usuarios a la tienda (vista Benefactor)
-    @GetMapping("/productosDeseos")
-    public ModelAndView mostrarProductosDeseos(){
-        ModelAndView mav = new ModelAndView("tienda");
-        List<Producto> productos = pService.obtenerDeseos();
         mav.addObject("productos", productos);
         return mav;
     }
@@ -148,15 +105,9 @@ public class ProductoController {
         return new RedirectView("todos-los-productos");
     }
     
+    
     //Cambiar estados de productos
     //Busquedas
     //filtros por categoria
     //Asociar 2 usuarios, agregando el segundo usuario a la BD y trayendo los datos.
-    /*
-        String cel = "543329333126";
-        String url;
-        url = "https://api.whatsapp.com/send/?phone="+cel+"&text=Hola%21+Te+contacto+desde+la+boutique&app_absent=0";
-        mav.addObject("url",url);
-    
-    */
 }
