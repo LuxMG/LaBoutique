@@ -18,6 +18,7 @@
   <!-- MAIN-->
   <main>
       <h1> HACER EL FORMULARIO PARA PEDIR TODOS LOS DATOS </h1>
+      <div class="alert alert-danger col-xl-6" th:if="${error}" th:text="${error}"></div>
        <form method="post" th:action="@{/registro}" th:object="${usuario}" class="mb-5">
             <label for="nombre">Nombre</label>  
             <input placeholder="Nombre" th:field="*{nombre}" type="text">
@@ -40,8 +41,8 @@
             <label for="barrio">Barrio</label>
             <input  id="barrio" type="text" placeholder="Contraseña" th:field="*{barrio}"/>
             <br>
-            <input name="rol" id="rol" th:value="${rol}" type="hidden"/>
-            
+            <input id="rol"  type="hidden" th:field="*{rol}"/>
+
             <br>
             <button type="submit">Signup</button>
             <br>

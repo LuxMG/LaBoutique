@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,8 +51,9 @@ public class LoginController {
 
         ModelAndView modelAndView = new ModelAndView("registro");
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-        modelAndView.addObject("usuario", new Usuario());
-        modelAndView.addObject("rol", Rol.Donante);
+        Usuario usuario = new Usuario();
+        usuario.setRol(Rol.Donante);
+        modelAndView.addObject("usuario", usuario);
         if (flashMap != null) {
 
             modelAndView.addObject("exito", flashMap.get("exito"));
@@ -71,7 +71,7 @@ public class LoginController {
 
         return modelAndView;
     }
-    
+
     @GetMapping("/registrobeneficiario")
     public ModelAndView signupBeneficiario(HttpServletRequest request, Principal principal) {
 
@@ -97,7 +97,7 @@ public class LoginController {
 
         return modelAndView;
     }
-    
+
     @PostMapping("/registro")
     public RedirectView signup(@ModelAttribute Usuario usuario, RedirectAttributes attributtes) {
         RedirectView redirectView = new RedirectView("/producto/productosTienda");
@@ -111,8 +111,18 @@ public class LoginController {
             attributtes.addFlashAttribute("dni", usuario.getDni());
             attributtes.addFlashAttribute("email", usuario.getEmail());
             attributtes.addFlashAttribute("clave", usuario.getClave());
+            switch (usuario.getRol()) {
+                case Beneficiario:
+                    redirectView.setUrl("/registrobeneficiario");
+                    break;
+                case Donante:
+                    redirectView.setUrl("/registrodonante");
+                    break;
+                default:
+                    redirectView.setUrl("/");
+                    break;
+            }
 
-            redirectView.setUrl("/signup");
         }
 
         return redirectView;
