@@ -2,10 +2,13 @@ package com.egg.laboutique.controller;
 
 import com.egg.laboutique.entity.Producto;
 import com.egg.laboutique.entity.Usuario;
+import com.egg.laboutique.enums.Rol;
 import com.egg.laboutique.service.UsuarioService;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -46,10 +49,19 @@ public class UsuarioController {
     }
 
     @GetMapping("/editar/{id}")
-    public ModelAndView editarUsuario(@PathVariable Long id) {
+    public ModelAndView editarUsuario(@PathVariable Long id, HttpSession session) {
         ModelAndView mav = new ModelAndView("registro");
         try {
+            String emailUsuario = session.getAttribute("email").toString();
+            Usuario usuarioSession = uService.buscarPorEmail(emailUsuario);
             Usuario usuario = uService.buscarPorId(id);
+            System.out.println("---------");
+            System.out.println(usuarioSession.getId());
+            System.out.println(usuario.getId());
+            System.out.println("---------");
+            if(!Objects.equals(usuarioSession.getId(), usuario.getId())){
+                throw new Exception("No tiene permiso para modificar este usuario");
+            }
             mav.addObject("usuario", usuario);
             mav.addObject("rol", usuario.getRol());
             mav.addObject("title", "Editar Usuario");

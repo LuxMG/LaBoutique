@@ -141,4 +141,11 @@ public class ProductoService {
         }
 
     }
+    
+    @Transactional
+    public void crearProducto(Producto producto){
+        //validarProducto(producto);
+        repo.save(producto);
+    }
+    
 }
