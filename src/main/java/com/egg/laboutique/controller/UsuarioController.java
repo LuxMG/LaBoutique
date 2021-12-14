@@ -44,7 +44,7 @@ public class UsuarioController {
         return mav;
     }
      @GetMapping("/editar/{id}")
-    public ModelAndView editarProducto(@PathVariable Long id) {
+    public ModelAndView editarUsuario(@PathVariable Long id) {
         ModelAndView mav = new ModelAndView("nuevo-producto");//refactorizar nombre de html a formulario-producto 
         try {
              mav.addObject("usuario", uService.buscarPorId(id));
@@ -80,6 +80,16 @@ public class UsuarioController {
         return new RedirectView("/usuario");
     }
     
+     //mostrar datos de un usuario
+    @GetMapping("/mostrarUsuario/{id}")
+    public ModelAndView mostrar(@RequestBody Long id) throws Exception{
+        ModelAndView mav = new ModelAndView("mostrar-datos");
+        Usuario usuario = uService.buscarPorId(id);
+        mav.addObject("usuario", usuario);
+        return mav;
+    }
+    
+   
     
     
 }
