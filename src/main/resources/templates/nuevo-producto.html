@@ -19,21 +19,21 @@
   <header th:replace="fragments/header-index :: header-index"></header>
   <!-- MAIN-->
   <main>
-    <form method="post" th:action="@{/producto/__${action}__}" enctype="multipart/form-data">
+    <form method="post" th:action="@{/producto/__${action}__}" enctype="multipart/form-data" th:object="${producto}">
       <div class="form-group">
         <label for="">Título</label>
-        <input type="text" placeholder="Escribir el nombre del producto" name="titulo">
+        <input type="text" placeholder="Escribir el nombre del producto" th:field="*{titulo}">
       </div>
       <br>
 
       <div class="form-group">
         <label for="">Descripción</label>
-        <textarea name="descripcion" placeholder="Escribir una descripción breve del producto" rows="3"></textarea>
+        <textarea th:field="*{descripcion}" placeholder="Escribir una descripción breve del producto" rows="3"></textarea>
       </div>
       <br>
 
       <label for="categoria">Categoría</label>
-      <select aria-label="Seleccionar una categoria" class="form" name="categoria">
+      <select aria-label="Seleccionar una categoria" class="form" th:field="*{categoria}">
         <option aria-label="seleccionar una categoria">Seleccionar una categoria</option>
         <option th:each="categoria : ${categorias}" th:text="${categoria.nombre}"></option>
       </select>
