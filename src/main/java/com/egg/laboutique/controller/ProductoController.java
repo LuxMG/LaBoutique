@@ -11,6 +11,7 @@ import com.egg.laboutique.entity.Producto;
 import com.egg.laboutique.entity.Usuario;
 import com.egg.laboutique.enums.Estado;
 import com.egg.laboutique.enums.Tipo;
+import com.egg.laboutique.service.CategoriaService;
 import com.egg.laboutique.service.ProductoService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -41,6 +42,9 @@ public class ProductoController {
     @Autowired
     private ProductoService pService;
     
+    @Autowired
+    private CategoriaService catService;
+    
     //Detalle de un producto
     @GetMapping("/detalleProducto/{id}")
     public ModelAndView verProducto(@PathVariable("id") Long id){
@@ -56,7 +60,7 @@ public class ProductoController {
         ModelAndView mav = new ModelAndView("nuevo-producto");//refactorizar nombre de html a formulario-producto
         mav.addObject("producto", new Producto());
         //mav.addObject("tipo", Tipo.Deseo); Lo modifico con la sesion
-        //mav.addObject("categorias", catService.obtenerTodas());
+        mav.addObject("categorias", catService.buscarTodas());
         mav.addObject("action", "guardar");
         return mav;
     }
@@ -67,10 +71,10 @@ public class ProductoController {
             @RequestParam("descripcion") String descripcion,
 //            @RequestParam("tipo") Tipo tipo,
 //            @RequestParam("estado") Estado estado,
-//            @RequestParam("categoria") Categoria categoria,
+            @RequestParam("categoria") String categoria,
             MultipartFile archivo){
-        
-        pService.crearProducto(titulo, descripcion, null, null, null, archivo);
+        Categoria categoriaDos=catService.buscarPorNombre(categoria);
+        pService.crearProducto(titulo, descripcion, null, null, categoriaDos, archivo);
         
         return new RedirectView("/listado");
     }
