@@ -1,7 +1,8 @@
 package com.egg.laboutique.service;
 
+import com.egg.laboutique.Utilities.Util;
 import com.egg.laboutique.entity.Usuario;
-import com.egg.laboutique.enums.Rol;
+import com.egg.laboutique.exception.ServiceException;
 import com.egg.laboutique.repository.UsuarioRepository;
 import java.util.Collections;
 import java.util.List;
@@ -29,46 +30,13 @@ public class UsuarioService implements UserDetailsService {
     @Autowired
     private BCryptPasswordEncoder encoder;
 
-    /**
-     * crear usuario
-     *
-     * @param usuario
-     * @throws java.lang.Exception
-     */
     @Transactional
     public void crearUsuario(Usuario usuario) throws Exception {
 
         //hago todas las validaciones
-//        if (usuario.getNombre().equals("")){
-//            throw new Exception("El nombre se encuentra vacío"); 
-//        }
-//          if (usuario.getDni().equals("")){
-//            throw new Exception("El DNI se encuentra vacío" );     
-//        }
-//        if (usuario.getEmail().equals("")){
-//            throw new Exception("El e-mail se encuentra vacío"); 
-//        }
-//        if (usuario.getTelefono().equals("")){
-//            throw new Exception("El telefono se encuentra vacío" );     
-//        }
-//        if (usuario.getBarrio().equals("")){
-//            throw new Exception("El barrio se encuentra vacío" );     
-//        }  
-        //Usuario usuario1 = new Usuario();
-        //usuario1.setNombre(usuario.getNombre());
-        //.setDni(usuario.getDni());
-        //usuario1.setEmail(usuario.getEmail());
-        //usuario1.setTelefono(usuario.getTelefono());
-        //usuario1.setBarrio(usuario.getBarrio());
-        //usuario1.setRol(usuario.getRol());
-        //usuario1.setTelefono("1122223333");
-        //usuario1.setBarrio("Barrio");
-        //usuario1.setRol(Rol.ADMIN);
-        usuario.setClave(encoder.encode(usuario.getClave()));
+        validarUsuario(usuario);
 
-        System.out.println("******" + usuario.getNombre() + "********");
-        System.out.println("******" + usuario.getClave() + "********");
-        System.out.println("******" + usuario.getRol() + "********");
+        usuario.setClave(encoder.encode(usuario.getClave()));
 
         usuarioRepository.save(usuario);
 
@@ -82,21 +50,9 @@ public class UsuarioService implements UserDetailsService {
         if (!usuarioRepository.existsUsuarioById(id)) {
             throw new Exception("No existe un usuario con este id " + id);
         }
-        if (usuario.getNombre().equals("")) {
-            throw new Exception("El nombre se encuentra vacío");
-        }
-        if (usuario.getDni().equals("")) {
-            throw new Exception("El DNI se encuentra vacío");
-        }
-        if (usuario.getEmail().equals("")) {
-            throw new Exception("El e-mail se encuentra vacío");
-        }
-        if (usuario.getTelefono().equals("")) {
-            throw new Exception("El telefono se encuentra vacío");
-        }
-        if (usuario.getBarrio().equals("")) {
-            throw new Exception("El barrio se encuentra vacío");
-        }
+
+        //hago todas las validaciones
+        validarUsuario(usuario);
 
         Usuario usuario2 = usuarioRepository.findById(usuario.getId()).get();
         usuario2.setNombre(usuario.getNombre());
@@ -107,7 +63,6 @@ public class UsuarioService implements UserDetailsService {
         usuario2.setRol(usuario.getRol());
 
         usuarioRepository.save(usuario2);
-
     }
 
     //dar de baja un usuario
@@ -131,7 +86,7 @@ public class UsuarioService implements UserDetailsService {
 
     @Transactional
     public Usuario buscarPorEmail(String email) throws Exception {
-        System.out.println("---entra a buscar por email");
+
         if (email.equals("") || email.isEmpty()) {
             throw new Exception("El email no puede estar vacío");
         }
@@ -166,12 +121,51 @@ public class UsuarioService implements UserDetailsService {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attributes.getRequest().getSession(true);
 
-        session.setAttribute("id", usuario.getId());
-        session.setAttribute("nombre", usuario.getNombre());
-        session.setAttribute("email", usuario.getEmail());
-        session.setAttribute("rol", usuario.getRol());
-                
+        session.setAttribute(
+                "id", usuario.getId());
+        session.setAttribute(
+                "nombre", usuario.getNombre());
+        session.setAttribute(
+                "email", usuario.getEmail());
+        session.setAttribute(
+                "rol", usuario.getRol());
+
         return new User(usuario.getEmail(), usuario.getClave(), Collections.singletonList(authority));
     }
 
+    private void validarUsuario(Usuario usuario) throws ServiceException {
+
+        if (usuario.getNombre().equals("") || usuario.getNombre() == null) {
+            throw new ServiceException("El nombre se encuentra vacío");
+        }
+
+        if (!Util.checkName(usuario.getNombre())) {
+            throw new ServiceException("Nombre no válido, utilice solo letras");
+        }
+
+        if (usuario.getDni().equals("") || usuario.getDni() == null) {
+            throw new ServiceException("El DNI se encuentra vacío");
+        }
+        if (!Util.checkDNI(usuario.getDni())) {
+            throw new ServiceException("DNI no válido, utilice solo numeros");
+        }
+
+        if (usuario.getEmail().equals("") || usuario.getEmail() == null) {
+            throw new ServiceException("El e-mail se encuentra vacío");
+        }
+        if (!Util.checkEmail(usuario.getEmail())) {
+            throw new ServiceException("Email no válido");
+        }
+
+        if (usuario.getTelefono().equals("") || usuario.getTelefono() == null) {
+            throw new ServiceException("El telefono se encuentra vacío");
+        }
+        if (!Util.checkTelefono(usuario.getTelefono())) {
+            throw new ServiceException("Telefono no válido, utilice solo números");
+        }
+
+        if (usuario.getBarrio().equals("") || usuario.getBarrio() == null) {
+            throw new ServiceException("El barrio se encuentra vacío");
+        }
+    }
 }
