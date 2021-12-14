@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.egg.laboutique.controller;
 
 import com.egg.laboutique.entity.Categoria;
@@ -13,26 +8,18 @@ import com.egg.laboutique.enums.Estado;
 import com.egg.laboutique.enums.Tipo;
 import com.egg.laboutique.service.ProductoService;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-
-/**
- *
- * @author Mailen
- */
 
 @Controller
 @RequestMapping("/producto")
@@ -55,7 +42,6 @@ public class ProductoController {
     public ModelAndView crearProducto(){
         ModelAndView mav = new ModelAndView("nuevo-producto");//refactorizar nombre de html a formulario-producto
         mav.addObject("producto", new Producto());
-        //mav.addObject("tipo", Tipo.Deseo); Lo modifico con la sesion
         //mav.addObject("categorias", catService.obtenerTodas());
         mav.addObject("action", "guardar");
         return mav;
@@ -91,8 +77,9 @@ public class ProductoController {
     
     //Trae todos los productos (Para admin)
     @GetMapping("/listado")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView mostrarProductos(){
-        ModelAndView mav = new ModelAndView("todos-los-productos");
+        ModelAndView mav = new ModelAndView("producto-listado");
         List<Producto> productos = pService.obtenerTodos();
         mav.addObject("productos", productos);
         return mav;
@@ -102,7 +89,7 @@ public class ProductoController {
     @PostMapping("/eliminar/{id}")
     public RedirectView eliminar(@PathVariable Long id){
         pService.eliminar(id);
-        return new RedirectView("todos-los-productos");
+        return new RedirectView("/listado");
     }
     
     
