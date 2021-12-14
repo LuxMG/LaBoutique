@@ -2,20 +2,24 @@ package com.egg.laboutique.service;
 
 import com.egg.laboutique.Utilities.Util;
 import com.egg.laboutique.entity.Usuario;
-import com.egg.laboutique.enums.Rol;
 import com.egg.laboutique.exception.ServiceException;
 import com.egg.laboutique.repository.UsuarioRepository;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
 public class UsuarioService implements UserDetailsService {
@@ -32,17 +36,9 @@ public class UsuarioService implements UserDetailsService {
         //hago todas las validaciones
         validarUsuario(usuario);
 
-        Usuario usuario1 = new Usuario();
+        usuario.setClave(encoder.encode(usuario.getClave()));
 
-        usuario1.setNombre(usuario.getNombre());
-        usuario1.setDni(usuario.getDni());
-        usuario1.setEmail(usuario.getEmail());
-        usuario1.setTelefono(usuario.getTelefono());
-        usuario1.setBarrio(usuario.getBarrio());
-        usuario1.setRol(usuario.getRol());
-        usuario1.setClave(encoder.encode(usuario.getClave()));
-
-        usuarioRepository.save(usuario1);
+        usuarioRepository.save(usuario);
 
     }
 
@@ -54,7 +50,7 @@ public class UsuarioService implements UserDetailsService {
         if (!usuarioRepository.existsUsuarioById(id)) {
             throw new Exception("No existe un usuario con este id " + id);
         }
-        
+
         //hago todas las validaciones
         validarUsuario(usuario);
 
@@ -90,10 +86,11 @@ public class UsuarioService implements UserDetailsService {
 
     @Transactional
     public Usuario buscarPorEmail(String email) throws Exception {
-        if (email.equals("")) {
+
+        if (email.equals("") || email.isEmpty()) {
             throw new Exception("El email no puede estar vacío");
         }
-        return usuarioRepository.getByEmail(email);
+        return usuarioRepository.findByEmail(email).orElse(null);
     }
 
     @Transactional
@@ -119,17 +116,29 @@ public class UsuarioService implements UserDetailsService {
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("No existe un usuario asociado al correo ingresado"));
 
-        //GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre());
-        return new User(usuario.getEmail(), usuario.getClave(), Collections.EMPTY_LIST);
+        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + usuario.getRol().name());
+
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attributes.getRequest().getSession(true);
+
+        session.setAttribute(
+                "id", usuario.getId());
+        session.setAttribute(
+                "nombre", usuario.getNombre());
+        session.setAttribute(
+                "email", usuario.getEmail());
+        session.setAttribute(
+                "rol", usuario.getRol());
+
+        return new User(usuario.getEmail(), usuario.getClave(), Collections.singletonList(authority));
     }
-    
-    //Validaciones de campos entidad usuario
-    private void validarUsuario(Usuario usuario) throws ServiceException{
-        
+
+    private void validarUsuario(Usuario usuario) throws ServiceException {
+
         if (usuario.getNombre().equals("") || usuario.getNombre() == null) {
             throw new ServiceException("El nombre se encuentra vacío");
         }
-        
+
         if (!Util.checkName(usuario.getNombre())) {
             throw new ServiceException("Nombre no válido, utilice solo letras");
         }
@@ -140,22 +149,22 @@ public class UsuarioService implements UserDetailsService {
         if (!Util.checkDNI(usuario.getDni())) {
             throw new ServiceException("DNI no válido, utilice solo numeros");
         }
-        
+
         if (usuario.getEmail().equals("") || usuario.getEmail() == null) {
             throw new ServiceException("El e-mail se encuentra vacío");
         }
         if (!Util.checkEmail(usuario.getEmail())) {
             throw new ServiceException("Email no válido");
         }
-        
-        if (usuario.getTelefono().equals("") || usuario.getTelefono()== null) {
+
+        if (usuario.getTelefono().equals("") || usuario.getTelefono() == null) {
             throw new ServiceException("El telefono se encuentra vacío");
         }
         if (!Util.checkTelefono(usuario.getTelefono())) {
             throw new ServiceException("Telefono no válido, utilice solo números");
         }
-        
-        if (usuario.getBarrio().equals("") || usuario.getBarrio()== null) {
+
+        if (usuario.getBarrio().equals("") || usuario.getBarrio() == null) {
             throw new ServiceException("El barrio se encuentra vacío");
         }
     }
