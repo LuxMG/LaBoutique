@@ -31,8 +31,8 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
             + "p.descripcion = :descripcion, p.tipo = :tipo, "
             + "p.estado = :estado, p.categoria = :categoria, "
             + "p.foto = :foto, "
-            + "p.donante = :donante, p.beneficiario = :beneficiario, "
-            + "p.modificacion = :modificacion WHERE p.id = :id")
+            + "p.donante = :donante, p.beneficiario = :beneficiario "
+            + "WHERE p.id = :id")
     void modificar(@Param("id") Long id,
             @Param("titulo") String titulo,
             @Param("descripcion") String descripcion,
@@ -40,8 +40,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
             @Param("categoria") Categoria categoria,
             @Param("foto") Foto foto, 
             @Param("donante") Usuario donante,
-            @Param("beneficiario") Usuario beneficiario,
-            @Param("modificacion") LocalDateTime modificacion);
+            @Param("beneficiario") Usuario beneficiario);
     
     //Trae todos los productos ordenados por tipo(Donacion/Deseo)
     @Query("SELECT p FROM Producto p WHERE p.alta = true ORDER BY p.tipo")

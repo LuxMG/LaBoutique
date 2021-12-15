@@ -46,13 +46,13 @@
                             </p>
                             <p id="descripcion" th:text="${producto.descripcion}"></p>
                             <p class="card-text text-right">
-                                <a data-toggle="modal" data-target="#exampleModal3" th:href="@{/producto/detalleProducto/__${producto.id}__}" class="btn btn-primary">Ver más</a>
+                                <a  th:href="@{/producto/detalleProducto/__${producto.id}__}" class="btn btn-primary">Ver más</a>
                             </p>
                         </div>
                     </div>
                 </div>
             </section>
-
+            
             <!-- <div class="modal fade col-12" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                  aria-hidden="true" th:unless="${productos.isEmpty()}">
                 <div class="modal-dialog" role="document">

@@ -41,16 +41,16 @@ public class ProductoController {
 
     @Autowired
     private UsuarioService usuarioService;
-    
+
     @Autowired
     private FotoService fotoService;
-    
-    
+
     //Detalle de un producto
     @GetMapping("/detalleProducto/{id}")
     public ModelAndView verProducto(@PathVariable("id") Long id) {
         ModelAndView mav = new ModelAndView("producto-tienda");
         Producto producto = pService.obtenerPorId(id);
+        System.out.println("********"+producto.getTitulo());
         mav.addObject("producto", producto);
         return mav;
     }
@@ -59,20 +59,20 @@ public class ProductoController {
     @GetMapping("/crear")
     public ModelAndView crearProducto(HttpSession session) {
         ModelAndView mav = new ModelAndView("nuevo-producto");
-        
+
         try {
             //refactorizar nombre de html a formulario-producto
             Producto producto = new Producto();
             producto.setEstado(Estado.Disponible);
             System.out.println("------------------ANTES DEL SERVICE-----------------");
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
-            System.out.println("--------------"+usuario.getNombre()+"--------------");
+            System.out.println("--------------" + usuario.getNombre() + "--------------");
             switch (session.getAttribute("rol").toString()) {
                 case "Beneficiario":
                     producto.setTipo(Tipo.Deseo);
                     producto.setBeneficiario(usuario);
                     producto.setDonante(null);
-                    System.out.println("--------------"+producto.getTitulo()+"--------------");
+                    System.out.println("--------------" + producto.getTitulo() + "--------------");
                     break;
                 case "Donante":
                     producto.setTipo(Tipo.Donacion);
@@ -84,7 +84,7 @@ public class ProductoController {
             mav.addObject("producto", producto);
             mav.addObject("categorias", catService.buscarTodas());
             mav.addObject("action", "guardar");
-            
+
         } catch (Exception ex) {
             Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -96,7 +96,7 @@ public class ProductoController {
         try {
             producto.setFoto(fotoService.guardar(archivo));
             pService.crearProducto(producto);
-            
+
         } catch (ServiceException ex) {
             Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -121,7 +121,7 @@ public class ProductoController {
     //Trae todos los productos (Para admin)
     @GetMapping("/listado")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView mostrarProductos(){
+    public ModelAndView mostrarProductos() {
         ModelAndView mav = new ModelAndView("producto-listado");
         List<Producto> productos = pService.obtenerTodos();
         mav.addObject("productos", productos);
@@ -135,6 +135,24 @@ public class ProductoController {
         return new RedirectView("/listado");
     }
 
+    @PostMapping("/comprar")
+    public RedirectView comprar(@RequestParam("producto") String productoId,HttpSession session) {
+        System.out.println("----****---"+productoId+"----****---");
+        
+        Producto producto = pService.obtenerPorId(Long.parseLong(productoId));
+        System.out.println("----****---"+producto.getTitulo()+"----****---");
+        try {
+            Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
+            producto.setBeneficiario(usuario);
+            producto.setEstado(Estado.Reservado);
+            System.out.println("----****---"+producto.getTitulo()+"----****---");
+            pService.modificarProducto(producto);
+        } catch (Exception ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return new RedirectView("/listado");
+    }
     //Cambiar estados de productos
     //Busquedas
     //filtros por categoria
