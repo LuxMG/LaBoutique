@@ -65,7 +65,7 @@ public class UsuarioController {
             mav.addObject("usuario", usuario);
             mav.addObject("rol", usuario.getRol());
             mav.addObject("title", "Editar Usuario");
-            mav.addObject("action", "modificar");
+            mav.addObject("action", "usuario/modificar");
         } catch (Exception ex) {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -74,7 +74,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificar(@RequestBody Usuario usuario, RedirectAttributes attributtes) {
+    public RedirectView modificar(@ModelAttribute Usuario usuario, RedirectAttributes attributtes) {
         RedirectView redirectView = new RedirectView("/producto/productosTienda");
         try {
             uService.modificarUsuario(usuario.getId(), usuario);

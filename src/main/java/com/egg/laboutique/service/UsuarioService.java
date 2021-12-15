@@ -7,6 +7,7 @@ import com.egg.laboutique.exception.ServiceException;
 import com.egg.laboutique.repository.UsuarioRepository;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
@@ -35,8 +36,14 @@ public class UsuarioService implements UserDetailsService {
     public void crearUsuario(Usuario usuario) throws Exception {
         //hago todas las validaciones
         validarUsuario(usuario);
-        
+        if(usuarioRepository.existsByEmail(usuario.getEmail())){
+            throw new ServiceException("Ya existe un usuario con ese EMAIL");
+        }
+        if(usuarioRepository.existsByDni(usuario.getDni())){
+            throw new ServiceException("Ya existe un usuario con ese DNI");
+        }
         usuario.setClave(encoder.encode(usuario.getClave()));
+        
         usuarioRepository.save(usuario);
     }
 
@@ -47,10 +54,15 @@ public class UsuarioService implements UserDetailsService {
         if (!usuarioRepository.existsUsuarioById(id)) {
             throw new Exception("No existe un usuario con este id " + id);
         }
-
         //hago todas las validaciones
         validarUsuario(usuario);
-
+        if(usuarioRepository.existeOtroUsuarioConMismoEmail(id, usuario.getEmail())!=null){
+            throw new ServiceException("Ya existe otro usuario con ese EMAIL");
+        }
+        if(usuarioRepository.existeOtroUsuarioConMismoDNI(id, usuario.getDni())!=null){
+            throw new ServiceException("Ya existe otro usuario con ese DNI");
+        }
+        
         //se pisan los valores viejos con los valores nuevos si es que hubo cambios
         Usuario usuario2 = usuarioRepository.findById(usuario.getId()).get();
         usuario2.setNombre(usuario.getNombre());
@@ -144,20 +156,14 @@ public class UsuarioService implements UserDetailsService {
         if (!Util.checkDNI(usuario.getDni())) {
             throw new ServiceException("DNI no válido, utilice solo numeros");
         }
-        if(usuarioRepository.existsByDni(usuario.getDni())){
-            throw new ServiceException("Ya existe un usuario con ese DNI");
-        }
-
+        
         if (usuario.getEmail().equals("") || usuario.getEmail() == null) {
             throw new ServiceException("El e-mail se encuentra vacío");
         }
         if (!Util.checkEmail(usuario.getEmail())) {
             throw new ServiceException("Email no válido");
         }
-        if(usuarioRepository.existsByEmail(usuario.getEmail())){
-            throw new ServiceException("Ya existe un usuario con ese EMAIL");
-        }
-
+        
         if (usuario.getTelefono().equals("") || usuario.getTelefono() == null) {
             throw new ServiceException("El telefono se encuentra vacío");
         }

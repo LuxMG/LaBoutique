@@ -19,8 +19,9 @@
   <main>
       <h1> HACER EL FORMULARIO PARA PEDIR TODOS LOS DATOS </h1>
       <div class="alert alert-danger col-xl-6" th:if="${error}" th:text="${error}"></div>
-       <form method="post" th:action="@{/registro}" th:object="${usuario}" class="mb-5">
-            <label for="nombre">Nombre</label>  
+       <form method="post" th:action="@{/__${action}__}" th:object="${usuario}" class="mb-5">
+            <input id="id"  type="hidden" th:field="*{id}"/>
+           <label for="nombre">Nombre</label>  
             <input placeholder="Nombre" th:field="*{nombre}" type="text">
             <br>
             <label for="dni">DNI</label>    
@@ -36,10 +37,10 @@
             <input  id="clave2" type="password" placeholder="Repetir Contraseña" th:field="*{clave2}"/> -->
             <br>
             <label for="telefono">Telefono</label>
-            <input  id="telefono" type="text" placeholder="Contraseña" th:field="*{telefono}"/>
+            <input  id="telefono" type="text" placeholder="Telefono" th:field="*{telefono}"/>
             <br>
             <label for="barrio">Barrio</label>
-            <input  id="barrio" type="text" placeholder="Contraseña" th:field="*{barrio}"/>
+            <input  id="barrio" type="text" placeholder="Barrio" th:field="*{barrio}"/>
             <br>
             <input id="rol"  type="hidden" th:field="*{rol}"/>
 
