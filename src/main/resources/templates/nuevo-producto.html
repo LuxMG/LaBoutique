@@ -34,14 +34,20 @@
 
       <label for="categoria">Categoría</label>
       <select aria-label="Seleccionar una categoria" class="form" th:field="*{categoria}">
-        <option aria-label="seleccionar una categoria">Seleccionar una categoria</option>
-        <option th:each="categoria : ${categorias}" th:text="${categoria.nombre}"></option>
+        <option aria-label="seleccionar una categoria" value="0">Seleccionar una categoria</option>
+        <option th:each="categoria : ${categorias}" th:text="${categoria.nombre}" th:value="${categoria.id}"></option>
       </select>
       <br>
 
       <label for="">Subir una imagen</label>
       <input type="file" placeholder="Foto" name="archivo">
       <br>
+      
+      <input th:field="*{foto}" hidden>
+      <input th:field="*{estado}" hidden>
+      <input th:field="*{tipo}" hidden>
+      <input th:field="*{beneficiario}" hidden>
+      <input th:field="*{donante}" hidden>
 
       <button type="submit" class="btn btn-primary"
         th:text="${action == 'guardar'} ? 'cargar producto' : 'Guardar cambios'"></button>

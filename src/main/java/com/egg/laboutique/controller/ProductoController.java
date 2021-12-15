@@ -80,6 +80,7 @@ public class ProductoController {
                     producto.setBeneficiario(null);
                     break;
             }
+            System.out.println("----------------------DESPUES DEL SWITCH---------------------");
             mav.addObject("producto", producto);
             mav.addObject("categorias", catService.buscarTodas());
             mav.addObject("action", "guardar");
@@ -91,7 +92,7 @@ public class ProductoController {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(MultipartFile archivo,@ModelAttribute Producto producto) {
+    public RedirectView guardar(@RequestParam MultipartFile archivo, @ModelAttribute Producto producto) {
         try {
             producto.setFoto(fotoService.guardar(archivo));
             pService.crearProducto(producto);

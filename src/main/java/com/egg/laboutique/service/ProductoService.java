@@ -35,6 +35,7 @@ public class ProductoService {
     
     @Transactional
     public void crearProducto(String titulo, String descripcion, Tipo tipo, Estado estado, Categoria categoria, Foto foto, Usuario donante, Usuario beneficiario, Boolean alta, LocalDateTime modificacion){
+        //validarProducto(producto);
         Producto producto = new Producto();
         producto.setTitulo(titulo);
         producto.setDescripcion(descripcion);
@@ -46,6 +47,13 @@ public class ProductoService {
         producto.setDonante(donante);
         producto.setAlta(true);
         producto.setModificacion(modificacion);
+        repo.save(producto);
+    }
+    
+    @Transactional
+    public void crearProducto(Producto producto){
+        //validarProducto(producto);
+        producto.setAlta(true);
         repo.save(producto);
     }
     
@@ -142,10 +150,5 @@ public class ProductoService {
 
     }
     
-    @Transactional
-    public void crearProducto(Producto producto){
-        //validarProducto(producto);
-        repo.save(producto);
-    }
     
 }
