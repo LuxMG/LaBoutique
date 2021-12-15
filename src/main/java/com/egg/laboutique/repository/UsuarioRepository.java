@@ -41,6 +41,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     // Retorna usuario por email
     Optional<Usuario> findByEmail(String email);
+    
     boolean existsByEmail(String email);
-
+    
+    boolean existsByDni(String dni);
 }

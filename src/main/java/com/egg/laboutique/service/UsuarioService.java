@@ -144,12 +144,18 @@ public class UsuarioService implements UserDetailsService {
         if (!Util.checkDNI(usuario.getDni())) {
             throw new ServiceException("DNI no válido, utilice solo numeros");
         }
+        if(usuarioRepository.existsByDni(usuario.getDni())){
+            throw new ServiceException("Ya existe un usuario con ese DNI");
+        }
 
         if (usuario.getEmail().equals("") || usuario.getEmail() == null) {
             throw new ServiceException("El e-mail se encuentra vacío");
         }
         if (!Util.checkEmail(usuario.getEmail())) {
             throw new ServiceException("Email no válido");
+        }
+        if(usuarioRepository.existsByEmail(usuario.getEmail())){
+            throw new ServiceException("Ya existe un usuario con ese EMAIL");
         }
 
         if (usuario.getTelefono().equals("") || usuario.getTelefono() == null) {

@@ -50,7 +50,6 @@ public class ProductoController {
     public ModelAndView verProducto(@PathVariable("id") Long id) {
         ModelAndView mav = new ModelAndView("producto-tienda");
         Producto producto = pService.obtenerPorId(id);
-        System.out.println("********"+producto.getTitulo());
         mav.addObject("producto", producto);
         return mav;
     }
@@ -64,15 +63,12 @@ public class ProductoController {
             //refactorizar nombre de html a formulario-producto
             Producto producto = new Producto();
             producto.setEstado(Estado.Disponible);
-            System.out.println("------------------ANTES DEL SERVICE-----------------");
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
-            System.out.println("--------------" + usuario.getNombre() + "--------------");
             switch (session.getAttribute("rol").toString()) {
                 case "Beneficiario":
                     producto.setTipo(Tipo.Deseo);
                     producto.setBeneficiario(usuario);
                     producto.setDonante(null);
-                    System.out.println("--------------" + producto.getTitulo() + "--------------");
                     break;
                 case "Donante":
                     producto.setTipo(Tipo.Donacion);
@@ -80,7 +76,6 @@ public class ProductoController {
                     producto.setBeneficiario(null);
                     break;
             }
-            System.out.println("----------------------DESPUES DEL SWITCH---------------------");
             mav.addObject("producto", producto);
             mav.addObject("categorias", catService.buscarTodas());
             mav.addObject("action", "guardar");
@@ -137,15 +132,11 @@ public class ProductoController {
 
     @PostMapping("/comprar")
     public RedirectView comprar(@RequestParam("producto") String productoId,HttpSession session) {
-        System.out.println("----****---"+productoId+"----****---");
-        
         Producto producto = pService.obtenerPorId(Long.parseLong(productoId));
-        System.out.println("----****---"+producto.getTitulo()+"----****---");
         try {
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
             producto.setBeneficiario(usuario);
             producto.setEstado(Estado.Reservado);
-            System.out.println("----****---"+producto.getTitulo()+"----****---");
             pService.modificarProducto(producto);
         } catch (Exception ex) {
             Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
