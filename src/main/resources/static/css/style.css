@@ -14,9 +14,9 @@ body {
 
 /*para setear variables*/
 :root {
-  --color-primary: #8F07C3;
+  --color-primary: #64477D;
   --color-secondary: #FFF212;
-  --color-light-primary: #64477D;
+  --color-light-primary: #8F07C3;
   --color-dark-primary: #3F0760;
   --raleway: 'Raleway', sans-serif;
   --dancing: 'Dancing Script', cursive;
