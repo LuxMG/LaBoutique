@@ -41,6 +41,14 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     // Retorna usuario por email
     Optional<Usuario> findByEmail(String email);
+    
     boolean existsByEmail(String email);
-
+    
+    boolean existsByDni(String dni);
+    
+    @Query(value = "SELECT * from usuario WHERE usuario.email = :email AND usuario.id != :id",nativeQuery = true)
+    Usuario existeOtroUsuarioConMismoEmail(@Param("id") Long id,@Param("email") String email);
+    
+    @Query(value = "SELECT * from usuario WHERE usuario.dni = :dni AND usuario.id != :id",nativeQuery = true)
+    Usuario existeOtroUsuarioConMismoDNI(@Param("id") Long id,@Param("dni") String dni);
 }
