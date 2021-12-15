@@ -54,6 +54,7 @@ public class LoginController {
         Usuario usuario = new Usuario();
         usuario.setRol(Rol.Donante);
         modelAndView.addObject("usuario", usuario);
+        modelAndView.addObject("action", "registro");
         if (flashMap != null) {
 
             modelAndView.addObject("exito", flashMap.get("exito"));
@@ -80,6 +81,7 @@ public class LoginController {
         Usuario usuario = new Usuario();
         usuario.setRol(Rol.Beneficiario);
         modelAndView.addObject("usuario", usuario);
+        modelAndView.addObject("action", "registro");
         if (flashMap != null) {
 
             modelAndView.addObject("exito", flashMap.get("exito"));

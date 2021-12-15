@@ -33,7 +33,6 @@ public class BeneficiarioController {
     
     //Carrito de un usuario
     @GetMapping("/carrito/{id}")
-    @PreAuthorize("hasRole('Beneficiario')")
     public ModelAndView mostrarCarrito(@PathVariable("id") Long id){
         ModelAndView mav = new ModelAndView("carrito");
         List<Producto> productos = pService.obtenerCarrito(id);
@@ -50,11 +49,12 @@ public class BeneficiarioController {
         return mav;
     }
     
-    @PostMapping
-    public RedirectView comprar(){
+    @PostMapping("/comprar/{id}")
+    public RedirectView comprarProducto(@PathVariable("id") Long id){
         // cambiar estado del producto
         // setear al usuario que compro como beneficiario
         // mostrar los datos del usuario donante
-        return new RedirectView(); 
+        
+        return new RedirectView("/beneficiario/tienda");
     }
 }
