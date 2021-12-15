@@ -151,18 +151,20 @@ public class ProductoService {
 
     @Transactional
     public void modificarProducto(Producto producto) {
-        System.out.println("-------"+producto.getTitulo()+"-------");
-        
-        repo.modificar(producto.getId(), 
-                producto.getTitulo(), 
-                producto.getDescripcion(), 
-                producto.getTipo(), 
-                producto.getEstado(), 
-                producto.getCategoria(), 
-                producto.getFoto(), 
-                producto.getDonante(), 
-                producto.getBeneficiario());
-        
+        System.out.println("-------" + producto.getTitulo() + "-------");
+
+        repo.modificar(
+                producto.getId(),
+                producto.getTitulo(),
+                producto.getDescripcion(),
+                producto.getTipo(),
+                producto.getEstado(),
+                producto.getCategoria(),
+                producto.getFoto(),
+                producto.getDonante(),
+                producto.getBeneficiario()
+        );
+
     }
 
 }
