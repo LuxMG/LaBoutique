@@ -1,10 +1,16 @@
 package com.egg.laboutique.controller;
 
+import com.egg.laboutique.entity.Producto;
 import com.egg.laboutique.entity.Usuario;
+import com.egg.laboutique.enums.Rol;
 import com.egg.laboutique.service.UsuarioService;
+import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,17 +31,16 @@ public class UsuarioController {
 
     @GetMapping("/crear")
     public ModelAndView crearUsuario() {
-        ModelAndView mav = new ModelAndView("datos"); //llama al html que se llame datos
+        ModelAndView mav = new ModelAndView("usuario-datos"); //llama al html
         mav.addObject("usuario", new Usuario());
         mav.addObject("action", "guardar");
         return mav;
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardarUsuario(@ModelAttribute Usuario usuario) {
+    public RedirectView guardar(@ModelAttribute Usuario usuario) {
         RedirectView mav = new RedirectView("/usuario/crear"); //le digo a qué url quiero ir 
         try {
-            System.out.println("******" + usuario.getNombre() + "****");
             uService.crearUsuario(usuario);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -45,16 +50,24 @@ public class UsuarioController {
 
 
     @GetMapping("/editar/{id}")
-    public ModelAndView editarProducto(@PathVariable Long id) {
+    public ModelAndView editarUsuario(@PathVariable Long id, HttpSession session) {
         ModelAndView mav = new ModelAndView("registro");
 
         try {
+            String emailUsuario = session.getAttribute("email").toString();
+            Usuario usuarioSession = uService.buscarPorEmail(emailUsuario);
             Usuario usuario = uService.buscarPorId(id);
+            System.out.println("---------");
+            System.out.println(usuarioSession.getId());
+            System.out.println(usuario.getId());
+            System.out.println("---------");
+            if(!Objects.equals(usuarioSession.getId(), usuario.getId())){
+                throw new Exception("No tiene permiso para modificar este usuario");
+            }
             mav.addObject("usuario", usuario);
             mav.addObject("rol", usuario.getRol());
             mav.addObject("title", "Editar Usuario");
             mav.addObject("action", "modificar");
-
         } catch (Exception ex) {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -89,24 +102,23 @@ public class UsuarioController {
         return redirectView;
     }
 
-    @PostMapping("/darDeBajaUsuario")
+    @PostMapping("/eliminar")
     public RedirectView darDeBaja(@RequestBody Long id) {
         try {
             uService.darDeBajaUsuario(id);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return new RedirectView("/usuario");
         }
         return new RedirectView("/usuario");
     }
 
-    
-     //mostrar datos de un usuario
-    @GetMapping("/mostrarUsuario/{id}")
-    public ModelAndView mostrar(@RequestBody Long id) throws Exception{
-        ModelAndView mav = new ModelAndView("mostrar-datos");
-        Usuario usuario = uService.buscarPorId(id);
-        mav.addObject("usuario", usuario);
+    //Trae todos los usuarios (Para admin)
+    @GetMapping("/listado")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView mostrarUsuarios(){
+        ModelAndView mav = new ModelAndView("usuario-listado");
+        List<Usuario> usuarios = uService.buscarTodos();
+        mav.addObject("usuarios", usuarios);
         return mav;
     }
     
