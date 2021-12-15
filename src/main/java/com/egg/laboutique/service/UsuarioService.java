@@ -1,11 +1,13 @@
 package com.egg.laboutique.service;
 
 import com.egg.laboutique.Utilities.Util;
+import com.egg.laboutique.entity.Categoria;
 import com.egg.laboutique.entity.Usuario;
 import com.egg.laboutique.exception.ServiceException;
 import com.egg.laboutique.repository.UsuarioRepository;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
@@ -32,28 +34,36 @@ public class UsuarioService implements UserDetailsService {
 
     @Transactional
     public void crearUsuario(Usuario usuario) throws Exception {
-
         //hago todas las validaciones
         validarUsuario(usuario);
-
+        if(usuarioRepository.existsByEmail(usuario.getEmail())){
+            throw new ServiceException("Ya existe un usuario con ese EMAIL");
+        }
+        if(usuarioRepository.existsByDni(usuario.getDni())){
+            throw new ServiceException("Ya existe un usuario con ese DNI");
+        }
         usuario.setClave(encoder.encode(usuario.getClave()));
-
+        
         usuarioRepository.save(usuario);
-
     }
 
     //modificar usuario
     @Transactional
     public void modificarUsuario(Long id, Usuario usuario) throws Exception {
-        //hago todas las validaciones
         //si no existe el usuario, lanzo una excepcion 
         if (!usuarioRepository.existsUsuarioById(id)) {
             throw new Exception("No existe un usuario con este id " + id);
         }
-
         //hago todas las validaciones
         validarUsuario(usuario);
-
+        if(usuarioRepository.existeOtroUsuarioConMismoEmail(id, usuario.getEmail())!=null){
+            throw new ServiceException("Ya existe otro usuario con ese EMAIL");
+        }
+        if(usuarioRepository.existeOtroUsuarioConMismoDNI(id, usuario.getDni())!=null){
+            throw new ServiceException("Ya existe otro usuario con ese DNI");
+        }
+        
+        //se pisan los valores viejos con los valores nuevos si es que hubo cambios
         Usuario usuario2 = usuarioRepository.findById(usuario.getId()).get();
         usuario2.setNombre(usuario.getNombre());
         usuario2.setDni(usuario.getDni());
@@ -95,6 +105,7 @@ public class UsuarioService implements UserDetailsService {
 
     @Transactional
     public List<Usuario> buscarPorNombre(String nombre) throws Exception {
+        
         if (nombre.equals("")) {
             throw new Exception("El nombre no puede estar vacío");
         }
@@ -121,14 +132,10 @@ public class UsuarioService implements UserDetailsService {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attributes.getRequest().getSession(true);
 
-        session.setAttribute(
-                "id", usuario.getId());
-        session.setAttribute(
-                "nombre", usuario.getNombre());
-        session.setAttribute(
-                "email", usuario.getEmail());
-        session.setAttribute(
-                "rol", usuario.getRol());
+        session.setAttribute("id", usuario.getId());
+        session.setAttribute("nombre", usuario.getNombre());
+        session.setAttribute("email", usuario.getEmail());
+        session.setAttribute("rol", usuario.getRol());
 
         return new User(usuario.getEmail(), usuario.getClave(), Collections.singletonList(authority));
     }
@@ -149,14 +156,14 @@ public class UsuarioService implements UserDetailsService {
         if (!Util.checkDNI(usuario.getDni())) {
             throw new ServiceException("DNI no válido, utilice solo numeros");
         }
-
+        
         if (usuario.getEmail().equals("") || usuario.getEmail() == null) {
             throw new ServiceException("El e-mail se encuentra vacío");
         }
         if (!Util.checkEmail(usuario.getEmail())) {
             throw new ServiceException("Email no válido");
         }
-
+        
         if (usuario.getTelefono().equals("") || usuario.getTelefono() == null) {
             throw new ServiceException("El telefono se encuentra vacío");
         }
@@ -168,4 +175,11 @@ public class UsuarioService implements UserDetailsService {
             throw new ServiceException("El barrio se encuentra vacío");
         }
     }
+    
+    // ------------------------------- busquedas ------------------------------- 
+    @Transactional
+    public List<Usuario> buscarTodos() {
+        return usuarioRepository.findAll();
+    }
+    
 }
