@@ -148,4 +148,11 @@ public class ProductoController {
     //Busquedas
     //filtros por categoria
     //Asociar 2 usuarios, agregando el segundo usuario a la BD y trayendo los datos.
+    /*
+        String cel = "543329333126";
+        String url;
+        url = "https://api.whatsapp.com/send/?phone="+cel+"&text=Hola%21+Te+contacto+desde+la+boutique&app_absent=0";
+        mav.addObject("url",url);
+    
+    */
 }
