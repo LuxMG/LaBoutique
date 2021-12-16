@@ -24,16 +24,21 @@
 
 
     </head>
+    
     <body>
+        
+        <!-- HEADER-->
         <header th:replace="fragments/header :: header"></header>
         
-        <h1>LISTADO DE PRODUCTOS</h1>
-        <div th:each="producto : ${productos}">
-            <p th:text="${producto.titulo}"></p>
-        </div>
+        <h1>LISTA DE USUARIOS</h1>
         
-        <footer th:replace="fragments/footer :: footer"></footer>
+        <div th:each="usuario : ${usuarios}">
+            <p th:text="|${usuario.nombre} ${usuario.email}|"></p>
+        </div>
+    </body>
+    
+     <!--FOOTER-->
+    <footer th:replace="fragments/footer :: footer"></footer>
     <!-- Link al JS de Bootstrap-->
     <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
-    </body>
 </html>

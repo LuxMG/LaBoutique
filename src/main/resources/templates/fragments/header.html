@@ -9,27 +9,27 @@
         <ul class="navbar-nav">
            <!--Bwnwficiario-->
            <li class="nav-item">
-            <a th:if="${#strings.equals(session.rol, 'Beneficiario')}" class="nav-link" href="@{}">Carrito</a>
+            <a th:if="${#strings.equals(session.rol, 'Beneficiario')}" class="nav-link" th:href="@{/beneficiario/carrito/__${session.id}__}">Carrito</a>
           </li>
           <li class="nav-item">
-            <a th:if="${#strings.equals(session.rol, 'Beneficiario')}" class="nav-link" href="@{}">Lista deseos</a>
+            <a th:if="${#strings.equals(session.rol, 'Beneficiario')}" class="nav-link" th:href="@{/beneficiario/deseos/__${session.id}__}">Lista deseos</a>
           </li>
           <!--Donante-->
           <li class="nav-item">
-            <a  th:if="${#strings.equals(session.rol,'Donante')}" class="nav-link" href="@{}">Ver donaciones</a>
+            <a  th:if="${#strings.equals(session.rol,'Donante')}" class="nav-link" th:href="@{/donante/donaciones/__${session.id}__}">Ver donaciones</a>
           </li>
           <li class="nav-item">
-            <a  th:if="${#strings.equals(session.rol,'Donante')}" class="nav-link" href="@{}">Nueva donacion</a>
+            <a  th:if="${#strings.equals(session.rol,'Donante')}" class="nav-link" th:href="@{/producto/crear}">Nueva donacion</a>
           </li>
           <!--ADMIN-->
           <li class="nav-item">
-            <a  th:if="${#strings.equals(session.rol,'ADMIN')}" class="nav-link" href="@{}">Ver productos</a>
+            <a  th:if="${#strings.equals(session.rol,'ADMIN')}" class="nav-link" th:href="@{/producto/listado}">Ver productos</a>
           </li>
           <li class="nav-item">
-            <a  th:if="${#strings.equals(session.rol,'ADMIN')}" class="nav-link" href="@{}">Ver usuarios</a>
+            <a  th:if="${#strings.equals(session.rol,'ADMIN')}" class="nav-link" th:href="@{/usuario/listado}">Ver usuarios</a>
           </li>
            <li class="nav-item">
-            <a  th:if="${#strings.equals(session.rol,'ADMIN')}" class="nav-link" href="@{}">Administrar categoria</a>
+            <a  th:if="${#strings.equals(session.rol,'ADMIN')}" class="nav-link" th:href="@{/categorias}">Administrar categoria</a>
           </li>
           <!--todos-->
           <li class="nav-item">
