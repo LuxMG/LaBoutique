@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <meta content="ie=edge" http-equiv="X-UA-Compatible" />
+        <meta content="La Boutique " name="description" />
+        <meta content="La Boutique" name="author" />
+        <title>La Boutique</title>
+        <!-- Link al CSS de BOOTSTRAP -->
+        <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}" />
+        <!-- Link a nuestro CSS -->
+        <link rel="stylesheet" th:href="@{/css/style.css}" />
+    </head>
+
+    <body>
+        <!-- HEADER-->
+        <header th:replace="fragments/header-index :: header-index"></header>
+        <!-- MAIN-->
+        <main>
+            <h1 id="titulo-producto"> Detalles de producto </h1>
+
+            <form th:action="@{/producto/comprar}" method="post" th:object="${producto}">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+
+                            <img id="img_detalle" th:src="${'/foto/__${producto.foto.id}__'}" />
+                        </div>
+
+                        <div class="col">
+
+                            <h2 th:text="${producto.titulo}"></h2>
+                            <input name="producto" th:value="${producto.id}" hidden />
+
+                            <label for="">Descripción:</label>
+                            <p th:text="${producto.descripcion}"></p>
+                            <input name="producto" th:value="${producto.id}" hidden />
+
+                            <label for="">Estado:</label>
+                            <p th:text="${producto.estado}"></p>
+                            <input name="producto" th:value="${producto.id}" hidden />
+
+                            <h4>Información de contacto:</h4>
+                            <label for="">Email:</label>
+                            <p th:text="${producto.donante.email}"></p>
+                            <input name="usuario" th:value="${producto.id}" hidden />
+                            
+                            <label for="">Teléfono:</label>
+                            <p th:text="${producto.donante.telefono}"></p>
+                            <input name="usuario" th:value="${producto.id}" hidden />
+                            
+                            <label for="">Barrio/zona:</label>
+                            <p th:text="${producto.donante.barrio}"></p>
+                            <input name="usuario" th:value="${producto.id}" hidden />
+
+                            <button type="submit" class="btn btn-primary">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+            </form>
+
+        </main>
+        <!--FOOTER-->
+        <footer th:replace="fragments/footer :: footer"></footer>
+        <!-- Link al JS de Bootstrap-->
+        <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
+    </body>
+
+</html>
