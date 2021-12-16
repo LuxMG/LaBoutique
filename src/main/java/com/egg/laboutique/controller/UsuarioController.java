@@ -48,6 +48,21 @@ public class UsuarioController {
         return mav;
     }
 
+    @GetMapping("/datos/{id}")
+    public ModelAndView mostrarDatos(@PathVariable Long id, HttpSession session) {
+        ModelAndView mav = new ModelAndView("mostrar-datos");
+        Usuario usuario;
+        try {
+            usuario = uService.buscarPorId(id);
+            String url = "https://api.whatsapp.com/send/?phone=54" + usuario.getTelefono() + "&text=Hola%21+Te+contacto+desde+la+boutique&app_absent=0\";";
+            mav.addObject("usuario", usuario);
+            mav.addObject("url", url);
+        } catch (Exception ex) {
+            Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return mav;
+    }
+
     @GetMapping("/editar/{id}")
     public ModelAndView editarUsuario(@PathVariable Long id, HttpSession session) {
         ModelAndView mav = new ModelAndView("registro");
@@ -59,7 +74,7 @@ public class UsuarioController {
             System.out.println(usuarioSession.getId());
             System.out.println(usuario.getId());
             System.out.println("---------");
-            if(!Objects.equals(usuarioSession.getId(), usuario.getId())){
+            if (!Objects.equals(usuarioSession.getId(), usuario.getId())) {
                 throw new Exception("No tiene permiso para modificar este usuario");
             }
             mav.addObject("usuario", usuario);
@@ -70,7 +85,7 @@ public class UsuarioController {
             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return mav;
-        
+
     }
 
     @PostMapping("/modificar")
@@ -113,11 +128,11 @@ public class UsuarioController {
     //Trae todos los usuarios (Para admin)
     @GetMapping("/listado")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView mostrarUsuarios(){
+    public ModelAndView mostrarUsuarios() {
         ModelAndView mav = new ModelAndView("usuario-listado");
         List<Usuario> usuarios = uService.buscarTodos();
         mav.addObject("usuarios", usuarios);
         return mav;
     }
-    
+
 }

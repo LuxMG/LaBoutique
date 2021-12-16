@@ -6,8 +6,7 @@ public enum Estado {
     Reservado, // para donaciones -> el beneficiario pidio esa donacion
     Disponible, // para donaciones -> el donante dono algo
     Solicitado, // para deseos -> el beneficiario hizo el pedido
-    Tomado,
-    En_Espera// para deseos -> un donante paga el pedido
+    Tomado
 }
 
 // para donaciones el ciclo es
