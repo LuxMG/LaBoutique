@@ -20,6 +20,7 @@
       <section class="container">
             <p th:if="${error}" th:text="${error}"></p>
             <p th:if="${logout}" th:text="${logout}"></p>
+            <p th:if="${exito}" th:text="${exito}"></p>
             <form th:action="@{/logincheck}" class="formulario" method="post">
                 <label> Email: </label>
                 <input type="email" placeholder="Email" name="email">

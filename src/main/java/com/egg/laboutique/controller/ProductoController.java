@@ -168,7 +168,15 @@ public class ProductoController {
         
         return new RedirectView("donante/donaciones/" + producto.getDonante().getId());
     }
-  
+    
+    @PostMapping("/cancelar-compra/{idProducto}")
+    public RedirectView cancelarCompra (@PathVariable("idProducto") Long idProducto){
+        Producto producto = pService.obtenerPorId(idProducto);
+        producto.setEstado(Estado.Disponible);
+        producto.setBeneficiario(null);
+        pService.modificarProducto(producto);
+        return new RedirectView("/beneficiario/tienda");
+    }
     //Busquedas
     //filtros por categoria
 }
