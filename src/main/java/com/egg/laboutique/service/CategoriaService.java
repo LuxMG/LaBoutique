@@ -1,6 +1,7 @@
 package com.egg.laboutique.service;
 
 import com.egg.laboutique.entity.Categoria;
+import com.egg.laboutique.exception.ServiceException;
 import com.egg.laboutique.repository.CategoriaRepository;
 
 import java.util.List;
@@ -16,15 +17,12 @@ public class CategoriaService {
 
     // ------------------------- alta-baja-modificacion ------------------------ 
     @Transactional
-    public void crear(String nombre) throws Exception {
-        System.out.println("aqui en el service creando una categoria: " + nombre);
-        if (categoriaRepository.existsByNombre(nombre)) {
-            throw new Exception("Ya existe una categoria con ese nombre");
-        }
-        System.out.println("aqui en el service creando una categoria x2: " + nombre);
+    public void crear(String nombre) throws ServiceException {
         Categoria categoria = new Categoria();
         categoria.setNombre(nombre);
         categoria.setAlta(true);
+        
+        validarCreacion(categoria);
         categoriaRepository.save(categoria);
     }
     
@@ -34,8 +32,32 @@ public class CategoriaService {
     }
 
     @Transactional
-    public void modificar(Long id, String nombre) {
-        categoriaRepository.modificar(id, nombre);
+    public void modificar(Long id, String nombre) throws ServiceException {
+        Categoria categoria = new Categoria();
+        categoria.setId(id);
+        categoria.setNombre(nombre);
+        categoria.setAlta(true);
+        
+        validarModificacion(categoria);
+        categoriaRepository.modificar(categoria.getId(), categoria.getNombre());
+    }
+    
+    // ------------------------------ validaciones ----------------------------- 
+    public void validarCreacion(Categoria categoria) throws ServiceException{
+        if (categoriaRepository.existsByNombre(categoria.getNombre())) {
+            throw new ServiceException("Ya existe una categoria con ese nombre");
+        }
+    }
+    
+    public void validarModificacion(Categoria categoria) throws ServiceException{
+        if (!categoriaRepository.existsById(categoria.getId())) {
+            throw new ServiceException("No existe una categoria con el id " + categoria.getId());
+        }
+        //si el nombre ya esta usado por otra categoria
+        Categoria aux = categoriaRepository.findByNombre(categoria.getNombre()).orElse(null);
+        if(aux != null && aux.getId().equals(categoria.getId())){
+            throw new ServiceException("Ya existe otra categoria con ese nombre");
+        }
     }
 
     // ------------------------------- busquedas ------------------------------- 

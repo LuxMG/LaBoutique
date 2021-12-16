@@ -2,8 +2,14 @@
 package com.egg.laboutique.controller;
 
 import com.egg.laboutique.entity.Producto;
+import com.egg.laboutique.entity.Usuario;
+import com.egg.laboutique.enums.Estado;
 import com.egg.laboutique.service.ProductoService;
+import com.egg.laboutique.service.UsuarioService;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -11,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -21,6 +28,9 @@ public class BeneficiarioController {
 
     @Autowired
     private ProductoService pService;
+    
+    @Autowired
+    private UsuarioService usuarioService;
     
     //Trae todos los productos donados a la tienda (vista Beneficiario)
     @GetMapping("/tienda")
@@ -49,12 +59,19 @@ public class BeneficiarioController {
         return mav;
     }
     
+    //Logica cuando se compra un producto
     @PostMapping("/comprar/{id}")
-    public RedirectView comprarProducto(@PathVariable("id") Long id){
-        // cambiar estado del producto
-        // setear al usuario que compro como beneficiario
-        // mostrar los datos del usuario donante
+    public RedirectView comprar(@RequestParam("producto") String productoId,HttpSession session) {
+        Producto producto = pService.obtenerPorId(Long.parseLong(productoId));
+        try {
+            Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
+            producto.setBeneficiario(usuario);
+            producto.setEstado(Estado.Reservado);
+            pService.modificarProducto(producto);
+        } catch (Exception ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
-        return new RedirectView("/beneficiario/tienda");
+        return new RedirectView("beneficiario/tienda/");
     }
 }
