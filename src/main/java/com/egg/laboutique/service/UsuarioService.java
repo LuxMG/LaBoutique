@@ -56,6 +56,7 @@ public class UsuarioService implements UserDetailsService {
         }
         //hago todas las validaciones
         validarUsuario(usuario);
+        
         if(usuarioRepository.existeOtroUsuarioConMismoEmail(id, usuario.getEmail())!=null){
             throw new ServiceException("Ya existe otro usuario con ese EMAIL");
         }

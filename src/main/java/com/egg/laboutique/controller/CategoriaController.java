@@ -3,25 +3,32 @@ package com.egg.laboutique.controller;
 import com.egg.laboutique.entity.Categoria;
 import com.egg.laboutique.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping("/categorias")
+@PreAuthorize("hasRole('ADMIN')")
 public class CategoriaController {
 
     @Autowired
     private CategoriaService categoriaService;
+    
+    // ----------------------------- redireccionar -----------------------------
+    @GetMapping("/")
+    public RedirectView inicio() {
+        return new RedirectView("/categorias/listado");
+    }
 
     // ----------------------------- para mostrar ------------------------------ 
-    @GetMapping
+    @GetMapping("/listado")
     public ModelAndView mostrarTodas() {
         ModelAndView mav = new ModelAndView("categoria-listado");
         mav.addObject("categorias", categoriaService.buscarTodas());
@@ -33,21 +40,20 @@ public class CategoriaController {
     public ModelAndView crearCategoria() {
         ModelAndView mav = new ModelAndView("categoria-formulario");
         mav.addObject("categoria", new Categoria());
-        mav.addObject("title", "Crear Categoria");
+        mav.addObject("title", "Crear categoria");
         mav.addObject("action", "guardar");
         return mav;
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(@ModelAttribute Categoria categoria) throws Exception {
+    public RedirectView guardar(@ModelAttribute Categoria categoria) {
         try {
-            System.out.println("se esta guardando una categoria: " + categoria.getNombre());
             categoriaService.crear(categoria.getNombre());
         }catch(Exception e) {
-            return new RedirectView("/usuarios/crear");
+            System.out.println("ERROR >>> en crear categoria");
         }
         
-        return new RedirectView("/categorias");
+        return new RedirectView("/categorias/listado");
     }
 
     // ------------------------------ para editar ------------------------------ 
@@ -62,8 +68,13 @@ public class CategoriaController {
 
     @PostMapping("/modificar")
     public RedirectView modificar(@ModelAttribute Categoria categoria) {
-        categoriaService.modificar(categoria.getId(), categoria.getNombre()                           );
-        return new RedirectView("/categorias");
+        try{
+            categoriaService.modificar(categoria.getId(), categoria.getNombre());
+        }catch(Exception e){
+            System.out.println("ERROR >>> en modificar categoria");
+        }
+        
+        return new RedirectView("/categorias/listado");
     }
 
     // ------------------------------ para borrar ------------------------------ 

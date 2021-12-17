@@ -1,16 +1,41 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Crear rol</title>
-</head>
-<body>
-<form method="post" th:action="@{/categorias/guardar}" th:object="${categoria}">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head>
+        <meta charset="UTF-8"/>    
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <meta content="ie=edge" http-equiv="X-UA-Compatible" />
+        <meta content="La Boutique " name="description" />
+        <meta content="La Boutique" name="author" />
+        <title th:text="|${title} - La Boutique|"></title>
+        <!-- Link al CSS de BOOTSTRAP -->
+        <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}" />
+        <!-- Link a nuestro CSS -->
+        <link rel="stylesheet" th:href="@{/css/style.css}" />
+    </head>
+    <body>
+        <!-- HEADER-->
+        <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
+        <!-- MAIN-->
+        <main>
+            <form method="post" th:action="@{/categorias/__${action}__}" th:object="${categoria}">
+                <div class="form-group">
+                    <label for="">Nombre</label>
+                    <input type="text" placeholder="Nombre de la categoria" th:field="*{nombre}">
+                </div>
+                <br>
+
+                <button type="submit" class="btn btn-primary"
+                        th:text="${action == 'guardar'} ? 'Crear categoria' : 'Modificar'"></button>
+                <a class="btn btn-primary" th:ref="@{/categorias/listado}">Cancelar</a>
+            </form>
+
+        </main>
+        <!--FOOTER-->
+        <footer th:replace="fragments/footer :: footer"></footer>
+        <!-- Link al JS de Bootstrap-->
+        <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
+    </body>
     
-    <input th:field="*{nombre}" type="text">
-    <input type="submit">
-   
-</form>
-</body>
 </html>
 

@@ -114,6 +114,7 @@ div#carouselExampleCaptions {
 
 #que-es,
 #preguntas,
+#tienda,
 .nuevo-producto {
     text-align: center;
     margin-bottom: 8rem!important;
@@ -190,7 +191,7 @@ footer {
 
 /******TIENDA******/
 
-.tienda {
+#tienda {
     min-height: 100vh;
 }
 
