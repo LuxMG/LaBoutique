@@ -22,10 +22,10 @@
       <div class="container mt-5 main">
     <div class="alert alert-success" th:if="${exito}" th:text="${exito}"></div>
     <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
-    <h1>Carrito</h1>
+    <h1>Mis Donaciones</h1>
     <hr class="mb-4"/>
     <div th:if="${productos.isEmpty()}">
-        <h5>Todavía no hay productos cargados. En <a th:href="@{/beneficiario/tienda}">tienda</a>  podés encontrar lo que necesitás.</h5>
+        <h5>Todavía no hay productos cargados.
     </div>
     <div class="table-responsive" th:unless="${productos.isEmpty()}">
         <table class="table table-hover table-bordered">
@@ -33,21 +33,22 @@
             <tr>
                 <th class="col-md-4">Pedido</th>
                 <th class="col-md-2">Estado</th>
-                <th class="col-md-2">Cancelar Compra</th>
+                <th class="col-md-2">Acciones</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="producto : ${productos}">
                 <td class="col-md-4" th:text="${producto.titulo}"></td>
                 <td class="col-md-2" th:text="${producto.estado}"></td>
-                <td class="col-md-3" >
-                    <div class="d-flex justify-content-around">
-                        <a class="btn btn-warning btn-sm" th:href="@{/producto/cancelar-compra/__${producto.id}__}">Cancelar</a>
-                    </div>
+                <td class="col-md-4" >
+                        <a class="btn btn-warning btn-sm" th:href="@{/producto/editar/__${producto.id}__}">Modificar</a>
+                        <a class="btn btn-warning btn-sm" th:href="@{/producto/eliminar/__${producto.id}__}">Eliminar</a>
+                        <a class="btn btn-warning btn-sm" th:href="@{/producto/entregado/__${producto.id}__}">Marcar como entregado</a>
+                        <a class="btn btn-warning btn-sm" th:if="${#strings.equals(producto.estado, 'Reservado')}" th:href="@{/usuario/datos/__${producto.beneficiario.id}__}">Ver datos</a>
                 </td>
-            </tr>
             </tbody>
         </table>
+          <a class="btn btn-warning btn-sm" th:href="@{/producto/crear}">Ingresar nueva donacion</a>
     </div>
 </div>
      
@@ -60,3 +61,4 @@
 <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
 </body>
 </html>
+
