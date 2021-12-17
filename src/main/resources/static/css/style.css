@@ -7,115 +7,292 @@ body {
 }
 
 /** Google Fonts Raleway: font-family: 'Raleway', sans-serif; **/
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 /**Google Fonts Dancing-Script**/
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&display=swap");
 
 /*para setear variables*/
 :root {
-  --color-primary: #64477D;
+  --color-primary: #3F0760;
   --color-secondary: #FFF212;
-  --color-light-primary: #8F07C3;
-  --color-dark-primary: #3F0760;
+  --color-light-primary: #64477D;
+  --color-dark-primary: #8F07C3;
+  --text-white: #fff;
   --raleway: 'Raleway', sans-serif;
   --dancing: 'Dancing Script', cursive;
 }
 
-h1, h2 {
+h1,
+h2 {
   font-family: var(--dancing);
   margin-bottom: 1.25rem;
 }
 
 h3 {
-    margin-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
 }
-/****HEADER*****/
 
+/****HEADER*****/
+header.header-principal {
+    background-color: var(--color-primary);
+}
+
+header.header-principal .navbar-toggler {
+    background-color: red;
+} 
+
+.navbar-nav .nav-link {
+    text-align: center;
+    color: var(--text-white);
+}
+
+.navbar-nav .nav-link.btn-card {
+    color: var(--color-primary);
+}
+
+@media (min-width: 992px) {
+    .navbar-expand-lg {
+        flex-wrap: wrap;
+    } 
+}
 
 /****HEADER-INDEX*****/
 header.header-index {
-    padding: 1rem;
-    background-color: var(--color-primary);
-    margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: var(--color-primary);
+  margin-bottom: 2rem;
 }
 
 header.header-index .navbar-brand {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
 }
 
 header .navbar-brand img {
-  width: 20%;  
+  width: 20%;
+}
+
+a.btn.btn-login {
+    background-color: var(--color-secondary);
+    font-size: 12px;
+    font-weight: 800;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    width: 18%;
 }
 
 /****INDEX*****/
 div#carouselExampleCaptions {
-    height: 280px;
-    margin-bottom: 2rem;
+  height: 280px;
+  margin-bottom: 2rem;
 }
 
 .carousel-inner {
-    height: 280px;
+  height: 280px;
 }
 
 /*CARD TIENDA */
 .card-tienda {
-    box-shadow: -7px 7px rgb(0 0 0 / 15%);
+  box-shadow: -7px 7px rgb(0 0 0 / 15%);
 }
 
 /** BOTON PERSONALIZADO AMARILLO **/
 .btn-card {
-    background-color: var(--color-secondary);
+  background-color: var(--color-secondary);
 }
+
 .btn-card:hover {
-    background-color: var(--color-primary);
-    color: var(--color-secondary);
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 #que-es,
-#preguntas {
+#preguntas,
+.nuevo-producto {
     text-align: center;
-    margin-bottom: 7rem!important;
+    margin-bottom: 8rem!important;
 }
-
 
 /****FOOTER*****/
 footer {
-    background-color: var(--color-primary);
+  background-color: var(--color-primary);
 }
 
 .legal a,
 .redes a {
-    text-decoration: none;
-    margin: 0rem 0.10rem;
-    color: var(--color-secondary);
+  text-decoration: none;
+  margin: 0rem 0.1rem;
+  color: var(--color-secondary);
 }
 
-/***CARRITO***/
-// gise
-
-/***DATOS****/
-// gise
-
-/****DESEOS*****/ //misma vista carrito.
-// gise
-
+@media (max-width: 576px) {
+    .legal a {
+        font-size: 10px;
+    }
+}
 /****LOGIN****/
-// gise
+.index-login p {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-align: center;
+}
 
-/*****NUEVO PRODUCTO****/
-//Mariana
+.formulario {
+    margin-bottom: 3rem;
+}
 
-/*****PRODUCTO-DESEO****/
-//Mariana
+.formulario label,
+.formulario input {
+    display: block;
+    padding-bottom: 0.75rem;
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    text-align: center;
+}
 
-/****PRODUCTO-TIENDA******/
-//Mariana
+.formulario button {
+    margin: 0.5rem 0rem;
+}
+
+.links-ingreso {
+    margin-bottom: 9rem;
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: space-around;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (max-width: 576px) {
+    .links-ingreso a {
+        font-size: 11px;
+    }
+}
+
+
+.formulario button.btn.btn-card  {
+    display: block;
+    width: 38%;
+    margin-left: 31%;
+    margin-right: 31%;
+}
 
 /******TIENDA******/
-//Mariana
+
+.tienda {
+    min-height: 100vh;
+}
+
+.tienda-title {
+    margin-top: 2rem;
+}
+
+.tienda-title h1 {
+    text-align: center;
+}
+
+img#img {
+    width: 100%;
+}
+
+.tienda-card p.card-text {
+    text-align: center;
+    font-weight: 700;
+}
+
+/*****NUEVO PRODUCTO****/
+
+.nuevo-producto form {
+  max-width: 600px;
+  text-align: center;
+  margin: 20px auto;
+}
+
+.nuevo-producto form input,
+.nuevo-producto form textarea, select{
+  background-color: #DBD4D2;
+  border: 1 solid #999;
+  outline: 0;
+  padding: 1em;
+  display: block;
+  width: 100%;
+  margin-top: 1em;
+  font-family: var(--raleway);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  resize: none;
+}
+
+.nuevo-producto form #input-submit {
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+  cursor: pointer;
+}
+
+.nuevo-producto form textarea {
+  height: 126px;
+}
+
+.nuevo-producto .half {
+  float: left;
+  width: 48%;
+  margin-bottom: 1em;
+}
+
+.nuevo-producto .right {
+  width: 50%;
+}
+
+.nuevo-producto .left {
+  margin-right: 2%;
+}
+
+@media (max-width: 480px) {
+  .half {
+    width: 100%;
+    float: none;
+    margin-bottom: 0;
+  }
+}
+/* Clearfix */
+.cf:before,
+.cf:after {
+  content: " ";
+  /* 1 */
+  display: table;
+  /* 2 */
+}
+
+.cf:after {
+  clear: both; 
+}
+/****PRODUCTO-TIENDA******/
+#titulo-producto{
+  text-align: center;
+}
+#contenedor {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#contenedor > div {
+  width: 50%;
+}
+
+img#img_detalle {
+
+  width: 100%;
+}

@@ -102,7 +102,7 @@ public class LoginController {
 
     @PostMapping("/registro")
     public RedirectView signup(@ModelAttribute Usuario usuario, RedirectAttributes attributtes) {
-        RedirectView redirectView = new RedirectView("/producto/productosTienda");
+        RedirectView redirectView = new RedirectView("/login");
 
         try {
             usuarioService.crearUsuario(usuario);

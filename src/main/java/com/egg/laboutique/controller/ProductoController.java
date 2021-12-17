@@ -131,6 +131,7 @@ public class ProductoController {
     }
 
     @PostMapping("/comprar")
+    @PreAuthorize("hasRole('Beneficiario')")
     public RedirectView comprar(@RequestParam("producto") String productoId,HttpSession session) {
         Producto producto = pService.obtenerPorId(Long.parseLong(productoId));
         try {
@@ -141,11 +142,41 @@ public class ProductoController {
         } catch (Exception ex) {
             Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        return new RedirectView("/listado");
+        return new RedirectView("/usuario/datos/" + producto.getDonante().getId());
     }
-    //Cambiar estados de productos
+    
+    @PostMapping("/donar") //Asocia el donante al deseo y cambia el estado
+    @PreAuthorize("hasRole('Donante')")
+    public RedirectView donar(@RequestParam("producto") String productoId,HttpSession session) {
+        Producto producto = pService.obtenerPorId(Long.parseLong(productoId));
+        try {
+            Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
+            producto.setDonante(usuario);
+            producto.setEstado(Estado.Tomado);
+            pService.modificarProducto(producto);
+        } catch (Exception ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new RedirectView("/usuario/datos/" + producto.getBeneficiario().getId());
+    }
+    
+    @PostMapping("/entregado")
+    public RedirectView entregado(@RequestParam("producto") String productoId, HttpSession session){
+        Producto producto = pService.obtenerPorId(Long.parseLong(productoId)); //Por que lo traemos como string?
+        producto.setEstado(Estado.Entregado);
+        pService.modificarProducto(producto);
+        
+        return new RedirectView("donante/donaciones/" + producto.getDonante().getId());
+    }
+    
+    @PostMapping("/cancelar-compra/{idProducto}")
+    public RedirectView cancelarCompra (@PathVariable("idProducto") Long idProducto){
+        Producto producto = pService.obtenerPorId(idProducto);
+        producto.setEstado(Estado.Disponible);
+        producto.setBeneficiario(null);
+        pService.modificarProducto(producto);
+        return new RedirectView("/beneficiario/tienda");
+    }
     //Busquedas
     //filtros por categoria
-    //Asociar 2 usuarios, agregando el segundo usuario a la BD y trayendo los datos.
 }

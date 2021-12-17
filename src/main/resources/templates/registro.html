@@ -14,10 +14,10 @@
 </head>
 <body>
   <!-- HEADER-->
-  <header th:replace="fragments/header-index :: header-index"></header>
+      <header th:replace="fragments/header-index :: header-index"></header>
   <!-- MAIN-->
   <main>
-      <h1> HACER EL FORMULARIO PARA PEDIR TODOS LOS DATOS </h1>
+      <h1> Registrate </h1>
       <div class="alert alert-danger col-xl-6" th:if="${error}" th:text="${error}"></div>
        <form method="post" th:action="@{/__${action}__}" th:object="${usuario}" class="mb-5">
             <input id="id"  type="hidden" th:field="*{id}"/>

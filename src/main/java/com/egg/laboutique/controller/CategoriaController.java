@@ -23,7 +23,7 @@ public class CategoriaController {
     // ----------------------------- para mostrar ------------------------------ 
     @GetMapping
     public ModelAndView mostrarTodas() {
-        ModelAndView mav = new ModelAndView("categorias");
+        ModelAndView mav = new ModelAndView("categoria-listado");
         mav.addObject("categorias", categoriaService.buscarTodas());
         return mav;
     }
