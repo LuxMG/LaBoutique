@@ -1,13 +1,10 @@
 <header th:fragment="header-index" class="header-index" id="header">
     <nav class="container">
         <div class="row">
-                <a class="navbar-brand" th:href="@{#}"> 
-                    <img th:src="@{/img/logo_completo.png}" width="45"/>
-                </a>
-        </div> 
-        <div class="row">
-            <a th:href="@{/login}" class="btn"> Iniciar sesion</a>
-        </div>
-        
+            <a class="navbar-brand" th:href="@{#}"> 
+                <img th:src="@{/img/logo_completo.png}" width="45"/>
+            </a>
+            <a th:href="@{/login}" class="btn btn-login"> Iniciar <br> sesion</a>
+            </div>
     </nav> 
 </header>
