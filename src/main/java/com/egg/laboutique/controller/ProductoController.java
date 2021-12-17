@@ -130,6 +130,7 @@ public class ProductoController {
         try {
             //validarProducto()
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
+            //producto.setFoto(fotoService.actualizar(producto.getFoto().getId(), archivo));
             pService.modificarProducto(producto);
             if (usuario.getRol() == Rol.Donante) {
                 url = "/donante/donaciones/" + usuario.getId();
