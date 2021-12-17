@@ -25,13 +25,16 @@
 
     </head>
     <body>
-        <header th:replace="fragments/header :: header"></header>
-        
-        <h1>LISTADO DE PRODUCTOS</h1>
-        <div th:each="producto : ${productos}">
-            <p th:text="${producto.titulo}"></p>
-        </div>
-        
+        <!--HEADER-->
+        <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
+        <!--MAIN-->
+        <main>
+            <h1>LISTADO DE PRODUCTOS</h1>
+            <div th:each="producto : ${productos}">
+                <p th:text="${producto.titulo}"></p>
+            </div>
+        </main>
+        <!--FOOTER-->
         <footer th:replace="fragments/footer :: footer"></footer>
     <!-- Link al JS de Bootstrap-->
     <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>

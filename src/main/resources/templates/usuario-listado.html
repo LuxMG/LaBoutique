@@ -21,24 +21,20 @@
         integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
-
     </head>
-    
     <body>
-        
         <!-- HEADER-->
-        <header th:replace="fragments/header :: header"></header>
-        
-        <h1>LISTA DE USUARIOS</h1>
-        
-        <div th:each="usuario : ${usuarios}">
-            <p th:text="|${usuario.nombre} ${usuario.email}|"></p>
-        </div>
+        <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
+        <!--MAIN-->
+        <main>
+            <h1>LISTA DE USUARIOS</h1>
+            <div th:each="usuario : ${usuarios}">
+                <p th:text="|${usuario.nombre} ${usuario.email}|"></p>
+            </div>  
+        </main>
+         <!--FOOTER-->
+        <footer th:replace="fragments/footer :: footer"></footer>
+        <!-- Link al JS de Bootstrap-->
+        <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
     </body>
-    
-     <!--FOOTER-->
-    <footer th:replace="fragments/footer :: footer"></footer>
-    <!-- Link al JS de Bootstrap-->
-    <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
 </html>
