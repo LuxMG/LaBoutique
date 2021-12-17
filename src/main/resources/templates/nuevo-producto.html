@@ -12,13 +12,14 @@
   <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}" />
   <!-- Link a nuestro CSS -->
   <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <!--Favicon-->
+  <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">
 </head>
-
 <body>
   <!-- HEADER-->
-  <header th:replace="fragments/header-index :: header-index"></header>
+  <header th:replace="fragments/header :: header"></header>
   <!-- MAIN-->
-  <main>
+  <main class="nuevo-producto">
     <form method="post" th:action="@{/producto/__${action}__}" enctype="multipart/form-data" th:object="${producto}">
       <div class="form-group">
         <label for="">Título</label>
@@ -49,8 +50,15 @@
       <input th:field="*{beneficiario}" hidden>
       <input th:field="*{donante}" hidden>
 
-      <button type="submit" class="btn btn-primary"
+      <button type="submit" class="btn btn-card"
         th:text="${action == 'guardar'} ? 'cargar producto' : 'Guardar cambios'"></button>
+      <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+ 
     </form>
 
   </main>

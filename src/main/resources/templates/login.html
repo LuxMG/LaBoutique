@@ -17,18 +17,23 @@
   <header th:replace="fragments/header-index :: header-index"></header>
   <!-- MAIN-->
   <main>
-        <p th:if="${error}" th:text="${error}"></p>
-        <p th:if="${logout}" th:text="${logout}"></p>
-        <form th:action="@{/logincheck}" method="post">
-            <input type="email" placeholder="Email" name="email">
-            <br>
-            <input type="password" placeholder="Password" name="clave">
-            <br>
-            <button type="submit">Login</button>
-        </form>
-           
-        <a th:href="@{/registrodonante}" class="btn"> Registrate para dar una mano </a>
-        <a th:href="@{/registrobeneficiario}" class="btn"> Registrate para ir a tienda </a>
+      <section class="container index-login">
+            <p th:if="${error}" th:text="${error}"></p>
+            <p th:if="${logout}" th:text="${logout}"></p>
+            <p th:if="${exito}" th:text="${exito}"></p>
+            <form th:action="@{/logincheck}" class="formulario" method="post">
+                <label> Email: </label>
+                <input type="email" placeholder="Email" name="email">
+                <label> Password: </label>
+                <input type="password" placeholder="Password" name="clave">
+                <button type="submit" class="btn btn-card">Login</button>
+            </form>
+            <div class="links-ingreso">
+                <a th:href="@{/registrodonante}" class="btn btn-card"> Registrate para <br> dar una mano </a>
+                <a th:href="@{/registrobeneficiario}" class="btn btn-card"> Registrate para <br> ir a tienda </a>
+            </div>
+      </section>
+        
   </main>
   <!--FOOTER-->
   <footer th:replace="fragments/footer :: footer"></footer>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="La Boutique " name="description"/>
+    <meta content="La Boutique" name="author"/>
+    <title>La Boutique</title>
+    <!-- Link al CSS de BOOTSTRAP -->
+    <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}"/>
+    <!-- Link a nuestro CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">
+</head>
+<body>
+  <!-- HEADER-->
+  <header th:replace="fragments/header-index :: header-index"></header>
+  <!-- MAIN-->
+  <main>
+      
+      <div class="container mt-5 main">
+    <div class="alert alert-success" th:if="${exito}" th:text="${exito}"></div>
+    <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+    <h1>Listado de editoriales</h1>
+    <hr class="mb-4"/>
+    <div th:if="${editoriales.isEmpty()}">
+        <h5>Todavía no hay editoriales cargadas. <a th:href="@{/editorial/crear}">Cargar editorial.</a></h5>
+    </div>
+    <div class="table-responsive" th:unless="${editoriales.isEmpty()}">
+        <a th:href="@{/editorial/crear}" class="btn btn-success mb-4">Ingresar editorial</a>
+        <table class="table table-hover table-bordered">
+            <thead class="table-dark text-center">
+            <tr>
+                <th class="col-md-4">Nombre</th>
+                <th class="col-md-2">Creación</th>
+                <th class="col-md-2">Modificación</th>
+                <th class="col-md-3">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="editorial : ${editoriales}">
+                <td class="col-md-4" th:text="${editorial.nombre}"></td>
+                <td class="col-md-2" th:text="${#temporals.format(editorial.creacion, 'dd-MM-yyyy HH:mm')}"></td>
+                <td class="col-md-2"
+                    th:text="${#temporals.format(editorial.modificacion, 'dd-MM-yyyy HH:mm')}"></td>
+                <td class="col-md-3">
+                    <div class="d-flex justify-content-around">
+                        <a class="btn btn-warning btn-sm" th:href="@{/editorial/editar/__${editorial.id}__}">Editar</a>
+                        <form method="post"
+                              th:action="${editorial.alta} ? @{/editorial/eliminar/__${editorial.id}__} : @{/editorial/habilitar/__${editorial.id}__}">
+                            <button th:class="${editorial.alta} ? 'btn btn-danger btn-sm' : 'btn btn-primary btn-sm'"
+                                    type="submit" th:text="${editorial.alta} ? 'Eliminar' : 'Habilitar'">
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+     
+  
+      
+  </main>
+  <!--FOOTER-->
+  <footer th:replace="fragments/footer :: footer"></footer>
+<!-- Link al JS de Bootstrap-->
+<script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
