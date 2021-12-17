@@ -31,33 +31,20 @@
                         </div>
 
                         <div class="col">
+                        
 
                             <h2 th:text="${producto.titulo}"></h2>
                             <input name="producto" th:value="${producto.id}" hidden />
 
                             <label for="">Descripción:</label>
                             <p th:text="${producto.descripcion}"></p>
-                            <input name="producto" th:value="${producto.id}" hidden />
 
                             <label for="">Estado:</label>
                             <p th:text="${producto.estado}"></p>
-                            <input name="producto" th:value="${producto.id}" hidden />
+      
 
-                            <h4>Información de contacto:</h4>
-                            <label for="">Email:</label>
-                            <p th:text="${producto.donante.email}"></p>
-                            <input name="usuario" th:value="${producto.id}" hidden />
-                            
-                            <label for="">Teléfono:</label>
-                            <p th:text="${producto.donante.telefono}"></p>
-                            <input name="usuario" th:value="${producto.id}" hidden />
-                            
-                            <label for="">Barrio/zona:</label>
-                            <p th:text="${producto.donante.barrio}"></p>
-                            <input name="usuario" th:value="${producto.id}" hidden />
-
-                            <button type="submit" class="btn btn-primary">Comprar</button>
-                        </div>
+                            <button type="submit" class="btn btn-primary" th:if="${#strings.equals(producto.estado, 'Disponible')}">Comprar</button>
+                     
                     </div>
                 </div>
                 <br>
