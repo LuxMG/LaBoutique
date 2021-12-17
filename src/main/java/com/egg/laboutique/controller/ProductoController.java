@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -103,14 +104,28 @@ public class ProductoController {
         ModelAndView mav = new ModelAndView("nuevo-producto");//refactorizar nombre de html a formulario-producto
         mav.addObject("producto", pService.obtenerPorId(id));
         mav.addObject("title", "Editar Producto");
+        mav.addObject("categorias", catService.buscarTodas());
         mav.addObject("action", "modificar");
         return mav;
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificarProducto(@RequestParam Long id, @RequestParam String titulo, @RequestParam String descripcion, @RequestParam Tipo tipo, @RequestParam Estado estado, @RequestParam Categoria categoria, @RequestParam Foto foto, @RequestParam Usuario donante, @RequestParam Usuario beneficiario, @RequestParam LocalDateTime modificacion) {
-        pService.modificarProducto(id, titulo, descripcion, tipo, estado, categoria, foto, donante, beneficiario, modificacion);
-        return new RedirectView("/listado");
+    public RedirectView modificarProducto(@RequestBody("producto") Producto producto,HttpSession session) {
+        
+        System.out.println(producto.toString());
+//            Producto producto = pService.obtenerPorId(Long.parseLong(productoId));
+//        try {
+//            Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
+//            producto.setBeneficiario(usuario);
+//            producto.setEstado(Estado.Reservado);
+//            pService.modificarProducto(producto);
+//        } catch (Exception ex) {
+//            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        return new RedirectView("/usuario/datos/" + producto.getDonante().getId());    
+
+    // pService.modificarProducto(id, titulo, descripcion, tipo, estado, categoria, foto, donante, beneficiario, modificacion);
+        //return new RedirectView("/listado");
     }
 
     //Trae todos los productos (Para admin)
@@ -160,23 +175,23 @@ public class ProductoController {
         return new RedirectView("/usuario/datos/" + producto.getBeneficiario().getId());
     }
     
-//    @PostMapping("/entregado")
-//    public RedirectView entregado(@RequestParam("producto") String productoId, HttpSession session){
-//        Producto producto = pService.obtenerPorId(Long.parseLong(productoId)); //Por que lo traemos como string?
-//        producto.setEstado(Estado.Entregado);
-//        pService.modificarProducto(producto);
-//        
-//        return new RedirectView("donante/donaciones/" + producto.getDonante().getId());
-//    }
-    
-    @PostMapping("/entregado/{id}")
-    public RedirectView entregado(@PathVariable("idProducto") Long productoId, HttpSession session){
-        Producto producto = pService.obtenerPorId(productoId); //Por que lo traemos como string? Porque el dato lo traigo desde un input hidden como string
+    @PostMapping("/entregado")
+    public RedirectView entregado(@RequestParam("producto") String productoId, HttpSession session){
+        Producto producto = pService.obtenerPorId(Long.parseLong(productoId)); //Por que lo traemos como string?
         producto.setEstado(Estado.Entregado);
         pService.modificarProducto(producto);
         
         return new RedirectView("donante/donaciones/" + producto.getDonante().getId());
     }
+    
+//    @PostMapping("/entregado/{id}")
+//    public RedirectView entregado(@PathVariable("idProducto") Long productoId, HttpSession session){
+//        Producto producto = pService.obtenerPorId(productoId); //Por que lo traemos como string? Porque el dato lo traigo desde un input hidden como string
+//        producto.setEstado(Estado.Entregado);
+//        pService.modificarProducto(producto);
+//        
+//        return new RedirectView("donante/donaciones/" + producto.getDonante().getId());
+//    }
     
     @GetMapping("/cancelar-compra/{idProducto}")
     public RedirectView cancelarCompra (@PathVariable("idProducto") Long idProducto){

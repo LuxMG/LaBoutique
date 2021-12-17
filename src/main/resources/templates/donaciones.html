@@ -44,11 +44,11 @@
                         <a class="btn btn-warning btn-sm" th:href="@{/producto/editar/__${producto.id}__}">Modificar</a>
                         <a class="btn btn-warning btn-sm" th:href="@{/producto/eliminar/__${producto.id}__}">Eliminar</a>
                         <a class="btn btn-warning btn-sm" th:href="@{/producto/entregado/__${producto.id}__}">Marcar como entregado</a>
-                        <a class="btn btn-warning btn-sm" th:href="@{/producto/cancelar-compra/__${producto.id}__}">Ver datos</a>
+                        <a class="btn btn-warning btn-sm" th:if="${#strings.equals(producto.estado, 'Reservado')}" th:href="@{/usuario/datos/__${producto.beneficiario.id}__}">Ver datos</a>
                 </td>
             </tbody>
         </table>
-          <a class="btn btn-warning btn-sm" th:href="@{producto/crear}">Ingresar nueva donacion</a>
+          <a class="btn btn-warning btn-sm" th:href="@{/producto/crear}">Ingresar nueva donacion</a>
     </div>
 </div>
      
