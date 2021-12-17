@@ -123,11 +123,11 @@ public class ProductoController {
         return mav;
     }
 
-    //Deshabilitar desde admin
+    //Deshabilitar desde admin o donante
     @PostMapping("/eliminar/{id}")
-    public RedirectView eliminar(@PathVariable Long id) {
+    public RedirectView eliminar(@PathVariable("idProducto") Long id) {
         pService.eliminar(id);
-        return new RedirectView("/listado");
+        return new RedirectView("/listado"); //Si fuera admin deberia retornar el listado
     }
 
     @PostMapping("/comprar")
@@ -160,16 +160,25 @@ public class ProductoController {
         return new RedirectView("/usuario/datos/" + producto.getBeneficiario().getId());
     }
     
-    @PostMapping("/entregado")
-    public RedirectView entregado(@RequestParam("producto") String productoId, HttpSession session){
-        Producto producto = pService.obtenerPorId(Long.parseLong(productoId)); //Por que lo traemos como string?
+//    @PostMapping("/entregado")
+//    public RedirectView entregado(@RequestParam("producto") String productoId, HttpSession session){
+//        Producto producto = pService.obtenerPorId(Long.parseLong(productoId)); //Por que lo traemos como string?
+//        producto.setEstado(Estado.Entregado);
+//        pService.modificarProducto(producto);
+//        
+//        return new RedirectView("donante/donaciones/" + producto.getDonante().getId());
+//    }
+    
+    @PostMapping("/entregado/{id}")
+    public RedirectView entregado(@PathVariable("idProducto") Long productoId, HttpSession session){
+        Producto producto = pService.obtenerPorId(productoId); //Por que lo traemos como string? Porque el dato lo traigo desde un input hidden como string
         producto.setEstado(Estado.Entregado);
         pService.modificarProducto(producto);
         
         return new RedirectView("donante/donaciones/" + producto.getDonante().getId());
     }
     
-    @PostMapping("/cancelar-compra/{idProducto}")
+    @GetMapping("/cancelar-compra/{idProducto}")
     public RedirectView cancelarCompra (@PathVariable("idProducto") Long idProducto){
         Producto producto = pService.obtenerPorId(idProducto);
         producto.setEstado(Estado.Disponible);
