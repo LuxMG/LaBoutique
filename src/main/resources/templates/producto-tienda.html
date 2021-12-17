@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    
+
     <head>
         <meta charset="UTF-8" />
         <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -19,9 +19,9 @@
         <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
         <!-- MAIN-->
         <main>
-            <h1 id="titulo-producto"> Detalles de producto </h1>
+            <h1 th:text="${#strings.equals(session.rol,'Donante')} ? 'Detalles de solicitud' : 'Detalles de producto'" id="titulo-producto"></h1>
 
-            <form th:action="@{/producto/comprar}" method="post" th:object="${producto}">
+            <form method="post" th:action="${#strings.equals(session.rol,'Donante')} ? @{/producto/donar} : @{/producto/comprar}" th:object="${producto}">
 
                 <div class="container">
                     <div class="row">
@@ -32,7 +32,7 @@
 
                         <div class="col">
 
-                            <h2 th:text="${producto.titulo}"></h2>
+                            <h2 id ="detalle-titulo" th:text="${producto.titulo}"></h2>
                             <input name="producto" th:value="${producto.id}" hidden />
 
                             <label for="">Descripción:</label>
@@ -43,20 +43,13 @@
                             <p th:text="${producto.estado}"></p>
                             <input name="producto" th:value="${producto.id}" hidden />
 
-                            <h4>Información de contacto:</h4>
-                            <label for="">Email:</label>
-                            <p th:text="${producto.donante.email}"></p>
-                            <input name="usuario" th:value="${producto.id}" hidden />
-                            
-                            <label for="">Teléfono:</label>
-                            <p th:text="${producto.donante.telefono}"></p>
-                            <input name="usuario" th:value="${producto.id}" hidden />
-                            
                             <label for="">Barrio/zona:</label>
-                            <p th:text="${producto.donante.barrio}"></p>
-                            <input name="usuario" th:value="${producto.id}" hidden />
+                            <p th:text="${#strings.equals(session.rol,'Donante')} ? ${producto.beneficiario.barrio} : ${producto.donante.barrio}" ></p>
 
-                            <button type="submit" class="btn btn-primary">Comprar</button>
+                            <input name="producto" th:value="${producto.id}" hidden />
+
+                            <button th:class="${#strings.equals(producto.estado,'Disponible')} ? 'btn btn-card' : 'btn btn-danger btn-sm'"
+                                type="submit" th:text="${#strings.equals(session.rol,'Donante')} ? 'Cumplir' : 'Comprar'" class="btn btn-card">Comprar</button>
                         </div>
                     </div>
                 </div>
