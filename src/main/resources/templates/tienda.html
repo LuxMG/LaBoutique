@@ -27,7 +27,7 @@
 
     <body>
         <!-- HEADER-->
-        <header th:replace="fragments/header :: header"></header>
+        <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
         <!-- MAIN -->
         <main class="container tienda">
             <!-- TITLE -->
