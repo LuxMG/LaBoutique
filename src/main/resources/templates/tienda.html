@@ -57,37 +57,11 @@
                     </div>
                 </div>
             </section>
-            
-            <!-- <div class="modal fade col-12" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true" th:unless="${productos.isEmpty()}">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content col-12">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="exampleModalLabel">
-                                Detalles del Producto
-                            </h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body col-12" id="cuerpo">
-                            <div class="col-sm-6">
-                                <img id="img_detalle" th:src="${'/foto/__${producto.foto.id}__'}" />
-                            </div>
-                            <div class="col-sm-6">
-                                <p th:text="${producto.estado}"></p>
-                            </div>
-                            <div class="col-sm-6 text-left">
-                                <p th:text="${producto.descripcion"></p>
-                            </div>
-                        </div>
-                        <div id="boton" class="modal-footer text-left">
-                            <input type="submit" value="Volver" id="añadir al Carrito" class="btn btn-primary" data-dismiss="modal" />
-                            <input type="submit" value="Añadri al Carrito" id="" class="btn btn-primary" data-dismiss="modal" />
-                        </div>
-                    </div>
-                </div> 
-            </div> -->
+
+            <br>
+            <br>
+            <br>
+            <a th:href="@{/producto/crear}" class="btn btn-primary" id="boton-cargar">Cargar nuevo producto.</a>
         </main>
     </body>
     <!--FOOTER-->
