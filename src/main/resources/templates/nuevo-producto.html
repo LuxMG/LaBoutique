@@ -18,7 +18,7 @@
 
     <body>
         <!-- HEADER-->
-        <header th:replace="fragments/header-index :: header-index"></header>
+        <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
         <!-- MAIN-->
         <main>
             <form method="post" th:action="@{/producto/__${action}__}" enctype="multipart/form-data" th:object="${producto}">

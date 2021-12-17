@@ -14,7 +14,7 @@
 </head>
 <body>
   <!-- HEADER-->
-      <header th:replace="fragments/header-index :: header-index"></header>
+    <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
   <!-- MAIN-->
   <main>
       <h1> Registrate </h1>
@@ -53,12 +53,10 @@
             <br>
             <br>
         </form>
-
-
-  </main>
-   <!--FOOTER-->
-  <footer th:replace="fragments/footer :: footer"></footer>
-<!-- Link al JS de Bootstrap-->
-<script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
+    </main>
+    <!--FOOTER-->
+    <footer th:replace="fragments/footer :: footer"></footer>
+    <!-- Link al JS de Bootstrap-->
+    <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

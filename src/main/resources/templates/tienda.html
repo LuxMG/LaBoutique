@@ -29,7 +29,7 @@
         <!-- HEADER-->
         <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
         <!-- MAIN -->
-        <main class="container tienda">
+        <main class="container" id="tienda">
             <!-- TITLE -->
             <section class="row tienda-title">
                 <h1 id="list">Tienda</h1>
@@ -57,16 +57,10 @@
                     </div>
                 </div>
             </section>
-
-            <br>
-            <br>
-            <br>
-            <a th:href="@{/producto/crear}" class="btn btn-primary" id="boton-cargar">Cargar nuevo producto.</a>
         </main>
+        <!--FOOTER-->
+        <footer th:replace="fragments/footer :: footer"></footer>
+        <!-- Link al JS de Bootstrap-->
+        <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
     </body>
-    <!--FOOTER-->
-    <footer th:replace="fragments/footer :: footer"></footer>
-    <!-- Link al JS de Bootstrap-->
-    <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
-
 </html>
