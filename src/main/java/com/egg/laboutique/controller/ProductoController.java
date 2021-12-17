@@ -5,6 +5,7 @@ import com.egg.laboutique.entity.Foto;
 import com.egg.laboutique.entity.Producto;
 import com.egg.laboutique.entity.Usuario;
 import com.egg.laboutique.enums.Estado;
+import com.egg.laboutique.enums.Rol;
 import com.egg.laboutique.enums.Tipo;
 import com.egg.laboutique.exception.ServiceException;
 import com.egg.laboutique.service.CategoriaService;
@@ -88,15 +89,25 @@ public class ProductoController {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(@RequestParam MultipartFile archivo, @ModelAttribute Producto producto) {
+    public RedirectView guardar(@RequestParam MultipartFile archivo, @ModelAttribute Producto producto, HttpSession session) {
+        String url = "";
         try {
+            Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
             producto.setFoto(fotoService.guardar(archivo));
             pService.crearProducto(producto);
-
+            
+            if (usuario.getRol() == Rol.Donante) {
+                url = "/donante/donaciones/" + usuario.getId();
+            }
+            if (usuario.getRol() == Rol.Beneficiario) {
+                url = "/beneficiario/deseos/" + usuario.getId();
+            }
         } catch (ServiceException ex) {
             Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return new RedirectView("/listado");
+        return new RedirectView(url);
     }
 
     @GetMapping("/editar/{id}")
@@ -110,22 +121,26 @@ public class ProductoController {
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificarProducto(@RequestBody("producto") Producto producto,HttpSession session) {
-        
-        System.out.println(producto.toString());
-//            Producto producto = pService.obtenerPorId(Long.parseLong(productoId));
-//        try {
-//            Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
-//            producto.setBeneficiario(usuario);
-//            producto.setEstado(Estado.Reservado);
-//            pService.modificarProducto(producto);
-//        } catch (Exception ex) {
-//            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        return new RedirectView("/usuario/datos/" + producto.getDonante().getId());    
+    public RedirectView modificarProducto(
+            @RequestParam MultipartFile archivo,
+            @ModelAttribute Producto producto,
+            HttpSession session) {
 
-    // pService.modificarProducto(id, titulo, descripcion, tipo, estado, categoria, foto, donante, beneficiario, modificacion);
-        //return new RedirectView("/listado");
+        String url = "";
+        try {
+            //validarProducto()
+            Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
+            pService.modificarProducto(producto);
+            if (usuario.getRol() == Rol.Donante) {
+                url = "/donante/donaciones/" + usuario.getId();
+            }
+            if (usuario.getRol() == Rol.Beneficiario) {
+                url = "/beneficiario/deseos/" + usuario.getId();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new RedirectView(url);
     }
 
     //Trae todos los productos (Para admin)
@@ -147,7 +162,7 @@ public class ProductoController {
 
     @PostMapping("/comprar")
     @PreAuthorize("hasRole('Beneficiario')")
-    public RedirectView comprar(@RequestParam("producto") String productoId,HttpSession session) {
+    public RedirectView comprar(@RequestParam("producto") String productoId, HttpSession session) {
         Producto producto = pService.obtenerPorId(Long.parseLong(productoId));
         try {
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
@@ -159,10 +174,10 @@ public class ProductoController {
         }
         return new RedirectView("/usuario/datos/" + producto.getDonante().getId());
     }
-    
+
     @PostMapping("/donar") //Asocia el donante al deseo y cambia el estado
     @PreAuthorize("hasRole('Donante')")
-    public RedirectView donar(@RequestParam("producto") String productoId,HttpSession session) {
+    public RedirectView donar(@RequestParam("producto") String productoId, HttpSession session) {
         Producto producto = pService.obtenerPorId(Long.parseLong(productoId));
         try {
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
@@ -174,16 +189,16 @@ public class ProductoController {
         }
         return new RedirectView("/usuario/datos/" + producto.getBeneficiario().getId());
     }
-    
+
     @PostMapping("/entregado")
-    public RedirectView entregado(@RequestParam("producto") String productoId, HttpSession session){
+    public RedirectView entregado(@RequestParam("producto") String productoId, HttpSession session) {
         Producto producto = pService.obtenerPorId(Long.parseLong(productoId)); //Por que lo traemos como string?
         producto.setEstado(Estado.Entregado);
         pService.modificarProducto(producto);
-        
+
         return new RedirectView("donante/donaciones/" + producto.getDonante().getId());
     }
-    
+
 //    @PostMapping("/entregado/{id}")
 //    public RedirectView entregado(@PathVariable("idProducto") Long productoId, HttpSession session){
 //        Producto producto = pService.obtenerPorId(productoId); //Por que lo traemos como string? Porque el dato lo traigo desde un input hidden como string
@@ -192,9 +207,8 @@ public class ProductoController {
 //        
 //        return new RedirectView("donante/donaciones/" + producto.getDonante().getId());
 //    }
-    
     @GetMapping("/cancelar-compra/{idProducto}")
-    public RedirectView cancelarCompra (@PathVariable("idProducto") Long idProducto){
+    public RedirectView cancelarCompra(@PathVariable("idProducto") Long idProducto) {
         Producto producto = pService.obtenerPorId(idProducto);
         producto.setEstado(Estado.Disponible);
         producto.setBeneficiario(null);

@@ -58,5 +58,9 @@ public class Producto {
 
     @LastModifiedDate
     private LocalDateTime modificacion;
-    
+
+    @Override
+    public String toString() {
+        return "Producto{" + "id=" + id + ", titulo=" + titulo + ", descripcion=" + descripcion + ", alta=" + alta + '}';
+    }
 }
