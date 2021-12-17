@@ -190,23 +190,15 @@ public class ProductoController {
         return new RedirectView("/usuario/datos/" + producto.getBeneficiario().getId());
     }
 
-    @PostMapping("/entregado")
-    public RedirectView entregado(@RequestParam("producto") String productoId, HttpSession session) {
-        Producto producto = pService.obtenerPorId(Long.parseLong(productoId)); //Por que lo traemos como string?
+    @GetMapping("/entregado/{productoID}")
+    public RedirectView entregado(@PathVariable("productoID") Long productoId, HttpSession session) {
+        Producto producto = pService.obtenerPorId(productoId);
         producto.setEstado(Estado.Entregado);
         pService.modificarProducto(producto);
 
-        return new RedirectView("donante/donaciones/" + producto.getDonante().getId());
+        return new RedirectView("/donante/donaciones/" + producto.getDonante().getId());
     }
 
-//    @PostMapping("/entregado/{id}")
-//    public RedirectView entregado(@PathVariable("idProducto") Long productoId, HttpSession session){
-//        Producto producto = pService.obtenerPorId(productoId); //Por que lo traemos como string? Porque el dato lo traigo desde un input hidden como string
-//        producto.setEstado(Estado.Entregado);
-//        pService.modificarProducto(producto);
-//        
-//        return new RedirectView("donante/donaciones/" + producto.getDonante().getId());
-//    }
     @GetMapping("/cancelar-compra/{idProducto}")
     public RedirectView cancelarCompra(@PathVariable("idProducto") Long idProducto) {
         Producto producto = pService.obtenerPorId(idProducto);
