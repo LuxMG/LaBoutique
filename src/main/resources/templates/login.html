@@ -11,21 +11,23 @@
     <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}"/>
     <!-- Link a nuestro CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <!--Favicon-->
+    <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">
 </head>
 <body>
   <!-- HEADER-->
   <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
   <!-- MAIN-->
-  <main>
+  <main id="login">
       <section class="container index-login">
             <p th:if="${error}" th:text="${error}"></p>
             <p th:if="${logout}" th:text="${logout}"></p>
             <p th:if="${exito}" th:text="${exito}"></p>
             <form th:action="@{/logincheck}" class="formulario" method="post">
                 <label> Email: </label>
-                <input type="email" placeholder="Email" name="email">
+                <input type="email" placeholder="Email" name="Ingresa el correo">
                 <label> Password: </label>
-                <input type="password" placeholder="Password" name="clave">
+                <input type="password" placeholder="Ingresa la clave" name="clave">
                 <button type="submit" class="btn btn-card">Login</button>
             </form>
             <div class="links-ingreso">
