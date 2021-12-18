@@ -11,50 +11,47 @@
     <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}"/>
     <!-- Link a nuestro CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <!--Favicon-->
     <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">
+        
 </head>
 <body>
   <!-- HEADER-->
   <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
   <!-- MAIN-->
-  <main>
-      
-      <div class="container mt-5 main">
-    <div class="alert alert-success" th:if="${exito}" th:text="${exito}"></div>
-    <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
-    <h1>Lista de deseos.</h1>
-    <hr class="mb-4"/>
-    <div th:if="${productos.isEmpty()}">
-        <h5>¿Todavía no cargaste tu deseo? Inicia tu lista apretando <a th:href="@{/producto/crear}">aqui</a> </h5>
+  <main id="deseos" class="container">
+    <div class="container mt-5 main">
+        <div class="alert alert-success" th:if="${exito}" th:text="${exito}"></div>
+        <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+        <h1>Lista de deseos.</h1>
+        <hr class="mb-4"/>
+        <div th:if="${productos.isEmpty()}">
+            <h5>¿Todavía no cargaste tu deseo? Inicia tu lista apretando <a th:href="@{/producto/crear}">aqui</a> </h5>
+        </div>
+        <div class="table-responsive" th:unless="${productos.isEmpty()}">
+            <table class="table table-hover table-bordered">
+                <thead class="table-dark text-center">
+                <tr>
+                    <th class="col-md-4">Pedido</th>
+                    <th class="col-md-2">Estado</th>
+                    <th class="col-md-2">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="producto : ${productos}">
+                    <td class="col-md-4" th:text="${producto.titulo}"></td>
+                    <td class="col-md-2" th:text="${producto.estado}"></td>
+                    <td class="col-md-3" >
+                        <div class="d-flex justify-content-around">
+                            <a class="btn btn-warning btn-sm" th:href="@{/producto/cancelar-compra/__${producto.id}__}">Cancelar</a>
+                            <a class="btn btn-warning btn-sm" th:if="${#strings.equals(producto.estado, 'Tomado')}" th:href="@{/usuario/datos/__${producto.donante.id}__}">Ver datos</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="table-responsive" th:unless="${productos.isEmpty()}">
-        <table class="table table-hover table-bordered">
-            <thead class="table-dark text-center">
-            <tr>
-                <th class="col-md-4">Pedido</th>
-                <th class="col-md-2">Estado</th>
-                <th class="col-md-2">Acciones</th>
-              
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="producto : ${productos}">
-                <td class="col-md-4" th:text="${producto.titulo}"></td>
-                <td class="col-md-2" th:text="${producto.estado}"></td>
-                <td class="col-md-3" >
-                    <div class="d-flex justify-content-around">
-                        <a class="btn btn-warning btn-sm" th:href="@{/producto/cancelar-compra/__${producto.id}__}">Cancelar</a>
-                        <a class="btn btn-warning btn-sm" th:if="${#strings.equals(producto.estado, 'Tomado')}" th:href="@{/usuario/datos/__${producto.donante.id}__}">Ver datos</a>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-     
-  
-      
   </main>
   <!--FOOTER-->
   <footer th:replace="fragments/footer :: footer"></footer>

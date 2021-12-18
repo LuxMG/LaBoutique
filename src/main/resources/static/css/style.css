@@ -113,7 +113,7 @@ div#carouselExampleCaptions {
 /** BOTON PERSONALIZADO AMARILLO **/
 .btn-card {
   background-color: var(--color-secondary);
-  transition: all 2s;
+  transition: all 1s;
 }
 
 .btn-card:hover {
@@ -172,8 +172,9 @@ footer {
 
 .formulario input {
     background-color: var(--color-light-primary)!important;
-    color: var(--color-light-primary)!important;
     border-color: var(--color-light-primary)!important;
+    color: var(--color-light)!important;
+    padding-left: 1rem;
 }
 
 .formulario button {
@@ -338,8 +339,10 @@ label.col {
 
 #registrate input {
     background-color: var(--color-light-primary)!important;
-    color: var(--color-light-primary)!important;
+    color: var(--color-light)!important;
     border-color: var(--color-light-primary)!important;
+    padding-left: 1rem;
+    text-align: center;
 }
 
 #registrate button {
