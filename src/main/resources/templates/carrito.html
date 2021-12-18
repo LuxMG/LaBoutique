@@ -33,7 +33,8 @@
             <tr>
                 <th class="col-md-4">Pedido</th>
                 <th class="col-md-2">Estado</th>
-                <th class="col-md-2">Cancelar Compra</th>
+                <th class="col-md-2">Acciones</th>
+              
             </tr>
             </thead>
             <tbody>
@@ -43,6 +44,7 @@
                 <td class="col-md-3" >
                     <div class="d-flex justify-content-around">
                         <a class="btn btn-warning btn-sm" th:href="@{/producto/cancelar-compra/__${producto.id}__}">Cancelar</a>
+                        <a class="btn btn-warning btn-sm" th:if="${#strings.equals(producto.estado, 'Reservado')}" th:href="@{/usuario/datos/__${producto.donante.id}__}">Ver datos</a>
                     </div>
                 </td>
             </tr>
