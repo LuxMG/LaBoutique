@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    
+
     <head>
         <meta charset="UTF-8" />
         <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -19,21 +19,22 @@
         <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
         <!-- MAIN-->
         <main>
-            <h1 id="titulo-producto"> Detalles de producto </h1>
-
-            <form th:action="@{/producto/comprar}" method="post" th:object="${producto}">
+            
+            <form method="post" th:action="${#strings.equals(session.rol,'Donante')} ? @{/producto/donar} : @{/producto/comprar}" th:object="${producto}">
 
                 <div class="container">
+                    <div class="row  mt-5">
+                        <h1 id ="detalle-titulo" th:text="${producto.titulo}" class="text-center"></h1>  
+                        </div>
                     <div class="row">
                         <div class="col">
 
+                                                      
                             <img id="img_detalle" th:src="${'/foto/__${producto.foto.id}__'}" />
                         </div>
 
                         <div class="col">
-                        
-
-                            <h2 th:text="${producto.titulo}"></h2>
+                    
                             <input name="producto" th:value="${producto.id}" hidden />
 
                             <label for="">Descripción:</label>
@@ -42,9 +43,13 @@
                             <label for="">Estado:</label>
                             <p th:text="${producto.estado}"></p>
       
-
-                            <button type="submit" class="btn btn-primary" th:if="${#strings.equals(producto.estado, 'Disponible')}">Comprar</button>
-                     
+                          <!--  <button type="submit" class="btn btn-primary" th:if="${#strings.equals(producto.estado, 'Disponible')}">Comprar</button> -->                
+                            <label for="">Barrio/zona:</label>
+                            <p th:text="${#strings.equals(session.rol,'Donante')} ? ${producto.beneficiario.barrio} : ${producto.donante.barrio}" ></p>
+                            
+                            <button type="submit" class="btn btn-card" th:if="${#strings.equals(producto.estado, 'Disponible')}"
+                                 th:text="${#strings.equals(session.rol,'Donante')} ? 'Cumplir Deseo' : 'Comprar'"> Hola </button>
+                        </div>
                     </div>
                 </div>
                 <br>

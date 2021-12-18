@@ -279,9 +279,16 @@ img#img {
 .cf:after {
   clear: both; 
 }
+
 /****PRODUCTO-TIENDA******/
+
 #titulo-producto{
+  font-family: var(--raleway);
   text-align: center;
+}
+
+#detalle-titulo{
+    font-family: var(--raleway);
 }
 #contenedor {
   display: flex;
@@ -296,4 +303,8 @@ img#img {
 img#img_detalle {
 
   width: 100%;
+}
+
+label.col {
+    font-size: large;
 }
