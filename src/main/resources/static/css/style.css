@@ -325,3 +325,23 @@ img#img_detalle {
 label.col {
     font-size: large;
 }
+
+/*************
+  REGISTRO
+***************/
+#registrate label,
+#registrate input {
+    display: block;
+    width: 70%;
+    margin: 2% 15%;
+}
+
+#registrate input {
+    background-color: var(--color-light-primary)!important;
+    color: var(--color-light-primary)!important;
+    border-color: var(--color-light-primary)!important;
+}
+
+#registrate button {
+    margin-top: 1rem;
+}
