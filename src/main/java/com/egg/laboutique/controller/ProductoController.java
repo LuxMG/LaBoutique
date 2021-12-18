@@ -5,6 +5,7 @@ import com.egg.laboutique.entity.Foto;
 import com.egg.laboutique.entity.Producto;
 import com.egg.laboutique.entity.Usuario;
 import com.egg.laboutique.enums.Estado;
+import com.egg.laboutique.enums.Rol;
 import com.egg.laboutique.enums.Tipo;
 import com.egg.laboutique.exception.ServiceException;
 import com.egg.laboutique.service.CategoriaService;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -87,15 +89,25 @@ public class ProductoController {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(@RequestParam MultipartFile archivo, @ModelAttribute Producto producto) {
+    public RedirectView guardar(@RequestParam MultipartFile archivo, @ModelAttribute Producto producto, HttpSession session) {
+        String url = "";
         try {
+            Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
             producto.setFoto(fotoService.guardar(archivo));
             pService.crearProducto(producto);
-
+            
+            if (usuario.getRol() == Rol.Donante) {
+                url = "/donante/donaciones/" + usuario.getId();
+            }
+            if (usuario.getRol() == Rol.Beneficiario) {
+                url = "/beneficiario/deseos/" + usuario.getId();
+            }
         } catch (ServiceException ex) {
             Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return new RedirectView("/listado");
+        return new RedirectView(url);
     }
 
     @GetMapping("/editar/{id}")
@@ -103,14 +115,32 @@ public class ProductoController {
         ModelAndView mav = new ModelAndView("nuevo-producto");//refactorizar nombre de html a formulario-producto
         mav.addObject("producto", pService.obtenerPorId(id));
         mav.addObject("title", "Editar Producto");
+        mav.addObject("categorias", catService.buscarTodas());
         mav.addObject("action", "modificar");
         return mav;
     }
 
     @PostMapping("/modificar")
-    public RedirectView modificarProducto(@RequestParam Long id, @RequestParam String titulo, @RequestParam String descripcion, @RequestParam Tipo tipo, @RequestParam Estado estado, @RequestParam Categoria categoria, @RequestParam Foto foto, @RequestParam Usuario donante, @RequestParam Usuario beneficiario, @RequestParam LocalDateTime modificacion) {
-        pService.modificarProducto(id, titulo, descripcion, tipo, estado, categoria, foto, donante, beneficiario, modificacion);
-        return new RedirectView("/listado");
+    public RedirectView modificarProducto(
+            @RequestParam MultipartFile archivo,
+            @ModelAttribute Producto producto,
+            HttpSession session) {
+
+        String url = "";
+        try {
+            //validarProducto()
+            Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
+            pService.modificarProducto(producto);
+            if (usuario.getRol() == Rol.Donante) {
+                url = "/donante/donaciones/" + usuario.getId();
+            }
+            if (usuario.getRol() == Rol.Beneficiario) {
+                url = "/beneficiario/deseos/" + usuario.getId();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new RedirectView(url);
     }
 
     //Trae todos los productos (Para admin)
@@ -123,16 +153,16 @@ public class ProductoController {
         return mav;
     }
 
-    //Deshabilitar desde admin
-    @PostMapping("/eliminar/{id}")
-    public RedirectView eliminar(@PathVariable Long id) {
+    //Deshabilitar desde admin o donante
+    @GetMapping("/eliminar/{productoId}")
+    public RedirectView eliminar(@PathVariable("productoId") Long id) {
         pService.eliminar(id);
-        return new RedirectView("/listado");
+        return new RedirectView("/donante/donaciones/" + id); //Si fuera admin deberia retornar el listado
     }
 
     @PostMapping("/comprar")
     @PreAuthorize("hasRole('Beneficiario')")
-    public RedirectView comprar(@RequestParam("producto") String productoId,HttpSession session) {
+    public RedirectView comprar(@RequestParam("producto") String productoId, HttpSession session) {
         Producto producto = pService.obtenerPorId(Long.parseLong(productoId));
         try {
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
@@ -147,7 +177,7 @@ public class ProductoController {
     
     @PostMapping("/donar") //Asocia el donante al deseo y cambia el estado
     @PreAuthorize("hasRole('Donante')")
-    public RedirectView donar(@RequestParam("producto") String productoId,HttpSession session) {
+    public RedirectView donar(@RequestParam("producto") String productoId, HttpSession session) {
         Producto producto = pService.obtenerPorId(Long.parseLong(productoId));
         try {
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
@@ -159,18 +189,26 @@ public class ProductoController {
         }
         return new RedirectView("/usuario/datos/" + producto.getBeneficiario().getId());
     }
-    
+
     @PostMapping("/entregado")
-    public RedirectView entregado(@RequestParam("producto") String productoId, HttpSession session){
+    public RedirectView entregado(@RequestParam("producto") String productoId, HttpSession session) {
         Producto producto = pService.obtenerPorId(Long.parseLong(productoId)); //Por que lo traemos como string?
         producto.setEstado(Estado.Entregado);
         pService.modificarProducto(producto);
-        
+
         return new RedirectView("donante/donaciones/" + producto.getDonante().getId());
     }
-    
-    @PostMapping("/cancelar-compra/{idProducto}")
-    public RedirectView cancelarCompra (@PathVariable("idProducto") Long idProducto){
+
+//    @PostMapping("/entregado/{id}")
+//    public RedirectView entregado(@PathVariable("idProducto") Long productoId, HttpSession session){
+//        Producto producto = pService.obtenerPorId(productoId); //Por que lo traemos como string? Porque el dato lo traigo desde un input hidden como string
+//        producto.setEstado(Estado.Entregado);
+//        pService.modificarProducto(producto);
+//        
+//        return new RedirectView("donante/donaciones/" + producto.getDonante().getId());
+//    }
+    @GetMapping("/cancelar-compra/{idProducto}")
+    public RedirectView cancelarCompra(@PathVariable("idProducto") Long idProducto) {
         Producto producto = pService.obtenerPorId(idProducto);
         producto.setEstado(Estado.Disponible);
         producto.setBeneficiario(null);

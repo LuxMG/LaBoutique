@@ -12,24 +12,24 @@
         <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}" />
         <!-- Link a nuestro CSS -->
         <link rel="stylesheet" th:href="@{/css/style.css}" />
+         <!--Favicon-->
+        <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">
     </head>
     <body>
         <!-- HEADER-->
         <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
         <!-- MAIN-->
-        <main>
+        <main id="categoria-formularioa" class="container">
             <form method="post" th:action="@{/categorias/__${action}__}" th:object="${categoria}">
                 <div class="form-group">
                     <label for="">Nombre</label>
                     <input type="text" placeholder="Nombre de la categoria" th:field="*{nombre}">
                 </div>
                 <br>
-
                 <button type="submit" class="btn btn-primary"
                         th:text="${action == 'guardar'} ? 'Crear categoria' : 'Modificar'"></button>
                 <a class="btn btn-primary" th:ref="@{/categorias/listado}">Cancelar</a>
             </form>
-
         </main>
         <!--FOOTER-->
         <footer th:replace="fragments/footer :: footer"></footer>

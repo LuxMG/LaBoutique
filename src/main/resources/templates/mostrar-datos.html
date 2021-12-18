@@ -11,16 +11,20 @@
     <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}"/>
     <!-- Link a nuestro CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <!--Favicon-->
+    <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">
+        
 </head>
 <body>
   <!-- HEADER-->
   <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
   <!-- MAIN-->
-  <main>
-      <h1> ¡Felicitaciones, compra efectuada! </h1>
-      <h2> Contactate con el vendedor para coordinar la entrega :)</h2>
-      <div class="alert alert-danger col-xl-6" th:if="${error}" th:text="${error}"></div>
-       <form method="post" th:object="${usuario}" class="mb-5">
+  <main id="mostrar-datos" class="container">
+       <h1> ¡Felicitaciones, compra efectuada! </h1>
+       <h2> Contactate con el vendedor para coordinar la entrega :)</h2>
+       <div class="alert alert-danger col-xl-6" th:if="${error}" th:text="${error}"></div>
+       <!--formulario-->
+        <form method="post" th:object="${usuario}" class="mb-5">
            <div class="container-md">
             <input id="id"  type="hidden" th:field="*{id}"/>
             <label for="nombre">Nombre:</label>
@@ -35,7 +39,7 @@
            <a class="link btn btn-card" th:href="${url}" target="_blank">Enviar Whatsapp</a>
            </div>
         </form>
-  </main>
+   </main>
    <!--FOOTER-->
   <footer th:replace="fragments/footer :: footer"></footer>
 <!-- Link al JS de Bootstrap-->

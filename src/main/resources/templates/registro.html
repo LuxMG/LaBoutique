@@ -11,47 +11,43 @@
     <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}"/>
     <!-- Link a nuestro CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
+     <!--Favicon-->
+    <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">
 </head>
 <body>
   <!-- HEADER-->
     <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
   <!-- MAIN-->
-  <main>
-      <h1> Registrate </h1>
+  <main id="registrate" class="container">
+      <h1 th:text="${session.id != null} ? 'Actualizar' : 'Registrate'">  </h1>
       <div class="alert alert-danger col-xl-6" th:if="${error}" th:text="${error}"></div>
        <form method="post" th:action="@{/__${action}__}" th:object="${usuario}" class="mb-5">
             <input id="id"  type="hidden" th:field="*{id}"/>
-           <label for="nombre">Nombre</label>  
-            <input placeholder="Nombre" th:field="*{nombre}" type="text">
-            <br>
+            <!--nombre-->
+            <label for="nombre">Nombre</label>  
+            <input placeholder="Ingresa tu nombre" th:field="*{nombre}" type="text">
+            <!--dni-->
             <label for="dni">DNI</label>    
-            <input  id="dni" type="text" placeholder="Dni" th:field="*{dni}"/>
-            <br>
+            <input  id="dni" type="text" placeholder="Ingresa tu DNI" th:field="*{dni}"/>
+            <!--correo-->
             <label for="email">Email</label>
-            <input  id="correo" type="email" placeholder="Email"  th:field="*{email}"/>
-            <br>
+            <input  id="correo" type="email" placeholder="Ingresa tu correo"  th:field="*{email}"/>
+            <!--clave-->
             <label for="clave">Clave</label>
-            <input  id="clave" type="password" placeholder="Contraseña" th:field="*{clave}"/>
-            <!-- <br>
+            <input  id="clave" type="password" placeholder="Ingresa la contraseña" th:field="*{clave}"/>
+            <!-- 
             <label for="clave2">Repetir clave</label>
             <input  id="clave2" type="password" placeholder="Repetir Contraseña" th:field="*{clave2}"/> -->
-            <br>
+            <!--telefono-->
             <label for="telefono">Telefono</label>
-            <input  id="telefono" type="text" placeholder="Telefono" th:field="*{telefono}"/>
-            <br>
+            <input  id="telefono" type="text" placeholder="Ingresa el teléfono" th:field="*{telefono}"/>
+            <!--barrio-->
             <label for="barrio">Barrio</label>
-            <input  id="barrio" type="text" placeholder="Barrio" th:field="*{barrio}"/>
-            <br>
+            <input  id="barrio" type="text" placeholder="Ingresa el barrio" th:field="*{barrio}"/>
+            <!--rol-->
             <input id="rol"  type="hidden" th:field="*{rol}"/>
-
-            <br>
-            <button type="submit">Signup</button>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
+            <!--boton-->
+            <button type="submit" class="btn- btn-card"  th:text="${session.id != null} ? 'Actualizar' : 'Registrate'"> </button>
         </form>
     </main>
     <!--FOOTER-->

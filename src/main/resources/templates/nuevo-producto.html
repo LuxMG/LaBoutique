@@ -15,12 +15,11 @@
         <!--Favicon-->
         <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">
     </head>
-
     <body>
         <!-- HEADER-->
         <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
         <!-- MAIN-->
-        <main>
+        <main >
             <form method="post" th:action="@{/producto/__${action}__}" enctype="multipart/form-data" th:object="${producto}">
                 <div class="form-group">
                     <label for="">Título</label>
@@ -45,7 +44,7 @@
                 <input type="file" placeholder="Foto" name="archivo">
                 <br>
 
-                <input th:field="*{foto}" hidden>
+                <input th:field="*{id}" hidden>
                 <input th:field="*{estado}" hidden>
                 <input th:field="*{tipo}" hidden>
                 <input th:field="*{beneficiario}" hidden>
