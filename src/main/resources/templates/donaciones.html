@@ -50,8 +50,11 @@
                                     <button type="button" class="btn btn-card" th:disabled="${#strings.equals(producto.estado, 'Disponible')}"> 
                                         <a class="btn btn-card" th:href="@{/producto/entregado/__${producto.id}__}">Marcar como entregado</a>
                                     </button>
-                                    <button type="button" class="btn btn-card"> 
-                                        <a class="btn btn-card" th:if="${#strings.equals(producto.estado, 'Reservado')}" th:href="@{/usuario/datos/__${producto.beneficiario.id}__}">Ver Datos</a>
+                                    <button type="button" class="btn btn-card" th:if="${#strings.equals(producto.estado, 'Reservado')}"> 
+                                        <a class="btn btn-card" th:href="@{/usuario/datos/__${producto.beneficiario.id}__}">Ver Datos</a>
+                                    </button> 
+                                    <button type="button" class="btn btn-card" th:if="${#strings.equals(producto.estado, 'Disponible')}" th:disabled="${#strings.equals(producto.estado, 'Disponible')}"> 
+                                       <a class="btn btn-card">Ver Datos</a>
                                     </button>
                                 </td>
                         </tbody>
@@ -69,4 +72,3 @@
         <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
     </body>
 </html>
-
