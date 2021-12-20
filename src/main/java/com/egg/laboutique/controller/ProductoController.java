@@ -206,7 +206,11 @@ public class ProductoController {
     public RedirectView entregado(@PathVariable("productoID") Long productoId, HttpSession session) {
         Producto producto = pService.obtenerPorId(productoId);
         producto.setEstado(Estado.Entregado);
-        pService.modificarProducto(producto);
+        try {
+            pService.modificarProducto(producto);
+        } catch (Exception ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         return new RedirectView("/donante/donaciones/" + producto.getDonante().getId());
     }
@@ -216,7 +220,11 @@ public class ProductoController {
         Producto producto = pService.obtenerPorId(idProducto);
         producto.setEstado(Estado.Disponible);
         producto.setBeneficiario(null);
-        pService.modificarProducto(producto);
+        try {
+            pService.modificarProducto(producto);
+        } catch (Exception ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return new RedirectView("/beneficiario/tienda");
     }
 
@@ -225,7 +233,11 @@ public class ProductoController {
         Producto producto = pService.obtenerPorId(idProducto);
         producto.setEstado(Estado.Disponible);
         producto.setDonante(null);
-        pService.modificarProducto(producto);
+        try {
+            pService.modificarProducto(producto);
+        } catch (Exception ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return new RedirectView("/beneficiario/deseos/" + producto.getBeneficiario().getId());
     }
     //Busquedas
