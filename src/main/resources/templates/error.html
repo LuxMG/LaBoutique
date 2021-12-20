@@ -25,9 +25,12 @@
                 </div>
             </nav> 
         </header>
-        <h1 th:text="${codigo}"></h1>
-        <h2 th:text="${mensaje == null ? 'Intenta nuevamente' : mensaje}"></h2>
-        <a href="/" class="btn btn-primary">Volver al inicio</a>
+        <div style="text-align: center;">
+            <h1 th:text="${codigo}" style="font-family: var(--raleway);"></h1>
+            <h2 th:text="${mensaje == null ? 'Intenta nuevamente' : mensaje}" style="font-family: var(--raleway);"></h2>
+            <a href="/" class="btn btn-primary">Volver al inicio</a>
+        </div>
+
         <!--FOOTER-->
         <footer th:replace="fragments/footer :: footer"></footer>
         <!-- Link al JS de Bootstrap-->
