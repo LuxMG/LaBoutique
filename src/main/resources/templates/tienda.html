@@ -47,8 +47,14 @@
                                 <img id="img" th:src="${producto.foto != null} ? ${'/foto/__${producto.foto.id}__'} : ${'/uploads/foto-no-dosponible.png'}"><!--Corregir url para foto no disponible-->
                             </div>
                             <p class="card-text">
-                                <label id="articulo"><span th:text="${producto.titulo}"></span></label>
+                                <label id="articulo"><span th:text="${producto.titulo}"></span></label><br>
+                            
+                                <label id="estado"><span th:text="${producto.estado}" class="btn btn-info"></span></label>
                             </p>
+                           
+                          
+                                
+                           
                             <p id="descripcion" th:text="${producto.descripcion}"></p>
                             <p class="card-text text-right">
                                 <a  th:href="@{/producto/detalleProducto/__${producto.id}__}" class="btn btn-card">Ver más</a>

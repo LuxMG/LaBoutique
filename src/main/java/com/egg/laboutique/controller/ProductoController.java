@@ -174,7 +174,7 @@ public class ProductoController {
         }
         return new RedirectView("/usuario/datos/" + producto.getDonante().getId());
     }
-
+    
     @PostMapping("/donar") //Asocia el donante al deseo y cambia el estado
     @PreAuthorize("hasRole('Donante')")
     public RedirectView donar(@RequestParam("producto") String productoId, HttpSession session) {
