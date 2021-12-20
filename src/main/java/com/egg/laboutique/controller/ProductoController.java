@@ -208,6 +208,15 @@ public class ProductoController {
         pService.modificarProducto(producto);
         return new RedirectView("/beneficiario/tienda");
     }
+    
+    @GetMapping("/cancelar-deseo/{idProducto}")
+    public RedirectView cancelarDeseo(@PathVariable("idProducto") Long idProducto) {
+        Producto producto = pService.obtenerPorId(idProducto);
+        producto.setEstado(Estado.Disponible);
+        producto.setDonante(null);
+        pService.modificarProducto(producto);
+        return new RedirectView("/beneficiario/deseos/" + producto.getBeneficiario().getId());
+    }    
     //Busquedas
     //filtros por categoria
 }

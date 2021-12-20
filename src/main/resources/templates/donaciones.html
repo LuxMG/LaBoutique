@@ -41,7 +41,7 @@
                                 <td class="col-md-4" th:text="${producto.titulo}"></td>
                                 <td class="col-md-1" th:text="${producto.estado}"></td>
                                 <td class="col-md-8" >
-                                    <button type="button" class="btn btn-card" th:disabled="${!#strings.equals(producto.estado, 'Disponible')}"> <!--"${#strings.equals(producto.estado, 'Reservado')}"-->
+                                    <button type="button" class="btn btn-card" th:disabled="${!#strings.equals(producto.estado, 'Disponible')}"> 
                                         <a class="btn btn-card" th:href="@{/producto/editar/__${producto.id}__}">Modificar</a>
                                     </button>
                                     <button type="button" class="btn btn-card" th:disabled="${!#strings.equals(producto.estado, 'Disponible')}"> 
