@@ -130,12 +130,12 @@ public class ProductoController {
         try {
             //validarProducto()
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
-            if(archivo.isEmpty()){
+            if (archivo.isEmpty()) {
                 pService.modificarProducto(producto);
-            }else{
-                pService.modificarProducto(archivo,producto);
+            } else {
+                pService.modificarProducto(archivo, producto);
             }
-            
+
             if (usuario.getRol() == Rol.Donante) {
                 url = "/donante/donaciones/" + usuario.getId();
             }
@@ -168,6 +168,9 @@ public class ProductoController {
         }
         if (session.getAttribute("rol") == Rol.Beneficiario) {
             url = "/beneficiario/deseos/" + session.getAttribute("id");
+        }
+        if (session.getAttribute("rol") == Rol.ADMIN) {
+            url = "/producto/listado";
         }
         return new RedirectView(url); //Si fuera admin deberia retornar el listado
     }
