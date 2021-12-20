@@ -36,7 +36,8 @@
             </section>
             <!-- MENSAJE SI NO HAY PRODUCTOS -->
             <div th:if="${productos.isEmpty()}">
-                <h5>Todavía no hay productos cargados en la tienda. <a th:href="@{/producto/crear}">Cargar un producto.</a></h5>
+                <h5 th:text="${#strings.equals(session.rol,'Donante')} ? 'Todavía no hay productos en la tienda. ' : 'Todavía no hay productos en la tienda. Agrega lo que deseas a tu lista de deseos. '"></h5>
+                <a class="link btn btn-card " th:href="@{/producto/crear}">Cargar producto</a>
             </div>
             <!-- Si hay productos se ven las cards-->
             <section class="row tienda-card" th:unless="${productos.isEmpty()}">      
@@ -49,13 +50,13 @@
                             </div>
                             <p class="card-text">
                                 <label id="articulo"><span th:text="${producto.titulo}"></span></label><br>
-                            
+
                                 <label id="estado"><span th:text="${producto.estado}" class="btn btn-info"></span></label>
                             </p>
-                           
-                          
-                                
-                           
+
+
+
+
                             <p id="descripcion" th:text="${producto.descripcion}"></p>
                             <p class="card-text text-right">
                                 <a  th:href="@{/producto/detalleProducto/__${producto.id}__}" class="btn btn-card">Ver más</a>

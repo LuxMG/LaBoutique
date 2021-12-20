@@ -1,48 +1,49 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
-    <meta content="La Boutique " name="description"/>
-    <meta content="La Boutique" name="author"/>
-    <title>La Boutique</title>
-    <!-- Link al CSS de BOOTSTRAP -->
-    <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}"/>
-    <!-- Link a nuestro CSS -->
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
-    <!--Favicon-->
-    <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">
-        
-</head>
-<body>
-  <!-- HEADER-->
-  <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
-  <!-- MAIN-->
-  <main id="mostrar-datos" class="container">
-       <h1> ¡Felicitaciones, compra efectuada! </h1>
-       <h2> Contactate con el vendedor para coordinar la entrega :)</h2>
-       <div class="alert alert-danger col-xl-6" th:if="${error}" th:text="${error}"></div>
-       <!--formulario-->
-        <form method="post" th:object="${usuario}" class="mb-5">
-           <div class="container-md">
-            <input id="id"  type="hidden" th:field="*{id}"/>
-            <label for="nombre">Nombre:</label>
-            <label th:utext="*{nombre}"></label> <br>
-            <label for="barrio">Barrio:</label> 
-            <label th:utext="*{barrio}"></label> <br>
-            <label for="mail">Mail:</label> 
-            <label th:utext="*{email}"></label> <br>
-           <label for="telefono">Telefono:</label> 
-           <label th:utext="*{telefono}"></label>
-           <br><br>
-           <a class="link btn btn-card" th:href="${url}" target="_blank">Enviar Whatsapp</a>
-           </div>
-        </form>
-   </main>
-   <!--FOOTER-->
-  <footer th:replace="fragments/footer :: footer"></footer>
-<!-- Link al JS de Bootstrap-->
-<script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
-</body>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+        <meta content="La Boutique " name="description"/>
+        <meta content="La Boutique" name="author"/>
+        <title>La Boutique</title>
+        <!-- Link al CSS de BOOTSTRAP -->
+        <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}"/>
+        <!-- Link a nuestro CSS -->
+        <link rel="stylesheet" th:href="@{/css/style.css}"/>
+        <!--Favicon-->
+        <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">
+
+    </head>
+    <body>
+        <!-- HEADER-->
+        <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
+        <!-- MAIN-->
+        <main>
+            <h1 th:text="${#strings.equals(session.rol,'Donante')} ? '¡Gracias por cumplir este deseo!' : '¡Felicitaciones, tu compra ha sido efectuada!'" id="texto-datos"></h1>
+            <h2 id="texto-datos">Contactate con el anunciante para coordinar la entrega :)</h2>
+            <div class="alert alert-danger col-xl-6" th:if="${error}" th:text="${error}"></div>
+            <form method="post" th:object="${usuario}">
+                <div class="m-0 row justify-content-center">
+                    <div class="col-auto p-4" id="mostrar-d">
+                        <input id="id"  type="hidden" th:field="*{id}"/>
+                        <label for="Nombre" id="texto-detalle">Nombre:</label>
+                        <p th:text="*{nombre}"></p>
+                        <label for="Barrio" id="texto-detalle">Barrio:</label> 
+                        <p th:text="*{barrio}"></p>
+                        <label for="E-mail" id="texto-detalle">E-mail:</label> 
+                        <p th:text="*{email}"></p>
+                        <label for="Teléfono" id="texto-detalle">Telefono:</label> 
+                        <p th:text="*{telefono}"></p>
+                    </div>
+                </div>
+                <a class="link btn btn-card " th:href="${url}" target="_blank" id="bmd" >Enviar Whatsapp</a>
+            </form>
+            
+        </main>
+        <!--FOOTER-->
+        <footer th:replace="fragments/footer :: footer"></footer>
+        <!-- Link al JS de Bootstrap-->
+        <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
+    </body>
 </html>
