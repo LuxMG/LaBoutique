@@ -19,40 +19,40 @@
         <!-- HEADER-->
         <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
         <!-- MAIN-->
-        <main >
+        <main class="nuevo-producto">
             <form method="post" th:action="@{/producto/__${action}__}" enctype="multipart/form-data" th:object="${producto}">
-                <div class="form-group">
+                <div class="titulos-form">
                     <label for="">Título</label>
-                    <input type="text" placeholder="Escribir el nombre del producto" th:field="*{titulo}">
-                </div>
-                <br>
+                    <input type="text" placeholder="Escribir el nombre del producto" th:field="*{titulo}"><br>
 
-                <div class="form-group">
                     <label for="">Descripción</label>
-                    <textarea th:field="*{descripcion}" placeholder="Escribir una descripción breve del producto" rows="3"></textarea>
+                    <textarea th:field="*{descripcion}" placeholder="Escribir una descripción breve del producto" rows="3"></textarea><br>
+
+                    <label for="categoria">Categoría</label>
+                    <select aria-label="Seleccionar una categoria" class="form" th:field="*{categoria}">
+                        <option aria-label="seleccionar una categoria" value="0">Seleccionar una categoria</option>
+                        <option th:each="categoria : ${categorias}" th:text="${categoria.nombre}" th:value="${categoria.id}"></option>
+                    </select><br>
+                    <div th:if="${action == 'modificar'}">
+                        <img id="img_detalle" th:if="${producto.foto != null}" th:src="${'/foto/__${producto.foto.id}__'}">
+                        <img id="img_detalle" th:if="${producto.foto == null}" src="/img/imagen_no_disponible.png">
+                    </div>
+                    <label for="">Subir una imagen</label>
+                    <input type="file" placeholder="Foto" name="archivo" th:value="${archivo}"><br>
                 </div>
-                <br>
-
-                <label for="categoria">Categoría</label>
-                <select aria-label="Seleccionar una categoria" class="form" th:field="*{categoria}">
-                    <option aria-label="seleccionar una categoria" value="0">Seleccionar una categoria</option>
-                    <option th:each="categoria : ${categorias}" th:text="${categoria.nombre}" th:value="${categoria.id}"></option>
-                </select>
-                <br>
-
-                <label for="">Subir una imagen</label>
-                <input type="file" placeholder="Foto" name="archivo">
-                <br>
 
                 <input th:field="*{id}" hidden>
                 <input th:field="*{estado}" hidden>
                 <input th:field="*{tipo}" hidden>
+                <input th:field="*{foto}" hidden>
                 <input th:field="*{beneficiario}" hidden>
                 <input th:field="*{donante}" hidden>
 
-                <button type="submit" class="btn btn-primary"
+                <button type="submit" class="btn btn-card"
                         th:text="${action == 'guardar'} ? 'cargar producto' : 'Guardar cambios'"></button>
-                    <!--<img id="img" th:src="${producto.foto != null} ? ${'/foto/__${producto.foto.id}__'} : ${'/uploads/foto-no-dosponible.png'}">-->
+
+
+
             </form>
 
         </main>
