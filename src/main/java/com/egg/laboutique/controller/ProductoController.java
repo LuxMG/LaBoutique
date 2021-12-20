@@ -95,7 +95,7 @@ public class ProductoController {
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
             producto.setFoto(fotoService.guardar(archivo));
             pService.crearProducto(producto);
-            
+
             if (usuario.getRol() == Rol.Donante) {
                 url = "/donante/donaciones/" + usuario.getId();
             }
@@ -156,9 +156,16 @@ public class ProductoController {
 
     //Deshabilitar desde admin o donante
     @GetMapping("/eliminar/{productoId}")
-    public RedirectView eliminar(@PathVariable("productoId") Long id) {
+    public RedirectView eliminar(@PathVariable("productoId") Long id, HttpSession session) {
         pService.eliminar(id);
-        return new RedirectView("/donante/donaciones/" + id); //Si fuera admin deberia retornar el listado
+        String url = "";
+        if (session.getAttribute("rol") == Rol.Donante) {
+            url = "/donante/donaciones/" + session.getAttribute("id");
+        }
+        if (session.getAttribute("rol") == Rol.Beneficiario) {
+            url = "/beneficiario/deseos/" + session.getAttribute("id");
+        }
+        return new RedirectView(url); //Si fuera admin deberia retornar el listado
     }
 
     @PostMapping("/comprar")
@@ -175,7 +182,7 @@ public class ProductoController {
         }
         return new RedirectView("/usuario/datos/" + producto.getDonante().getId());
     }
-    
+
     @PostMapping("/donar") //Asocia el donante al deseo y cambia el estado
     @PreAuthorize("hasRole('Donante')")
     public RedirectView donar(@RequestParam("producto") String productoId, HttpSession session) {
@@ -207,6 +214,15 @@ public class ProductoController {
         producto.setBeneficiario(null);
         pService.modificarProducto(producto);
         return new RedirectView("/beneficiario/tienda");
+    }
+
+    @GetMapping("/cancelar-deseo/{idProducto}")
+    public RedirectView cancelarDeseo(@PathVariable("idProducto") Long idProducto) {
+        Producto producto = pService.obtenerPorId(idProducto);
+        producto.setEstado(Estado.Disponible);
+        producto.setDonante(null);
+        pService.modificarProducto(producto);
+        return new RedirectView("/beneficiario/deseos/" + producto.getBeneficiario().getId());
     }
     //Busquedas
     //filtros por categoria
