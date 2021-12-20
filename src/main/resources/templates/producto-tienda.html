@@ -29,8 +29,8 @@
                     <div class="row">
                         <div class="col">
 
-                                                      
-                            <img id="img_detalle" th:src="${'/foto/__${producto.foto.id}__'}" />
+                            <img id="img_detalle" th:if="${producto.foto != null}" th:src="${'/foto/__${producto.foto.id}__'}">
+                            <img id="img_detalle" th:if="${producto.foto == null}" src="/img/imagen_no_disponible.png">                          
                         </div>
 
                         <div class="col">
