@@ -37,18 +37,18 @@
                     
                             <input name="producto" th:value="${producto.id}" hidden />
 
-                            <label for="">Descripción:</label>
+                            <label id="texto-detalle" for="" >Descripción:</label>
                             <p th:text="${producto.descripcion}"></p>
 
-                            <label for="">Estado:</label>
+                            <label for="" id="texto-detalle">Estado:</label>
                             <p th:text="${producto.estado}"></p>
       
                           <!--  <button type="submit" class="btn btn-primary" th:if="${#strings.equals(producto.estado, 'Disponible')}">Comprar</button> -->                
-                            <label for="">Barrio/zona:</label>
+                            <label for="" id="texto-detalle">Barrio/zona:</label>
                             <p th:text="${#strings.equals(session.rol,'Donante')} ? ${producto.beneficiario.barrio} : ${producto.donante.barrio}" ></p>
                             
                             <button type="submit" class="btn btn-card" th:if="${#strings.equals(producto.estado, 'Disponible')}"
-                                 th:text="${#strings.equals(session.rol,'Donante')} ? 'Cumplir Deseo' : 'Comprar'"> Hola </button>
+                                 th:text="${#strings.equals(session.rol,'Donante')} ? 'Cumplir Deseo' : 'Comprar'"></button>
                         </div>
                     </div>
                 </div>
