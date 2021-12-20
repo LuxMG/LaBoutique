@@ -45,29 +45,25 @@
                                 <td class="col-md-2" th:text="${producto.estado}"></td>
                                 <td class="col-md-3" >
                                     <div class="d-flex justify-content-around">
-                                        <a class="btn btn-warning btn-sm" th:href="@{/producto/cancelar-compra/__${producto.id}__}">Cancelar</a>
-                                        <a class="btn btn-warning btn-sm" th:if="${#strings.equals(producto.estado, 'Tomado')}" th:href="@{/usuario/datos/__${producto.donante.id}__}">Ver datos</a>
-
 
                                         <button type="button" class="btn btn-card" th:disabled="${!#strings.equals(producto.estado, 'Disponible')}"> 
                                             <a class="btn btn-card" th:href="@{/producto/editar/__${producto.id}__}">Modificar</a>
                                         </button>
-                                        <button type="button" class="btn btn-card" th:if="${!#strings.equals(producto.estado, 'Disponible')}" th:disabled="${!#strings.equals(producto.estado, 'Disponible')}"> 
+                                        <button type="button" class="btn btn-card" th:disabled="${!#strings.equals(producto.estado, 'Tomado')}"> 
+                                            <a class="btn btn-card" th:href="@{/producto/cancelar-deseo/__${producto.id}__}">Cancelar</a>
+                                            <!-- <a class="btn btn-card" th:if="${#strings.equals(producto.estado, 'Tomado')}" th:href="@{/usuario/datos/__${producto.donante.id}__}">Ver datos</a>-->
+                                        </button>
+
+
+                                        <button type="button" class="btn btn-card"  th:disabled="${!#strings.equals(producto.estado, 'Disponible')}"> 
                                             <a class="btn btn-card" th:href="@{/producto/eliminar/__${producto.id}__}">Eliminar</a>
                                         </button>
-                                        
-                                        <button type="button" class="btn btn-card" th:disabled="${#strings.equals(producto.estado, 'Disponible')} or ${#strings.equals(producto.estado, 'Tomado')}"> 
-                                            <a class="btn btn-warning btn-sm" th:href="@{/producto/cancelar-deseo/__${producto.id}__}">Cancelar</a>
-                                        </button>
                                         <button type="button" class="btn btn-card" th:if="${!#strings.equals(producto.estado, 'Disponible')}"> 
-                                            <a class="btn btn-card" th:href="@{/usuario/datos/__${producto.beneficiario.id}__}">Ver Datos</a>
+                                            <a class="btn btn-card" th:href="@{/usuario/datos/__${producto.donante.id}__}">Ver Datos</a>
                                         </button> 
                                         <button type="button" class="btn btn-card" th:if="${#strings.equals(producto.estado, 'Disponible')}" th:disabled="${#strings.equals(producto.estado, 'Disponible')}"> 
                                             <a class="btn btn-card">Ver Datos</a>
                                         </button>
-
-
-
 
 
                                     </div>
