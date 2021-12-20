@@ -52,6 +52,7 @@
 
                 <button type="submit" class="btn btn-primary"
                         th:text="${action == 'guardar'} ? 'cargar producto' : 'Guardar cambios'"></button>
+                    <!--<img id="img" th:src="${producto.foto != null} ? ${'/foto/__${producto.foto.id}__'} : ${'/uploads/foto-no-dosponible.png'}">-->
             </form>
 
         </main>
@@ -60,5 +61,5 @@
         <!-- Link al JS de Bootstrap-->
         <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
     </body>
-    
+
 </html>
