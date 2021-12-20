@@ -1,61 +1,71 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
-    <meta content="La Boutique " name="description"/>
-    <meta content="La Boutique" name="author"/>
-    <title>La Boutique</title>
-    <!-- Link al CSS de BOOTSTRAP -->
-    <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}"/>
-    <!-- Link a nuestro CSS -->
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
-    <!--Favicon-->
-    <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">  
-</head>
-<body>
-  <!-- HEADER-->
-  <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
-  <!-- MAIN-->
-  <main id="donaciones">
-    <div class="container mt-5 main">
-        <div class="alert alert-success" th:if="${exito}" th:text="${exito}"></div>
-        <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
-        <h1>Mis Donaciones</h1>
-        <hr class="mb-4"/>
-        <div th:if="${productos.isEmpty()}">
-            <h5>Todavía no hay productos cargados.
-        </div>
-        <div class="table-responsive" th:unless="${productos.isEmpty()}">
-            <table class="table table-hover table-bordered">
-                <thead class="table-dark text-center">
-                <tr>
-                    <th class="col-md-4">Pedido</th>
-                    <th class="col-md-2">Estado</th>
-                    <th class="col-md-2">Acciones</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="producto : ${productos}">
-                    <td class="col-md-4" th:text="${producto.titulo}"></td>
-                    <td class="col-md-2" th:text="${producto.estado}"></td>
-                    <td class="col-md-4" >
-                            <a class="btn btn-warning btn-sm" th:href="@{/producto/editar/__${producto.id}__}">Modificar</a>
-                            <a class="btn btn-warning btn-sm" th:href="@{/producto/eliminar/__${producto.id}__}">Eliminar</a>
-                            <a class="btn btn-warning btn-sm" th:href="@{/producto/entregado/__${producto.id}__}">Marcar como entregado</a>
-                            <a class="btn btn-warning btn-sm" th:if="${#strings.equals(producto.estado, 'Reservado')}" th:href="@{/usuario/datos/__${producto.beneficiario.id}__}">Ver datos</a>
-                    </td>
-                </tbody>
-            </table>
-              <a class="btn btn-warning btn-sm" th:href="@{/producto/crear}">Ingresar nueva donacion</a>
-        </div>
-    </div>
-  </main>
-  <!--FOOTER-->
-  <footer th:replace="fragments/footer :: footer"></footer>
-<!-- Link al JS de Bootstrap-->
-<script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
-</body>
-</html>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+        <meta content="La Boutique " name="description"/>
+        <meta content="La Boutique" name="author"/>
+        <title>La Boutique</title>
+        <!-- Link al CSS de BOOTSTRAP -->
+        <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}"/>
+        <!-- Link a nuestro CSS -->
+        <link rel="stylesheet" th:href="@{/css/style.css}"/>
+        <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">
+    </head>
+    <body>
+        <!-- HEADER-->
+        <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
+        <!-- MAIN-->
+        <main>
 
+            <div class="container mt-5 main">
+                <div class="alert alert-success" th:if="${exito}" th:text="${exito}"></div>
+                <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+                <h1>Mis Donaciones</h1>
+                <hr class="mb-4"/>
+                <div th:if="${productos.isEmpty()}">
+                    <h5>Todavía no hay productos cargados.
+                </div>
+                <div class="table-responsive" th:unless="${productos.isEmpty()}">
+                    <table class="table table-hover table-bordered">
+                        <thead class="table-dark text-center">
+                            <tr>
+                                <th class="col-md-4">Pedido</th>
+                                <th class="col-md-2">Estado</th>
+                                <th class="col-md-2">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="producto : ${productos}">
+                                <td class="col-md-4" th:text="${producto.titulo}"></td>
+                                <td class="col-md-2" th:text="${producto.estado}"></td>
+                                <td class="col-md-6" >
+                                    <button type="button" class="btn btn-card" th:disabled="${#strings.equals(producto.estado, 'Reservado')}"> 
+                                        <a class="btn btn-card" th:href="@{/producto/editar/__${producto.id}__}">Modificar</a>
+                                    </button>
+                                    <button type="button" class="btn btn-card"> 
+                                        <a class="btn btn-card" th:href="@{/producto/eliminar/__${producto.id}__}">Eliminar</a>
+                                    </button>
+                                    <button type="button" class="btn btn-card" th:disabled="${#strings.equals(producto.estado, 'Disponible')}"> 
+                                        <a class="btn btn-card" th:href="@{/producto/entregado/__${producto.id}__}">Marcar como entregado</a>
+                                    </button>
+                                    <button type="button" class="btn btn-card" th:if="${#strings.equals(producto.estado, 'Reservado')}"> 
+                                        <a class="btn btn-card" th:href="@{/usuario/datos/__${producto.beneficiario.id}__}">Ver Datos</a>
+                                    </button> 
+                                    <button type="button" class="btn btn-card" th:if="${#strings.equals(producto.estado, 'Disponible')}" th:disabled="${#strings.equals(producto.estado, 'Disponible')}"> 
+                                       <a class="btn btn-card">Ver Datos</a>
+                                    </button>
+                                </td>
+                        </tbody>
+                    </table>
+                    <a class="btn btn-card" th:href="@{/producto/crear}">Ingresar nueva donacion</a>
+                </div>
+            </div>
+        </main>
+        <!--FOOTER-->
+        <footer th:replace="fragments/footer :: footer"></footer>
+        <!-- Link al JS de Bootstrap-->
+        <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
+    </body>
+</html>
