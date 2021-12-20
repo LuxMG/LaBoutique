@@ -233,6 +233,10 @@ img#img {
 /********************
    NUEVO PRODUCTO
 ********************/
+.titulos-form label{
+    font-weight: bold;
+    font-size: large;
+}
 .nuevo-producto form {
     max-width: 600px;
     text-align: center;
