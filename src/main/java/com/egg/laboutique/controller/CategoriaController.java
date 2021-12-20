@@ -22,7 +22,7 @@ public class CategoriaController {
     private CategoriaService categoriaService;
     
     // ----------------------------- redireccionar -----------------------------
-    @GetMapping("/")
+    @GetMapping()
     public RedirectView inicio() {
         return new RedirectView("/categorias/listado");
     }

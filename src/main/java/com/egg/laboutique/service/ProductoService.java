@@ -151,7 +151,6 @@ public class ProductoService {
 
     @Transactional
     public void modificarProducto(Producto producto) {
-        System.out.println("-------" + producto.getTitulo() + "-------");
 
         repo.modificar(
                 producto.getId(),
@@ -167,4 +166,20 @@ public class ProductoService {
 
     }
 
+    @Transactional
+    public void modificarProducto(MultipartFile archivo, Producto producto) throws ServiceException {
+
+        Foto foto = fotoService.actualizar(producto.getFoto().getId(), archivo);
+        repo.modificar(
+                producto.getId(),
+                producto.getTitulo(),
+                producto.getDescripcion(),
+                producto.getTipo(),
+                producto.getEstado(),
+                producto.getCategoria(),
+                foto,
+                producto.getDonante(),
+                producto.getBeneficiario()
+        );
+    }
 }

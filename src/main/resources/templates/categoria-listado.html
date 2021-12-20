@@ -31,7 +31,7 @@
         <main id="categorialistado" class="container">
             <section class="title">
                 <h1 id="list">Listado de categorias</h1>
-                <a th:href="@{/categoria/crear}">Crear una categoria.</a>
+                <a th:href="@{/categorias/crear}">Crear una categoria.</a>
             </section>
             <div th:if="${categorias.isEmpty()}">
                 <h5>Todavía no hay categorias cargadas.</h5>
@@ -46,12 +46,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr th:each="categoria : ${categorias}">
                             <td th:text="${categoria.id}"></td>
                             <td th:text="${categoria.nombre}"></td>
                             <td>
-                                <a th:href="@{/categoria/editar/__${categoria.id}__}" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a> |
-                                <a th:href="@{/categoria/eliminar/__${categoria.id}__}" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                                <a th:href="@{/categorias/editar/__${categoria.id}__}" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a> |
+                                <a th:href="@{/categorias/eliminar/__${categoria.id}__}" class="btn btn-danger"><i class="bi bi-trash"></i></a>
                             </td>
                         </tr>
                     </tbody>
