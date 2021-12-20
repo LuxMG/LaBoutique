@@ -47,7 +47,7 @@
                                     <button type="button" class="btn btn-card" th:disabled="${!#strings.equals(producto.estado, 'Disponible')}"> 
                                         <a class="btn btn-card" th:href="@{/producto/eliminar/__${producto.id}__}">Eliminar</a>
                                     </button>
-                                    <button type="button" class="btn btn-card" th:disabled="${#strings.equals(producto.estado, 'Disponible')}"> 
+                                    <button type="button" class="btn btn-card" th:disabled="${#strings.equals(producto.estado, 'Disponible')} or ${#strings.equals(producto.estado, 'Entregado')}"> 
                                         <a class="btn btn-card" th:href="@{/producto/entregado/__${producto.id}__}">Marcar como entregado</a>
                                     </button>
                                     <button type="button" class="btn btn-card" th:if="${!#strings.equals(producto.estado, 'Disponible')}"> 
