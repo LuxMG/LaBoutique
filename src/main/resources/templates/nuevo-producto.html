@@ -33,20 +33,26 @@
                         <option aria-label="seleccionar una categoria" value="0">Seleccionar una categoria</option>
                         <option th:each="categoria : ${categorias}" th:text="${categoria.nombre}" th:value="${categoria.id}"></option>
                     </select><br>
-
+                    <div th:if="${action == 'modificar'}">
+                        <img id="img_detalle" th:if="${producto.foto != null}" th:src="${'/foto/__${producto.foto.id}__'}">
+                        <img id="img_detalle" th:if="${producto.foto == null}" src="/img/imagen_no_disponible.png">
+                    </div>
                     <label for="">Subir una imagen</label>
-                    <input type="file" placeholder="Foto" name="archivo"><br>
+                    <input type="file" placeholder="Foto" name="archivo" th:value="${archivo}"><br>
                 </div>
 
                 <input th:field="*{id}" hidden>
                 <input th:field="*{estado}" hidden>
                 <input th:field="*{tipo}" hidden>
+                <input th:field="*{foto}" hidden>
                 <input th:field="*{beneficiario}" hidden>
                 <input th:field="*{donante}" hidden>
 
                 <button type="submit" class="btn btn-card"
                         th:text="${action == 'guardar'} ? 'cargar producto' : 'Guardar cambios'"></button>
-                <!--<img id="img" th:src="${producto.foto != null} ? ${'/foto/__${producto.foto.id}__'} : ${'/uploads/foto-no-dosponible.png'}">-->
+
+
+
             </form>
 
         </main>
