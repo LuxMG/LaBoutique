@@ -21,6 +21,7 @@
         <!-- MAIN-->
         <main id="categoria-formularioa" class="container">
             <form method="post" th:action="@{/categorias/__${action}__}" th:object="${categoria}">
+                <input th:field="*{id}" hidden>
                 <div class="form-group">
                     <label for="">Nombre</label>
                     <input type="text" placeholder="Nombre de la categoria" th:field="*{nombre}">
