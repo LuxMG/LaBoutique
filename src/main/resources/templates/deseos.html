@@ -11,14 +11,16 @@
     <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}"/>
     <!-- Link a nuestro CSS -->
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <!--Favicon-->
     <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">
+        
 </head>
 <body>
   <!-- HEADER-->
   <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
   <!-- MAIN-->
-  <main>
-      
+  <main id="deseos" class="container">
+
       <div class="container mt-5 main">
     <div class="alert alert-success" th:if="${exito}" th:text="${exito}"></div>
     <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
@@ -53,9 +55,7 @@
         <a class="btn btn-card" th:href="@{/producto/crear}">Ingresar deseo</a>
     </div>
 </div>
-     
-  
-      
+
   </main>
   <!--FOOTER-->
   <footer th:replace="fragments/footer :: footer"></footer>
