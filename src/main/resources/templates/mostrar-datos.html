@@ -12,7 +12,7 @@
         <!-- Link a nuestro CSS -->
         <link rel="stylesheet" th:href="@{/css/style.css}"/>
         <!--Favicon-->
-    <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">
+        <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">
 
     </head>
     <body>
@@ -20,7 +20,7 @@
         <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
         <!-- MAIN-->
         <main>
-            <h1 th:text="${#strings.equals(session.rol,'Donante')} ? '¡Gracias por cumplir este deseo!' : '¡Felicitaciones, tu compra ha sido efectuada!'" id ="detalle-titulo"></h1>
+            <h1 th:text="${#strings.equals(session.rol,'Donante')} ? '¡Gracias por cumplir este deseo!' : '¡Felicitaciones, tu compra ha sido efectuada!'" id="texto-datos"></h1>
             <h2 id="texto-datos">Contactate con el anunciante para coordinar la entrega :)</h2>
             <div class="alert alert-danger col-xl-6" th:if="${error}" th:text="${error}"></div>
             <form method="post" th:object="${usuario}">
@@ -37,9 +37,9 @@
                         <p th:text="*{telefono}"></p>
                     </div>
                 </div>
-                <a class="link btn btn-card " th:href="${url}" target="_blank" id="bmd">Enviar Whatsapp</a>
+                <a class="link btn btn-card " th:href="${url}" target="_blank" id="bmd" >Enviar Whatsapp</a>
             </form>
-            <br><br><br><br><br>
+            
         </main>
         <!--FOOTER-->
         <footer th:replace="fragments/footer :: footer"></footer>

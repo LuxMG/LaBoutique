@@ -1,4 +1,6 @@
-/* RESET */
+/*************
+   RESET 
+***********/
 body {
     margin: 0px;
     padding: 0px;
@@ -6,21 +8,21 @@ body {
     font-family: var(--raleway);
 }
 
-/** Google Fonts Raleway: font-family: 'Raleway', sans-serif; **/
+/**** Google Fonts Raleway: font-family: 'Raleway', sans-serif; ****/
 @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
-/**Google Fonts Dancing-Script**/
+/**** Google Fonts Dancing-Script ****/
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&display=swap");
 
-/*para setear variables*/
+/**** para setear variables *****/
 :root {
-    --color-primary: #3F0760;
-    --color-secondary: #FFF212;
-    --color-light-primary: #64477D;
-    --color-dark-primary: #8F07C3;
-    --text-white: #fff;
-    --raleway: 'Raleway', sans-serif;
-    --dancing: 'Dancing Script', cursive;
+  --color-primary: #3F0760;
+  --color-secondary: #FFF176;
+  --color-light-primary: #64477d42;
+  --color-dark-primary: #8F07C3;
+  --text-white: #fff;
+  --raleway: 'Raleway', sans-serif;
+  --dancing: 'Dancing Script', cursive;
 }
 
 h1,
@@ -33,7 +35,9 @@ h3 {
     margin-bottom: 0.75rem;
 }
 
-/****HEADER*****/
+/***********
+    HEADER
+************/
 header.header-principal {
     background-color: var(--color-primary);
 }
@@ -57,7 +61,9 @@ header.header-principal .navbar-toggler {
     } 
 }
 
-/****HEADER-INDEX*****/
+/***************
+   HEADER-INDEX
+****************/
 header.header-index {
     padding: 1rem;
     background-color: var(--color-primary);
@@ -80,14 +86,16 @@ header .navbar-brand img {
 a.btn.btn-login {
     background-color: var(--color-secondary);
     font-size: 12px;
-    font-weight: 800;
+    font-weight: 600;
     position: absolute;
     right: 15px;
     top: 15px;
     width: 18%;
 }
 
-/****INDEX*****/
+/*************
+   INDEX
+*************/
 div#carouselExampleCaptions {
     height: 280px;
     margin-bottom: 2rem;
@@ -97,30 +105,31 @@ div#carouselExampleCaptions {
     height: 280px;
 }
 
-/*CARD TIENDA */
+/**** CARD TIENDA ****/
 .card-tienda {
     box-shadow: -7px 7px rgb(0 0 0 / 15%);
 }
 
 /** BOTON PERSONALIZADO AMARILLO **/
 .btn-card {
-    background-color: var(--color-secondary);
+  background-color: var(--color-secondary);
+  transition: all 1s;
 }
 
 .btn-card:hover {
-    background-color: var(--color-primary);
-    color: var(--color-secondary);
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+  box-shadow: -3px 3px var(--color-secondary);
 }
 
-#que-es,
-#preguntas,
-#tienda,
-.nuevo-producto {
+main {
     text-align: center;
     margin-bottom: 8rem!important;
 }
 
-/****FOOTER*****/
+/***********
+   FOOTER
+************/
 footer {
     background-color: var(--color-primary);
 }
@@ -137,7 +146,10 @@ footer {
         font-size: 10px;
     }
 }
-/****LOGIN****/
+
+/**************
+    LOGIN
+**************/
 .index-login p {
     color: var(--color-primary);
     font-weight: 600;
@@ -151,11 +163,18 @@ footer {
 .formulario label,
 .formulario input {
     display: block;
-    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
     width: 70%;
     margin-left: 15%;
     margin-right: 15%;
     text-align: center;
+}
+
+.formulario input {
+    background-color: var(--color-light-primary)!important;
+    border-color: var(--color-light-primary)!important;
+    color: var(--color-light)!important;
+    padding-left: 1rem;
 }
 
 .formulario button {
@@ -181,16 +200,15 @@ footer {
     }
 }
 
-
 .formulario button.btn.btn-card  {
     display: block;
     width: 38%;
-    margin-left: 31%;
-    margin-right: 31%;
+    margin: 3% 31%;
 }
 
-/******TIENDA******/
-
+/***********
+  TIENDA
+************/
 #tienda {
     min-height: 100vh;
 }
@@ -212,8 +230,9 @@ img#img {
     font-weight: 700;
 }
 
-/*****NUEVO PRODUCTO****/
-
+/********************
+   NUEVO PRODUCTO
+********************/
 .nuevo-producto form {
     max-width: 600px;
     text-align: center;
@@ -267,25 +286,23 @@ img#img {
         margin-bottom: 0;
     }
 }
-/* Clearfix */
+/*** Clearfix ***/
 .cf:before,
 .cf:after {
-    content: " ";
-    /* 1 */
-    display: table;
-    /* 2 */
+  content: " "; /* 1 */
+  display: table; /* 2 */
 }
 
 .cf:after {
     clear: both; 
 }
 
-/****PRODUCTO-TIENDA******/
-
-#detalle-titulo,
-#texto-datos{
-    font-family: var(--raleway);
-    text-align:center;
+/******************** 
+  PRODUCTO-TIENDA
+*******************/
+#titulo-producto{
+  font-family: var(--raleway);
+  text-align: center;
 }
 
 label#texto-detalle{
@@ -314,6 +331,10 @@ label.col {
 
 /**Mastrar-Datos**/
 
+#texto-datos{
+   font-family: var(--raleway);
+   text-align: center;
+}
 #mostrar-d{
     font-size: large;
     background:#f7f5f5; 
@@ -323,7 +344,29 @@ label.col {
 
 #bmd{
     position: relative;
-    left: 900px;
-    margin: 15px;
+    left: 100px;
+    margin: 20px;
+}
+
+/*************
+  REGISTRO
+***************/
+#registrate label,
+#registrate input {
+    display: block;
+    width: 70%;
+    margin: 2% 15%;
+}
+
+#registrate input {
+    background-color: var(--color-light-primary)!important;
+    color: var(--color-light)!important;
+    border-color: var(--color-light-primary)!important;
+    padding-left: 1rem;
+    text-align: center;
+}
+
+#registrate button {
+    margin-top: 1rem;
 }
 
