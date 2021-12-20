@@ -26,11 +26,11 @@
         <!-- HEADER-->
         <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
         <!--MAIN-->
-        <main>
+        <main id="listadousuario" class="containerS">
             <h1>LISTA DE USUARIOS</h1>
-            <div th:each="usuario : ${usuarios}">
+            <section th:each="usuario : ${usuarios}">
                 <p th:text="|${usuario.nombre} ${usuario.email}|"></p>
-            </div>  
+            </section>  
         </main>
          <!--FOOTER-->
         <footer th:replace="fragments/footer :: footer"></footer>

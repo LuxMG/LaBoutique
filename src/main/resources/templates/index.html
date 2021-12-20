@@ -18,7 +18,7 @@
   <!-- HEADER-->
   <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
   <!-- MAIN-->
-  <main>
+  <main id="index">
     <!--SECCION SOBRE NOSOTROS EN SLIDER-->
     <section id="nosotros" class="container">
       <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">

@@ -15,12 +15,11 @@
         <!--Favicon-->
         <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">
     </head>
-
     <body>
         <!-- HEADER-->
         <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
         <!-- MAIN-->
-        <main>
+        <main >
             <form method="post" th:action="@{/producto/__${action}__}" enctype="multipart/form-data" th:object="${producto}">
                 <div class="form-group">
                     <label for="">Título</label>
@@ -53,6 +52,7 @@
 
                 <button type="submit" class="btn btn-primary"
                         th:text="${action == 'guardar'} ? 'cargar producto' : 'Guardar cambios'"></button>
+                    <!--<img id="img" th:src="${producto.foto != null} ? ${'/foto/__${producto.foto.id}__'} : ${'/uploads/foto-no-dosponible.png'}">-->
             </form>
 
         </main>
@@ -61,5 +61,5 @@
         <!-- Link al JS de Bootstrap-->
         <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
     </body>
-    
+
 </html>

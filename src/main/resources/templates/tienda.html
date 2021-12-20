@@ -44,7 +44,8 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="card-title text-center">
-                                <img id="img" th:src="${producto.foto != null} ? ${'/foto/__${producto.foto.id}__'} : ${'/uploads/foto-no-dosponible.png'}"><!--Corregir url para foto no disponible-->
+                                <img id="img" th:if="${producto.foto != null}" th:src="${'/foto/__${producto.foto.id}__'}">
+                                <img id="img" th:if="${producto.foto == null}" src="/img/imagen_no_disponible.png">
                             </div>
                             <p class="card-text">
                                 <label id="articulo"><span th:text="${producto.titulo}"></span></label><br>

@@ -3,6 +3,8 @@ package com.egg.laboutique.controller;
 import com.egg.laboutique.entity.Foto;
 import com.egg.laboutique.exception.ServiceException;
 import com.egg.laboutique.service.FotoService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,23 +25,29 @@ public class FotoController {
 
     @Autowired
     private FotoService fotoService;
-    
+
     @PostMapping
-    public Foto guardar(@RequestParam("file") MultipartFile archivo) throws ServiceException{
+    public Foto guardar(@RequestParam("file") MultipartFile archivo) throws ServiceException {
         return fotoService.guardar(archivo);
     }
-    
+
     @PutMapping("/{id}")
-    public Foto actualizar(@PathVariable("id") Long id,@RequestParam("file") MultipartFile archivo) throws ServiceException{
-        return fotoService.actualizar(id,archivo);
+    public Foto actualizar(@PathVariable("id") Long id, @RequestParam("file") MultipartFile archivo) throws ServiceException {
+        return fotoService.actualizar(id, archivo);
     }
-    
+
     @GetMapping("/{id}")
-    public ResponseEntity<byte[]> obtenerPorId(@PathVariable("id") Long id){
-        byte[] foto = fotoService.obtenerPorId(id).getContenido();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
-        
-        return new ResponseEntity<>(foto,headers,HttpStatus.OK);
+    public ResponseEntity<byte[]> obtenerPorId(@PathVariable("id") Long id) {
+        try {
+            byte[] foto = fotoService.obtenerPorId(id).getContenido();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG);
+
+            return new ResponseEntity<>(foto, headers, HttpStatus.OK);
+        } catch (Exception ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 }
