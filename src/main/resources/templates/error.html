@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+        <meta content="La Boutique " name="description"/>
+        <meta content="La Boutique" name="author"/>
+        <title>La Boutique</title>
+        <!-- Link al CSS de BOOTSTRAP -->
+        <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}"/>
+        <!-- Link a nuestro CSS -->
+        <link rel="stylesheet" th:href="@{/css/style.css}"/>
+        <!--Favicon-->
+        <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">
+    </head>
+
+    <body>
+        <header th:fragment="header-index" class="header-index" id="header">
+            <nav class="container">
+                <div class="row">
+                    <a class="navbar-brand" th:href="@{/}"> 
+                        <img th:src="@{/img/logo_completo.png}" width="45"/>
+                    </a>
+                </div>
+            </nav> 
+        </header>
+        <h1 th:text="${codigo}"></h1>
+        <h2 th:text="${mensaje == null ? 'Intenta nuevamente' : mensaje}"></h2>
+        <a href="/" class="btn btn-primary">Volver al inicio</a>
+        <!--FOOTER-->
+        <footer th:replace="fragments/footer :: footer"></footer>
+        <!-- Link al JS de Bootstrap-->
+        <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
+    </body>
+
+</html>
