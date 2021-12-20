@@ -156,9 +156,9 @@ public class ProductoController {
 
     //Deshabilitar desde admin o donante
     @GetMapping("/eliminar/{productoId}")
-    public RedirectView eliminar(@PathVariable("productoId") Long id) {
+    public RedirectView eliminar(@PathVariable("productoId") Long id, HttpSession session) {
         pService.eliminar(id);
-        return new RedirectView("/donante/donaciones/" + id); //Si fuera admin deberia retornar el listado
+        return new RedirectView("/donante/donaciones/" + session.getAttribute("id")); //Si fuera admin deberia retornar el listado
     }
 
     @PostMapping("/comprar")

@@ -32,15 +32,15 @@
                         <thead class="table-dark text-center">
                             <tr>
                                 <th class="col-md-4">Pedido</th>
-                                <th class="col-md-2">Estado</th>
-                                <th class="col-md-2">Acciones</th>
+                                <th class="col-md-1">Estado</th>
+                                <th class="col-md-8">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="producto : ${productos}">
                                 <td class="col-md-4" th:text="${producto.titulo}"></td>
-                                <td class="col-md-2" th:text="${producto.estado}"></td>
-                                <td class="col-md-6" >
+                                <td class="col-md-1" th:text="${producto.estado}"></td>
+                                <td class="col-md-8" >
                                     <button type="button" class="btn btn-card" th:disabled="${!#strings.equals(producto.estado, 'Disponible')}"> <!--"${#strings.equals(producto.estado, 'Reservado')}"-->
                                         <a class="btn btn-card" th:href="@{/producto/editar/__${producto.id}__}">Modificar</a>
                                     </button>
