@@ -1,5 +1,3 @@
-/*
- */
 package com.egg.laboutique.service;
 
 import com.egg.laboutique.entity.Categoria;
@@ -20,10 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- *
- * @author Mailen
- */
 @Service
 public class ProductoService {
 
@@ -34,8 +28,8 @@ public class ProductoService {
     private FotoService fotoService;
 
     @Transactional
-    public void crearProducto(String titulo, String descripcion, Tipo tipo, Estado estado, Categoria categoria, Foto foto, Usuario donante, Usuario beneficiario, Boolean alta, LocalDateTime modificacion) {
-        //validarProducto(producto);
+    public void crearProducto(String titulo, String descripcion, Tipo tipo, Estado estado, Categoria categoria, Foto foto, Usuario donante, Usuario beneficiario, Boolean alta, LocalDateTime modificacion) throws Exception {
+
         Producto producto = new Producto();
         producto.setTitulo(titulo);
         producto.setDescripcion(descripcion);
@@ -47,12 +41,14 @@ public class ProductoService {
         producto.setDonante(donante);
         producto.setAlta(true);
         producto.setModificacion(modificacion);
+        validarProducto(producto);
         repo.save(producto);
     }
 
     @Transactional
-    public void crearProducto(Producto producto) {
-        //validarProducto(producto);
+    public void crearProducto(Producto producto) throws ServiceException {
+
+        validarProducto(producto);
         producto.setAlta(true);
         repo.save(producto);
     }
@@ -64,7 +60,8 @@ public class ProductoService {
     }
 
     @Transactional
-    public void modificarProducto(Long id, String titulo, String descripcion, Tipo tipo, Estado estado, Categoria categoria, Foto foto, Usuario donante, Usuario beneficiario, LocalDateTime modificacion) {
+    public void modificarProducto(Long id, String titulo, String descripcion, Tipo tipo, Estado estado, Categoria categoria, Foto foto, Usuario donante, Usuario beneficiario, LocalDateTime modificacion) throws Exception {
+
         repo.modificar(id, titulo, descripcion, tipo, estado, categoria, foto, donante, beneficiario);
     }
 
@@ -146,12 +143,12 @@ public class ProductoService {
         } catch (ServiceException ex) {
             Logger.getLogger(ProductoService.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     @Transactional
-    public void modificarProducto(Producto producto) {
+    public void modificarProducto(Producto producto) throws Exception {
 
+        validarProducto(producto);
         repo.modificar(
                 producto.getId(),
                 producto.getTitulo(),
@@ -163,13 +160,18 @@ public class ProductoService {
                 producto.getDonante(),
                 producto.getBeneficiario()
         );
-
     }
 
     @Transactional
     public void modificarProducto(MultipartFile archivo, Producto producto) throws ServiceException {
 
-        Foto foto = fotoService.actualizar(producto.getFoto().getId(), archivo);
+        validarProducto(producto);
+        Foto foto;
+        if (producto.getFoto() == null) {
+           foto = fotoService.guardar(archivo);
+        } else {
+           foto = fotoService.actualizar(producto.getFoto().getId(), archivo);
+        }
         repo.modificar(
                 producto.getId(),
                 producto.getTitulo(),
@@ -181,5 +183,20 @@ public class ProductoService {
                 producto.getDonante(),
                 producto.getBeneficiario()
         );
+    }
+
+    private void validarProducto(Producto producto) throws ServiceException {
+
+        if (producto.getTitulo().equals("") || producto.getTitulo() == null) {
+            throw new ServiceException("El título se encuentra vacío.");
+        }
+
+        if (producto.getDescripcion().equals("") || producto.getDescripcion() == null) {
+            throw new ServiceException("La descripción se encuentra vacía.");
+        }
+
+        if (producto.getCategoria() == null) {
+            throw new ServiceException("La categoría se encuentra vacía.");
+        }
     }
 }

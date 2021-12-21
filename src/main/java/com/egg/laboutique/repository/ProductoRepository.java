@@ -23,7 +23,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
     
-    //Long id, String titulo, String descripcion, Tipo tipo, Estado estado, Categoria categoria, Foto foto, Usuario donante, Usuario beneficiario, Boolean alta, LocalDateTime creacion, LocalDateTime modificacion
    
     //Para crear y modificar
     @Modifying

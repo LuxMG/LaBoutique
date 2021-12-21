@@ -14,8 +14,10 @@ import com.egg.laboutique.service.ProductoService;
 import com.egg.laboutique.service.UsuarioService;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
@@ -58,11 +62,11 @@ public class ProductoController {
 
     //Crear un producto
     @GetMapping("/crear")
-    public ModelAndView crearProducto(HttpSession session) {
+    public ModelAndView crearProducto(HttpSession session, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("nuevo-producto");
-
+        mav.addObject("action", "guardar");
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
         try {
-            //refactorizar nombre de html a formulario-producto
             Producto producto = new Producto();
             producto.setEstado(Estado.Disponible);
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
@@ -80,7 +84,16 @@ public class ProductoController {
             }
             mav.addObject("producto", producto);
             mav.addObject("categorias", catService.buscarTodas());
-            mav.addObject("action", "guardar");
+
+            if (flashMap != null) {
+
+                mav.addObject("error", flashMap.get("error"));
+                mav.addObject("exito", flashMap.get("exito"));
+                mav.addObject("titulo", flashMap.get("titulo"));
+                mav.addObject("descripcion", flashMap.get("descripcion"));
+                mav.addObject("categoria", flashMap.get("categoria"));
+
+            }
 
         } catch (Exception ex) {
             Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,38 +102,61 @@ public class ProductoController {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(@RequestParam MultipartFile archivo, @ModelAttribute Producto producto, HttpSession session) {
-        String url = "";
+    public RedirectView guardar(
+            @RequestParam MultipartFile archivo, 
+            @ModelAttribute Producto producto, 
+            HttpSession session, 
+            RedirectAttributes attributtes) {
+
+        RedirectView redirectView = new RedirectView("/");
+
         try {
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
-            if(!archivo.isEmpty()){
+            if (!archivo.isEmpty()) {
                 producto.setFoto(fotoService.guardar(archivo));
-            }else{
+            } else {
                 producto.setFoto(null);
             }
             pService.crearProducto(producto);
-
             if (usuario.getRol() == Rol.Donante) {
-                url = "/donante/donaciones/" + usuario.getId();
+                redirectView.setUrl("/donante/donaciones/" + usuario.getId());
             }
             if (usuario.getRol() == Rol.Beneficiario) {
-                url = "/beneficiario/deseos/" + usuario.getId();
+                redirectView.setUrl("/beneficiario/deseos/" + usuario.getId());
             }
-        } catch (ServiceException ex) {
-            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+            attributtes.addFlashAttribute("error", ex.getMessage());
+            attributtes.addFlashAttribute("titulo", producto.getTitulo());
+            attributtes.addFlashAttribute("descripcion", producto.getDescripcion());
+            attributtes.addFlashAttribute("categoria", producto.getCategoria());
+            
+            redirectView.setUrl("/producto/crear");
         }
-        return new RedirectView(url);
+        return redirectView;
     }
 
     @GetMapping("/editar/{id}")
-    public ModelAndView editarProducto(@PathVariable Long id) {
-        ModelAndView mav = new ModelAndView("nuevo-producto");//refactorizar nombre de html a formulario-producto
-        mav.addObject("producto", pService.obtenerPorId(id));
-        mav.addObject("title", "Editar Producto");
-        mav.addObject("categorias", catService.buscarTodas());
-        mav.addObject("action", "modificar");
+    public ModelAndView editarProducto(@PathVariable Long id, HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("nuevo-producto");
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+        try {
+            Producto producto = pService.obtenerPorId(id);
+            mav.addObject("producto", producto);
+            mav.addObject("title", "Editar Producto");
+            mav.addObject("categorias", catService.buscarTodas());
+            mav.addObject("action", "modificar");
+            if (flashMap != null) {
+
+                mav.addObject("error", flashMap.get("error"));
+                mav.addObject("exito", flashMap.get("exito"));
+                mav.addObject("titulo", flashMap.get("titulo"));
+                mav.addObject("descripcion", flashMap.get("descripcion"));
+                mav.addObject("categoria", flashMap.get("categoria"));
+
+            }
+        } catch (Exception ex) {
+             Logger.getLogger(UsuarioController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return mav;
     }
 
@@ -128,28 +164,34 @@ public class ProductoController {
     public RedirectView modificarProducto(
             @RequestParam MultipartFile archivo,
             @ModelAttribute Producto producto,
-            HttpSession session) {
+            HttpSession session, 
+            RedirectAttributes attributtes) {
 
-        String url = "";
+        RedirectView redirectView = new RedirectView("/");
         try {
-            //validarProducto()
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
-            if(archivo.isEmpty()){
+            if (archivo.isEmpty()) {
                 pService.modificarProducto(producto);
-            }else{
-                pService.modificarProducto(archivo,producto);
+            } else {
+                pService.modificarProducto(archivo, producto);
             }
-            
+
             if (usuario.getRol() == Rol.Donante) {
-                url = "/donante/donaciones/" + usuario.getId();
+                redirectView.setUrl("/donante/donaciones/" + usuario.getId());
             }
             if (usuario.getRol() == Rol.Beneficiario) {
-                url = "/beneficiario/deseos/" + usuario.getId();
+                redirectView.setUrl("/beneficiario/deseos/" + usuario.getId());
             }
         } catch (Exception ex) {
             Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+            attributtes.addFlashAttribute("error", ex.getMessage());
+            attributtes.addFlashAttribute("titulo", producto.getTitulo());
+            attributtes.addFlashAttribute("descripcion", producto.getDescripcion());
+            attributtes.addFlashAttribute("categoria", producto.getCategoria());
+            
+            redirectView.setUrl("/producto/editar/"+producto.getId());
         }
-        return new RedirectView(url);
+        return redirectView;
     }
 
     //Trae todos los productos (Para admin)
@@ -173,6 +215,10 @@ public class ProductoController {
         if (session.getAttribute("rol") == Rol.Beneficiario) {
             url = "/beneficiario/deseos/" + session.getAttribute("id");
         }
+        if (session.getAttribute("rol") == Rol.ADMIN) {
+            url = "/producto/listado";
+        }
+
         return new RedirectView(url); //Si fuera admin deberia retornar el listado
     }
 
@@ -210,7 +256,11 @@ public class ProductoController {
     public RedirectView entregado(@PathVariable("productoID") Long productoId, HttpSession session) {
         Producto producto = pService.obtenerPorId(productoId);
         producto.setEstado(Estado.Entregado);
-        pService.modificarProducto(producto);
+        try {
+            pService.modificarProducto(producto);
+        } catch (Exception ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         return new RedirectView("/donante/donaciones/" + producto.getDonante().getId());
     }
@@ -220,7 +270,11 @@ public class ProductoController {
         Producto producto = pService.obtenerPorId(idProducto);
         producto.setEstado(Estado.Disponible);
         producto.setBeneficiario(null);
-        pService.modificarProducto(producto);
+        try {
+            pService.modificarProducto(producto);
+        } catch (Exception ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return new RedirectView("/beneficiario/tienda");
     }
 
@@ -229,7 +283,11 @@ public class ProductoController {
         Producto producto = pService.obtenerPorId(idProducto);
         producto.setEstado(Estado.Disponible);
         producto.setDonante(null);
-        pService.modificarProducto(producto);
+        try {
+            pService.modificarProducto(producto);
+        } catch (Exception ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return new RedirectView("/beneficiario/deseos/" + producto.getBeneficiario().getId());
     }
     //Busquedas

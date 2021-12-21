@@ -48,6 +48,7 @@ public class UsuarioController {
         return mav;
     }
 
+
     @GetMapping("/datos/{id}")
     public ModelAndView mostrarDatos(@PathVariable Long id, HttpSession session) {
         ModelAndView mav = new ModelAndView("mostrar-datos");
@@ -63,9 +64,11 @@ public class UsuarioController {
         return mav;
     }
 
+
     @GetMapping("/editar/{id}")
     public ModelAndView editarUsuario(@PathVariable Long id, HttpSession session) {
         ModelAndView mav = new ModelAndView("registro");
+
         try {
             String emailUsuario = session.getAttribute("email").toString();
             Usuario usuarioSession = uService.buscarPorEmail(emailUsuario);
@@ -134,5 +137,6 @@ public class UsuarioController {
         mav.addObject("usuarios", usuarios);
         return mav;
     }
+
 
 }

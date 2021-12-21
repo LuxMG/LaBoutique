@@ -1,124 +1,133 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
-    <meta content="La Boutique " name="description"/>
-    <meta content="La Boutique" name="author"/>
-    <title>La Boutique</title>
-    <!-- Link al CSS de BOOTSTRAP -->
-    <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}"/>
-    <!-- Link a nuestro CSS -->
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
-    <!--Favicon-->
-    <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">
-</head>
-<body>
-  <!-- HEADER-->
-  <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
-  <!-- MAIN-->
-  <main id="index">
-    <!--SECCION SOBRE NOSOTROS EN SLIDER-->
-    <section id="nosotros" class="container">
-      <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
-        <div class="carousel-inner">
-          <!--PRIMER SLIDER-->
-          <div class="carousel-item active">
-            <img th:src="@{/img/tienda.jpg}" class="d-block w-100" alt="...">
-            <div class="carousel-caption d-none d-md-block">
-              <h5>First slide label</h5>
-              <p>Some representative placeholder content for the first slide.</p>
-            </div>
-          </div>
-          <!-- SEGUNDO SLIDER-->
-          <div class="carousel-item">
-            <img th:src="@{/img/tienda2.jpg}" class="d-block w-100" alt="...">
-            <div class="carousel-caption d-none d-md-block">
-              <h5>Second slide label</h5>
-              <p>Some representative placeholder content for the second slide.</p>
-            </div>
-          </div>
-          <!-- TERCER SLIDER-->
-          <div class="carousel-item">
-            <img th:src="@{/img/tienda.jpg}" class="d-block w-100" alt="...">
-            <div class="carousel-caption d-none d-md-block">
-              <h5>Third slide label</h5>
-              <p>Some representative placeholder content for the third slide.</p>
-            </div>
-          </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
-    </section>
-    <!-- SECCION TIENDA / MANO -->
-    <section id="tienda-mano" class="container mb-5" th:if="${session.id == null}">
-        <div class="row">
-            <div class="col-6">
-                <!--TARJETA TIENDA-->
-               <div class="card card-tienda" style="width: 100%;">
-                 <img th:src="@{/img/tienda.jpg}" class="card-img-top" alt="...">
-                 <div class="card-body">
-                   <a th:href="@{/registrobeneficiario}" class="btn btn-card">Ir a la tienda</a>
-                 </div>
-               </div>
-            </div>    
-            <div class="col-6">
-                <!-- TARJETA DAR UNA MANO-->
-                <div class="card card-tienda" style="width: 100%;">
-                  <img th:src="@{/img/tienda.jpg}" class="card-img-top" alt="...">
-                  <div class="card-body">
-                    <a th:href="@{/registrodonante}" class="btn btn-card">Dar una mano</a>
-                  </div>
-                </div>
-            </div>
-        </div> 
-    </section>
-    <!-- SECCION QUE ES -->
-    <section id="que-es" class="container mb-5">
-        <section class="row">
-            <h2>¿ Qué es ?</h2>
-            <p><strong>La Boutique </strong> La boutique conecta recursos con 
-                necesidades permitiendote darle una segunda oportunidad a eso 
-                que ya no usas. Es tan facil como sacar una foto y publicarlo.</p>
-            <p>Si necesitas algo podes buscar en la tienda lo que necesitas y 
-                si no lo encontras armar una lista de deseos.</p>
-        </section>
-    </section>
-    <!-- SECCION PREGUNTAS FRECUENTES-->
-    <section id="preguntas"class="container mb-5">
-        <section class="row">
-            <h2> Preguntas frecuentes </h2>
-        </section>
-        <section class="row mb-5">
-            <div class="col-sm-12 col-md-6">
-                <h3>¿ Qué puedo donar ?</h3>
-                <p> Comida, ropa, juguetes, muebles, electrónica, libros, 
-                    servicios y cualquier artículo que pueda ayudar a personas 
-                    que lo necesitan.</p>
-            </div>
-            <div class="col-sm-12 col-md-6">
-                <h3>¿ Hacen envios ?</h3>
-                <p> No, coordinas con la otra parte para la entrega. </p>
-            </div>
-        </section>
-    </section>
-  </main>
-  <!--FOOTER-->
-  <footer th:replace="fragments/footer :: footer"></footer>
-<!-- Link al JS de Bootstrap-->
-<script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
-</body>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+        <meta content="La Boutique " name="description"/>
+        <meta content="La Boutique" name="author"/>
+        <title>La Boutique</title>
+        <!-- Link al CSS de BOOTSTRAP -->
+        <link rel="stylesheet" th:href="@{/assets/bootstrap.min.css}"/>
+        <!-- Link a nuestro CSS -->
+        <link rel="stylesheet" th:href="@{/css/style.css}"/>
+        <!--Favicon-->
+        <link rel="shortcut icon" th:href="@{/img/logo_percha_chico.png}" type="image/x-icon">
+    </head>
+    <body>
+        <!-- HEADER-->
+        <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
+        <!-- MAIN-->
+        <main id="index">
+            <!--SECCION SOBRE NOSOTROS EN SLIDER-->
+            <section id="nosotros" class="container">
+                <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <!--PRIMER SLIDER-->
+                        <div class="carousel-item active">
+                            <img th:src="@{/img/recursosnecesidades.png}" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                                <!-- <h5>First slide label</h5>
+                                 <p>Some representative placeholder content for the first slide.</p>-->
+                            </div>
+                        </div>
+                        <!-- SEGUNDO SLIDER-->
+                        <div class="carousel-item">
+                            <img th:src="@{/img/recircula.png}" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                            </div>
+                        </div>
+                        <!-- TERCER SLIDER-->
+                        <div class="carousel-item">
+                            <img th:src="@{/img/recicla.png}" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                            </div>
+                        </div>
+                        <!-- CUARTO SLIDER-->
+                        <div class="carousel-item">
+                            <img th:src="@{/img/reutiliza.png}" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                            </div>
+                        </div>
+                        <!-- QUINTO SLIDER-->
+                        <div class="carousel-item">
+                            <img th:src="@{/img/nadasepierde.png}" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-none d-md-block">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+            </section>
+            <!-- SECCION TIENDA / MANO -->
+            <section id="tienda-mano" class="container mb-5" th:if="${session.id == null}">
+                <div class="row">
+                    <div class="col-6">
+                        <!--TARJETA TIENDA-->
+                        <div class="card card-tienda" style="width: 100%;">
+                            <img th:src="@{/img/tarjetatienda.png}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <a th:href="@{/registrobeneficiario}" class="btn btn-card">Ir a la tienda</a>
+                            </div>
+                        </div>
+                    </div>    
+                    <div class="col-6">
+                        <!-- TARJETA DAR UNA MANO-->
+                        <div class="card card-tienda" style="width: 100%;">
+                            <img th:src="@{/img/darunamano.png}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <a th:href="@{/registrodonante}" class="btn btn-card">Dar una mano</a>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </section>
+            <!-- SECCION QUE ES -->
+            <section id="que-es" class="container mb-5">
+                <section class="row">
+                    <h2>¿ Qué es ?</h2>
+                    <p><strong>La Boutique </strong> conecta <u>recursos</u> con 
+                        <u>necesidades</u> permitiendote darle una segunda oportunidad a eso 
+                        que ya no usas. Es tan facil como sacar una foto y publicarlo.</p>
+                    <p>Si necesitas algo podes buscar en la tienda y 
+                        si no lo encontras iniciá una lista de deseos.</p>
+                </section>
+            </section>
+            <!-- SECCION PREGUNTAS FRECUENTES-->
+            <section id="preguntas"class="container mb-5">
+                <section class="row">
+                    <h2> Preguntas frecuentes </h2>
+                </section>
+                <section class="row mb-5">
+                    <div class="col-sm-12 col-md-6">
+                        <h3>¿ Qué puedo publicar ?</h3>
+                        <p> Comida, ropa, juguetes, muebles, electrónica, libros, 
+                            servicios y cualquier artículo que pueda ayudar a personas 
+                            que lo necesitan.</p>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <h3>¿ Hacen envios ?</h3>
+                        <p> No, coordinas con la otra parte para la entrega. </p>
+                    </div>
+                </section>
+            </section>
+        </main>
+        <!--FOOTER-->
+        <footer th:replace="fragments/footer :: footer"></footer>
+        <!-- Link al JS de Bootstrap-->
+        <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
+    </body>
 </html>
