@@ -63,9 +63,8 @@
         </button>
       </div>
     </section>
-
     <!-- SECCION TIENDA / MANO -->
-    <section id="tienda-mano" class="container mb-5">
+    <section id="tienda-mano" class="container mb-5" th:if="${session.id == null}">
         <div class="row">
             <div class="col-6">
                 <!--TARJETA TIENDA-->
@@ -91,10 +90,11 @@
     <section id="que-es" class="container mb-5">
         <section class="row">
             <h2>¿ Qué es ?</h2>
-            <p><strong>La Boutique </strong> te permite donar lo que ya no te hace 
-                falta a personas que lo necesitan cerca de ti en tu barrio o tu ciudad.</p>
-            <p>Ya no hay excusas para no ser solidario, tan fácil y rápido como hacer 
-                una foto y compartirla !</p>
+            <p><strong>La Boutique </strong> La boutique conecta recursos con 
+                necesidades permitiendote darle una segunda oportunidad a eso 
+                que ya no usas. Es tan facil como sacar una foto y publicarlo.</p>
+            <p>Si necesitas algo podes buscar en la tienda lo que necesitas y 
+                si no lo encontras armar una lista de deseos.</p>
         </section>
     </section>
     <!-- SECCION PREGUNTAS FRECUENTES-->
@@ -105,13 +105,13 @@
         <section class="row mb-5">
             <div class="col-sm-12 col-md-6">
                 <h3>¿ Qué puedo donar ?</h3>
-                <p> Comida, ropa, juguetes, muebles, electrónica, libros, servicios y 
-                cualquier artículo que pueda ser donado para ayudar a personas que
-                lo necesitan.</p>
+                <p> Comida, ropa, juguetes, muebles, electrónica, libros, 
+                    servicios y cualquier artículo que pueda ayudar a personas 
+                    que lo necesitan.</p>
             </div>
             <div class="col-sm-12 col-md-6">
                 <h3>¿ Hacen envios ?</h3>
-                <p> No, coordinas con el donante cómo retirarlo. </p>
+                <p> No, coordinas con la otra parte para la entrega. </p>
             </div>
         </section>
     </section>

@@ -7,11 +7,11 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-          <!--Donante-->
+         
+          <!--Beneficiario-->
           <li class="nav-item">
-            <a class="nav-link" th:href="@{/tienda}">Tienda</a>
+            <a th:if="${#strings.equals(session.rol, 'Beneficiario')}"  class="nav-link" th:href="@{/tienda}">Tienda</a>
           </li>
-           <!--Beneficiario-->
            <li class="nav-item">
             <a th:if="${#strings.equals(session.rol, 'Beneficiario')}" class="nav-link" th:href="@{/beneficiario/carrito/__${session.id}__}">Carrito</a>
           </li>
@@ -19,6 +19,9 @@
             <a th:if="${#strings.equals(session.rol, 'Beneficiario')}" class="nav-link" th:href="@{/beneficiario/deseos/__${session.id}__}">Lista deseos</a>
           </li>
           <!--Donante-->
+          <li class="nav-item">
+            <a th:if="${#strings.equals(session.rol, 'Donante')}"  class="nav-link" th:href="@{/tienda}">Tienda</a>
+          </li>
           <li class="nav-item">
             <a  th:if="${#strings.equals(session.rol,'Donante')}" class="nav-link" th:href="@{/donante/donaciones/__${session.id}__}">Ver donaciones</a>
           </li>
