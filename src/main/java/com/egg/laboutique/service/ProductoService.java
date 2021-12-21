@@ -1,5 +1,3 @@
-/*
- */
 package com.egg.laboutique.service;
 
 import com.egg.laboutique.entity.Categoria;
@@ -20,13 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- *
- * @author Mailen
- */
 @Service
 public class ProductoService {
-    
 
     @Autowired
     private ProductoRepository repo;
@@ -36,7 +29,6 @@ public class ProductoService {
 
     @Transactional
     public void crearProducto(String titulo, String descripcion, Tipo tipo, Estado estado, Categoria categoria, Foto foto, Usuario donante, Usuario beneficiario, Boolean alta, LocalDateTime modificacion) throws Exception {
-        
        
         Producto producto = new Producto();
         producto.setTitulo(titulo);
@@ -54,7 +46,8 @@ public class ProductoService {
     }
 
     @Transactional
-    public void crearProducto(Producto producto) throws Exception {
+    public void crearProducto(Producto producto) throws ServiceException {
+        
         validarProducto(producto);
         producto.setAlta(true);
         repo.save(producto);
@@ -68,7 +61,6 @@ public class ProductoService {
 
     @Transactional
     public void modificarProducto(Long id, String titulo, String descripcion, Tipo tipo, Estado estado, Categoria categoria, Foto foto, Usuario donante, Usuario beneficiario, LocalDateTime modificacion) throws Exception {
-        
         
         repo.modificar(id, titulo, descripcion, tipo, estado, categoria, foto, donante, beneficiario);
     }
@@ -137,7 +129,7 @@ public class ProductoService {
     public void crearProducto(String titulo, String descripcion, Tipo tipo, Estado estado, Categoria categoria, MultipartFile archivo) {
 
         try {
-
+            
             Producto producto = new Producto();
             producto.setTitulo(titulo);
             producto.setDescripcion(descripcion);
@@ -151,7 +143,6 @@ public class ProductoService {
         } catch (ServiceException ex) {
             Logger.getLogger(ProductoService.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     @Transactional
@@ -169,7 +160,6 @@ public class ProductoService {
                 producto.getDonante(),
                 producto.getBeneficiario()
         );
-        
     }
 
     @Transactional
@@ -191,7 +181,6 @@ public class ProductoService {
     }
     
      private void validarProducto(Producto producto) throws ServiceException {
-         
 
         if (producto.getTitulo().equals("") || producto.getTitulo() == null) {
             throw new ServiceException("El título se encuentra vacío.");
@@ -201,11 +190,8 @@ public class ProductoService {
             throw new ServiceException("La descripción se encuentra vacía.");
         }
         
-        
         if (producto.getCategoria() == null) {
             throw new ServiceException("La categoría se encuentra vacía.");
         }
-        
-        
     }
 }

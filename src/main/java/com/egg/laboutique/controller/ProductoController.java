@@ -64,9 +64,9 @@ public class ProductoController {
     @GetMapping("/crear")
     public ModelAndView crearProducto(HttpSession session, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("nuevo-producto");
+        mav.addObject("action", "guardar");
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
         try {
-            //refactorizar nombre de html a formulario-producto
             Producto producto = new Producto();
             producto.setEstado(Estado.Disponible);
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
@@ -84,8 +84,7 @@ public class ProductoController {
             }
             mav.addObject("producto", producto);
             mav.addObject("categorias", catService.buscarTodas());
-            mav.addObject("action", "guardar");
-
+            
             if (flashMap != null) {
 
                 mav.addObject("error", flashMap.get("error"));
@@ -100,7 +99,9 @@ public class ProductoController {
 
     @PostMapping("/guardar")
     public RedirectView guardar(@RequestParam MultipartFile archivo, @ModelAttribute Producto producto, HttpSession session, RedirectAttributes attributtes) {
-        String url = "";
+        
+        RedirectView redirectView = new RedirectView("/");
+        
         try {
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
             if (!archivo.isEmpty()) {
@@ -109,25 +110,22 @@ public class ProductoController {
                 producto.setFoto(null);
             }
             pService.crearProducto(producto);
-
             if (usuario.getRol() == Rol.Donante) {
-                url = "/donante/donaciones/" + usuario.getId();
+                redirectView.setUrl("/donante/donaciones/"+ usuario.getId());
             }
             if (usuario.getRol() == Rol.Beneficiario) {
-                url = "/beneficiario/deseos/" + usuario.getId();
+                redirectView.setUrl("/beneficiario/deseos/"+ usuario.getId());
             }
-        } catch (ServiceException ex) {
+        } catch (Exception ex) {
             attributtes.addFlashAttribute("error", ex.getMessage());
+            redirectView.setUrl("/producto/crear");
         }
-          catch (Exception ex) {
-            attributtes.addFlashAttribute("error", ex.getMessage());
-        }
-        return new RedirectView(url);
+        return redirectView;
     }
 
     @GetMapping("/editar/{id}")
     public ModelAndView editarProducto(@PathVariable Long id) {
-        ModelAndView mav = new ModelAndView("nuevo-producto");//refactorizar nombre de html a formulario-producto
+        ModelAndView mav = new ModelAndView("nuevo-producto");
         mav.addObject("producto", pService.obtenerPorId(id));
         mav.addObject("title", "Editar Producto");
         mav.addObject("categorias", catService.buscarTodas());
@@ -143,7 +141,6 @@ public class ProductoController {
 
         String url = "";
         try {
-            //validarProducto()
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
             if (archivo.isEmpty()) {
                 pService.modificarProducto(producto);
