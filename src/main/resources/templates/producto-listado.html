@@ -26,11 +26,38 @@
         <!--HEADER-->
         <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
         <!--MAIN-->
-        <main>
+        <main class="container">
             <h1 class="mt-5">Listado de productos</h1>
-            <div th:each="producto : ${productos}">
-                <p th:text="${producto.titulo}"></p>
+            <div th:if="${productos.isEmpty()}">
+                <h5>Todavía no hay productos cargados. En <a th:href="@{/beneficiario/tienda}">tienda</a>  podés encontrar lo que necesitás.</h5>
             </div>
+            <div class="table-responsive mt-5" th:unless="${productos.isEmpty()}">
+                <table class="table table-hover table-bordered">
+                    <thead class="table text-center tabla-producto-listado">
+                        <tr>
+                            <th class="col-md-4">Producto</th>
+                            <th class="col-md-2">Tipo</th>
+                            <th class="col-md-2">Estado</th>
+                            <th class="col-md-2">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="producto : ${productos}">
+                            <td class="col-md-4" th:text="${producto.titulo}"></td>
+                            <td class="col-md-2" th:text="${producto.tipo}"></td>
+                            <td class="col-md-2" th:text="${producto.estado}"></td>
+                            <td class="col-md-3" >
+                                <div class="d-flex justify-content-around boton-producto-listado">
+                                    <button type="button" class="btn btn-card"> 
+                                        <a  th:href="@{/producto/eliminar/__${producto.id}__}">Eliminar</a>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        
         </main>
         <!--FOOTER-->
         <footer th:replace="fragments/footer :: footer"></footer>

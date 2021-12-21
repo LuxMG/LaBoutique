@@ -41,7 +41,7 @@
             </div>
             <!-- Si hay productos se ven las cards-->
             <section class="row tienda-card" th:unless="${productos.isEmpty()}">      
-                <div class="col-sm-4" th:each="producto : ${productos}">
+                <div class="col-sm-4 mb-3" th:each="producto : ${productos}">
                     <div class="card">
                         <div class="card-body">
                             <div class="card-title text-center">

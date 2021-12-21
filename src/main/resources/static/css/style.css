@@ -403,14 +403,31 @@ MOSTRAR DATOS
     padding: 0.25rem 0.75rem;
 }
 
-/*******
-DONACIONES
-***********/
-.tabla-donaciones {
-    background-color: var(--color-primary);
+/**************************
+TABLAS PERSONALIZADAS
+****************************/
+.tabla-donaciones,
+thead.tabla-usuarios,
+.tabla-producto-listado,
+.categoria-listado-cabecera,
+.tabla-carrito {
+    background-color: var(--color-primary)!important;
     color: var(--text-white);
 }
 
 .botones-donaciones button{
     padding: 0.1rem;
+}
+
+/***Botones de las tablas***/
+.boton-producto-listado a,
+.boton-carrito a {
+    text-decoration: none;
+    color: black;
+}
+
+.boton-producto-listado a:hover,
+.boton-carrito a:hover {
+    text-decoration: none;
+    color: var(--text-white);
 }
