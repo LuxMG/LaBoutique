@@ -26,17 +26,6 @@
         <!--HEADER-->
         <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
         <!--MAIN-->
-<<<<<<< HEAD
-        <main>
-            <h1>LISTADO DE PRODUCTOS</h1>
-            <div th:if="${productos.isEmpty()}">
-                <h5>Todavía no hay productos cargados. En <a th:href="@{/beneficiario/tienda}">tienda</a>  podés encontrar lo que necesitás.</h5>
-            </div>
-            <hr class="mb-4"/>
-            <div class="table-responsive" th:unless="${productos.isEmpty()}">
-                <table class="table table-hover table-bordered">
-                    <thead class="table-dark text-center">
-=======
         <main class="container">
             <h1 class="mt-5">Listado de productos</h1>
             <div th:if="${productos.isEmpty()}">
@@ -45,7 +34,6 @@
             <div class="table-responsive mt-5" th:unless="${productos.isEmpty()}">
                 <table class="table table-hover table-bordered">
                     <thead class="table text-center tabla-producto-listado">
->>>>>>> 0bf52547faa3f676d89d983a6a0d024e28fa5b31
                         <tr>
                             <th class="col-md-4">Producto</th>
                             <th class="col-md-2">Tipo</th>
