@@ -25,18 +25,16 @@
                 <div class="alert alert-success" th:if="${exito}" th:text="${exito}"></div>
                 <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
                 <h1 class="mt-5">Lista de deseos</h1>
-                <hr class="mb-4"/>
-                <div th:if="${productos.isEmpty()}">
+                <div th:if="${productos.isEmpty()}" class="mt-5">
                     <h5>¿Todavía no cargaste tu deseo? Inicia tu lista apretando <a th:href="@{/producto/crear}">aqui</a> </h5>
                 </div>
-                <div class="table-responsive" th:unless="${productos.isEmpty()}">
+                <div class="table-responsive mt-5" th:unless="${productos.isEmpty()}">
                     <table class="table table-hover table-bordered">
-                        <thead class="table-dark text-center">
+                        <thead class="table text-center tabla-deseos">
                             <tr>
                                 <th class="col-md-4">Pedido</th>
                                 <th class="col-md-2">Estado</th>
                                 <th class="col-md-2">Acciones</th>
-
                             </tr>
                         </thead>
                         <tbody>
@@ -44,7 +42,7 @@
                                 <td class="col-md-4" th:text="${producto.titulo}"></td>
                                 <td class="col-md-2" th:text="${producto.estado}"></td>
                                 <td class="col-md-3" >
-                                    <div class="d-flex justify-content-around">
+                                    <div class="d-flex justify-content-around botones-deseos">
                                         <button type="button" class="btn btn-card" th:disabled="${!#strings.equals(producto.estado, 'Disponible')}"> 
                                             <a  th:href="@{/producto/editar/__${producto.id}__}">Modificar</a>
                                         </button>
@@ -68,7 +66,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <a class="btn btn-card" th:href="@{/producto/crear}">Ingresar deseo</a>
+                    <a class="btn btn-card mt-5" th:href="@{/producto/crear}">Ingresar deseo</a>
                 </div>
             </div>
 

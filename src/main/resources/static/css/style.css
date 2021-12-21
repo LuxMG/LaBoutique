@@ -43,8 +43,12 @@ header.header-principal {
 }
 
 header.header-principal .navbar-toggler {
-    background-color: red;
+    background-color: var(--color-secondary);
 } 
+
+.barra-index-loqueado {
+    padding: 0.5rem;
+}
 
 .navbar-nav .nav-link {
     text-align: center;
@@ -59,6 +63,21 @@ header.header-principal .navbar-toggler {
     .navbar-expand-lg {
         flex-wrap: wrap;
     } 
+    
+    .navbar-expand-lg .navbar-collapse {
+    display: flex!important;
+    flex-basis: auto;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: baseline;
+}
+}
+
+
+.btn-cerrar-sesion a:hover {
+    background-color: var(--color-secondary);
 }
 
 /***************
@@ -250,12 +269,6 @@ img#img {
    text-align: justify; 
 }
 
-.tienda-descripcion p#descripcion::after {
-  content:'...';
-  position: absolute;
-  top: 4.5rem;/*max-height menos 1 line-height*/
-  right: 0;
-}
 
 /********************
    NUEVO PRODUCTO
@@ -360,6 +373,15 @@ label.col {
     font-size: large;
 }
 
+.col.columna-datos {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
 /****************
 MOSTRAR DATOS
 ******************/
@@ -410,7 +432,8 @@ TABLAS PERSONALIZADAS
 thead.tabla-usuarios,
 .tabla-producto-listado,
 .categoria-listado-cabecera,
-.tabla-carrito {
+.tabla-carrito,
+.tabla-deseos {
     background-color: var(--color-primary)!important;
     color: var(--text-white);
 }
@@ -421,13 +444,15 @@ thead.tabla-usuarios,
 
 /***Botones de las tablas***/
 .boton-producto-listado a,
-.boton-carrito a {
+.boton-carrito a,
+.botones-deseos a {
     text-decoration: none;
     color: black;
 }
 
 .boton-producto-listado a:hover,
-.boton-carrito a:hover {
+.boton-carrito a:hover,
+.botones-deseos a:hover {
     text-decoration: none;
     color: var(--text-white);
 }
