@@ -20,6 +20,7 @@
         <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
         <!-- MAIN-->
         <main class="nuevo-producto">
+            <p th:if="${error}" th:text="${error}"> </p>
             <form method="post" th:action="@{/producto/__${action}__}" enctype="multipart/form-data" th:object="${producto}">
                 <div class="titulos-form">
                     <label for="">Título</label>

@@ -14,8 +14,10 @@ import com.egg.laboutique.service.ProductoService;
 import com.egg.laboutique.service.UsuarioService;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
@@ -58,9 +62,9 @@ public class ProductoController {
 
     //Crear un producto
     @GetMapping("/crear")
-    public ModelAndView crearProducto(HttpSession session) {
+    public ModelAndView crearProducto(HttpSession session, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView("nuevo-producto");
-
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
         try {
             //refactorizar nombre de html a formulario-producto
             Producto producto = new Producto();
@@ -82,6 +86,12 @@ public class ProductoController {
             mav.addObject("categorias", catService.buscarTodas());
             mav.addObject("action", "guardar");
 
+            if (flashMap != null) {
+
+                mav.addObject("error", flashMap.get("error"));
+
+            }
+
         } catch (Exception ex) {
             Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -89,13 +99,13 @@ public class ProductoController {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(@RequestParam MultipartFile archivo, @ModelAttribute Producto producto, HttpSession session) {
+    public RedirectView guardar(@RequestParam MultipartFile archivo, @ModelAttribute Producto producto, HttpSession session, RedirectAttributes attributtes) {
         String url = "";
         try {
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
-            if(!archivo.isEmpty()){
+            if (!archivo.isEmpty()) {
                 producto.setFoto(fotoService.guardar(archivo));
-            }else{
+            } else {
                 producto.setFoto(null);
             }
             pService.crearProducto(producto);
@@ -107,9 +117,10 @@ public class ProductoController {
                 url = "/beneficiario/deseos/" + usuario.getId();
             }
         } catch (ServiceException ex) {
-            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+            attributtes.addFlashAttribute("error", ex.getMessage());
+        }
+          catch (Exception ex) {
+            attributtes.addFlashAttribute("error", ex.getMessage());
         }
         return new RedirectView(url);
     }
@@ -134,12 +145,12 @@ public class ProductoController {
         try {
             //validarProducto()
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
-            if(archivo.isEmpty()){
+            if (archivo.isEmpty()) {
                 pService.modificarProducto(producto);
-            }else{
-                pService.modificarProducto(archivo,producto);
+            } else {
+                pService.modificarProducto(archivo, producto);
             }
-            
+
             if (usuario.getRol() == Rol.Donante) {
                 url = "/donante/donaciones/" + usuario.getId();
             }
@@ -173,8 +184,12 @@ public class ProductoController {
         if (session.getAttribute("rol") == Rol.Beneficiario) {
             url = "/beneficiario/deseos/" + session.getAttribute("id");
         }
-        return new RedirectView(url); //Si fuera admin deberia retornar el listado
+        if (session.getAttribute("rol") == Rol.ADMIN) {
+            url = "/producto/listado";
+        }
+        return new RedirectView(url); 
     }
+
 
     @PostMapping("/comprar")
     @PreAuthorize("hasRole('Beneficiario')")
