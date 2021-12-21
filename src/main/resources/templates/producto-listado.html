@@ -21,15 +21,13 @@
         integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
-
     </head>
     <body>
         <!--HEADER-->
         <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
         <!--MAIN-->
         <main>
-            <h1>LISTADO DE PRODUCTOS</h1>
+            <h1 class="mt-5">Listado de productos</h1>
             <div th:each="producto : ${productos}">
                 <p th:text="${producto.titulo}"></p>
             </div>

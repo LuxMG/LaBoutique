@@ -20,10 +20,10 @@
         <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
         <!-- MAIN-->
         <main>
-            <h1 th:text="${#strings.equals(session.rol,'Donante')} ? '¡Gracias por cumplir este deseo!' : '¡Felicitaciones, tu compra ha sido efectuada!'" id="texto-datos"></h1>
+            <h1 th:text="${#strings.equals(session.rol,'Donante')} ? '¡Gracias por cumplir este deseo!' : '¡Felicitaciones, tu compra ha sido efectuada!'" id="texto-datos" class="mt-5"></h1>
             <h2 id="texto-datos">Contactate con el anunciante para coordinar la entrega :)</h2>
             <div class="alert alert-danger col-xl-6" th:if="${error}" th:text="${error}"></div>
-            <form method="post" th:object="${usuario}">
+            <form method="post" th:object="${usuario}" class="mt-5">
                 <div class="m-0 row justify-content-center">
                     <div class="col-auto p-4" id="mostrar-d">
                         <input id="id"  type="hidden" th:field="*{id}"/>

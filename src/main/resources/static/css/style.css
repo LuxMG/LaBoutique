@@ -174,7 +174,7 @@ footer {
     background-color: var(--color-light-primary)!important;
     border-color: var(--color-light-primary)!important;
     color: var(--color-light)!important;
-    padding-left: 1rem;
+    padding: 0.75rem;
 }
 
 .formulario button {
@@ -360,12 +360,14 @@ label.col {
     font-size: large;
 }
 
-/**Mastrar-Datos**/
-
+/****************
+MOSTRAR DATOS
+******************/
 #texto-datos{
    font-family: var(--raleway);
    text-align: center;
 }
+
 #mostrar-d{
     font-size: large;
     background:#f7f5f5; 
@@ -375,7 +377,6 @@ label.col {
 
 #bmd{
     position: relative;
-    left: 100px;
     margin: 20px;
 }
 
@@ -393,11 +394,23 @@ label.col {
     background-color: var(--color-light-primary)!important;
     color: var(--color-light)!important;
     border-color: var(--color-light-primary)!important;
-    padding-left: 1rem;
+    padding: 0.75rem;
     text-align: center;
 }
 
 #registrate button {
-    margin-top: 1rem;
+    margin: 0.75rem;
+    padding: 0.25rem 0.75rem;
 }
 
+/*******
+DONACIONES
+***********/
+.tabla-donaciones {
+    background-color: var(--color-primary);
+    color: var(--text-white);
+}
+
+.botones-donaciones button{
+    padding: 0.1rem;
+}
