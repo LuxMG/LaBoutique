@@ -19,7 +19,7 @@
     <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
   <!-- MAIN-->
   <main id="registrate" class="container">
-      <h1 th:text="${session.id != null} ? 'Actualizar' : 'Registrate'">  </h1>
+      <h1 th:text="${session.id != null} ? 'Actualizar' : 'Registrate'" class="mt-5">  </h1>
       <div class="alert alert-danger col-xl-6" th:if="${error}" th:text="${error}"></div>
        <form method="post" th:action="@{/__${action}__}" th:object="${usuario}" class="mb-5">
             <input id="id"  type="hidden" th:field="*{id}"/>
@@ -47,7 +47,7 @@
             <!--rol-->
             <input id="rol"  type="hidden" th:field="*{rol}"/>
             <!--boton-->
-            <button type="submit" class="btn- btn-card"  th:text="${session.id != null} ? 'Actualizar' : 'Registrate'"> </button>
+            <button type="submit" class="btn btn-card"  th:text="${session.id != null} ? 'Actualizar' : 'Registrate'"> </button>
         </form>
     </main>
     <!--FOOTER-->

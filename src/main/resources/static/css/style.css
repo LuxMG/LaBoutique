@@ -9,11 +9,12 @@ body {
 }
 
 /**** Google Fonts Raleway: font-family: 'Raleway', sans-serif; ****/
-@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 /**** Google Fonts Dancing-Script ****/
-@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&display=swap');
 
+/*'Dancing Script', cursive*/
 /**** para setear variables *****/
 :root {
   --color-primary: #3F0760;
@@ -22,13 +23,12 @@ body {
   --color-dark-primary: #8F07C3;
   --text-white: #fff;
   --raleway: 'Raleway', sans-serif;
-  --dancing: 'Dancing Script', cursive;
 }
 
 h1,
 h2 {
-    font-family: var(--dancing);
     margin-bottom: 1.25rem;
+    font-weight: 600;
 }
 
 h3 {
@@ -43,8 +43,12 @@ header.header-principal {
 }
 
 header.header-principal .navbar-toggler {
-    background-color: red;
+    background-color: var(--color-secondary);
 } 
+
+.barra-index-loqueado {
+    padding: 0.5rem;
+}
 
 .navbar-nav .nav-link {
     text-align: center;
@@ -59,6 +63,21 @@ header.header-principal .navbar-toggler {
     .navbar-expand-lg {
         flex-wrap: wrap;
     } 
+    
+    .navbar-expand-lg .navbar-collapse {
+    display: flex!important;
+    flex-basis: auto;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: baseline;
+}
+}
+
+
+.btn-cerrar-sesion a:hover {
+    background-color: var(--color-secondary);
 }
 
 /***************
@@ -174,7 +193,7 @@ footer {
     background-color: var(--color-light-primary)!important;
     border-color: var(--color-light-primary)!important;
     color: var(--color-light)!important;
-    padding-left: 1rem;
+    padding: 0.75rem;
 }
 
 .formulario button {
@@ -206,6 +225,13 @@ footer {
     margin: 3% 31%;
 }
 
+@media (min-width: 577px) {
+    .formulario button.btn.btn-card.btn-registro  {
+        width: 26%;
+        margin: 3% 37%;
+    }    
+}
+
 /***********
   TIENDA
 ************/
@@ -223,12 +249,26 @@ footer {
 
 img#img {
     width: 100%;
+    height: 140px;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .tienda-card p.card-text {
     text-align: center;
     font-weight: 700;
 }
+
+.tienda-descripcion {
+    line-height: 1.5rem;
+}
+
+.tienda-descripcion p#descripcion {
+    max-height: 6rem;
+   overflow: hidden;
+   text-align: justify; 
+}
+
 
 /********************
    NUEVO PRODUCTO
@@ -333,12 +373,23 @@ label.col {
     font-size: large;
 }
 
-/**Mastrar-Datos**/
+.col.columna-datos {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
 
+/****************
+MOSTRAR DATOS
+******************/
 #texto-datos{
    font-family: var(--raleway);
    text-align: center;
 }
+
 #mostrar-d{
     font-size: large;
     background:#f7f5f5; 
@@ -348,7 +399,6 @@ label.col {
 
 #bmd{
     position: relative;
-    left: 100px;
     margin: 20px;
 }
 
@@ -366,11 +416,43 @@ label.col {
     background-color: var(--color-light-primary)!important;
     color: var(--color-light)!important;
     border-color: var(--color-light-primary)!important;
-    padding-left: 1rem;
+    padding: 0.75rem;
     text-align: center;
 }
 
 #registrate button {
-    margin-top: 1rem;
+    margin: 0.75rem;
+    padding: 0.25rem 0.75rem;
 }
 
+/**************************
+TABLAS PERSONALIZADAS
+****************************/
+.tabla-donaciones,
+thead.tabla-usuarios,
+.tabla-producto-listado,
+.categoria-listado-cabecera,
+.tabla-carrito,
+.tabla-deseos {
+    background-color: var(--color-primary)!important;
+    color: var(--text-white);
+}
+
+.botones-donaciones button{
+    padding: 0.1rem;
+}
+
+/***Botones de las tablas***/
+.boton-producto-listado a,
+.boton-carrito a,
+.botones-deseos a {
+    text-decoration: none;
+    color: black;
+}
+
+.boton-producto-listado a:hover,
+.boton-carrito a:hover,
+.botones-deseos a:hover {
+    text-decoration: none;
+    color: var(--text-white);
+}
