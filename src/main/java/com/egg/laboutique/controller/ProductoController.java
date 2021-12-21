@@ -184,7 +184,8 @@ public class ProductoController {
         if (session.getAttribute("rol") == Rol.ADMIN) {
             url = "/producto/listado";
         }
-        return new RedirectView(url); 
+
+        return new RedirectView(url); //Si fuera admin deberia retornar el listado
     }
 
 
