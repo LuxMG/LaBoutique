@@ -30,15 +30,15 @@
         <!--MAIN-->
         <main id="categorialistado" class="container">
             <section class="title">
-                <h1 id="list">Listado de categorias</h1>
-                <a th:href="@{/categorias/crear}">Crear una categoria.</a>
+                <h1 id="list" class="mt-5">Listado de categorias</h1>
+                <a th:href="@{/categorias/crear}" class="btn btn-card my-5">Crear una categoria</a>
             </section>
             <div th:if="${categorias.isEmpty()}">
                 <h5>Todavía no hay categorias cargadas.</h5>
             </div>
             <section class="row" th:unless="${categorias.isEmpty()}">
                 <table class="table">
-                    <thead>
+                    <thead class="categoria-listado-cabecera">
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>

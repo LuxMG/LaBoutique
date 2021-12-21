@@ -21,13 +21,12 @@
         integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
-
     </head>
     <body>
         <!--HEADER-->
         <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
         <!--MAIN-->
+<<<<<<< HEAD
         <main>
             <h1>LISTADO DE PRODUCTOS</h1>
             <div th:if="${productos.isEmpty()}">
@@ -37,6 +36,16 @@
             <div class="table-responsive" th:unless="${productos.isEmpty()}">
                 <table class="table table-hover table-bordered">
                     <thead class="table-dark text-center">
+=======
+        <main class="container">
+            <h1 class="mt-5">Listado de productos</h1>
+            <div th:if="${productos.isEmpty()}">
+                <h5>Todavía no hay productos cargados. En <a th:href="@{/beneficiario/tienda}">tienda</a>  podés encontrar lo que necesitás.</h5>
+            </div>
+            <div class="table-responsive mt-5" th:unless="${productos.isEmpty()}">
+                <table class="table table-hover table-bordered">
+                    <thead class="table text-center tabla-producto-listado">
+>>>>>>> 0bf52547faa3f676d89d983a6a0d024e28fa5b31
                         <tr>
                             <th class="col-md-4">Producto</th>
                             <th class="col-md-2">Tipo</th>
@@ -51,9 +60,9 @@
                             <td class="col-md-2" th:text="${producto.tipo}"></td>
                             <td class="col-md-2" th:text="${producto.estado}"></td>
                             <td class="col-md-3" >
-                                <div class="d-flex justify-content-around">
+                                <div class="d-flex justify-content-around boton-producto-listado">
                                     <button type="button" class="btn btn-card"> 
-                                        <a class="btn btn-card" th:href="@{/producto/eliminar/__${producto.id}__}">Eliminar</a>
+                                        <a  th:href="@{/producto/eliminar/__${producto.id}__}">Eliminar</a>
                                     </button>
                                 </div>
                             </td>
@@ -61,10 +70,11 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-    </main>
-    <!--FOOTER-->
-    <footer th:replace="fragments/footer :: footer"></footer>
+        
+        </main>
+        <!--FOOTER-->
+        <footer th:replace="fragments/footer :: footer"></footer>
+
     <!-- Link al JS de Bootstrap-->
     <script th:src="@{/assets/bootstrap.bundle.min.js}"></script>
 </body>

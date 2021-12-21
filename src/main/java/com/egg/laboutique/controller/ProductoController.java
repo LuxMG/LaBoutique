@@ -93,7 +93,11 @@ public class ProductoController {
         String url = "";
         try {
             Usuario usuario = usuarioService.buscarPorEmail(session.getAttribute("email").toString());
-            producto.setFoto(fotoService.guardar(archivo));
+            if(!archivo.isEmpty()){
+                producto.setFoto(fotoService.guardar(archivo));
+            }else{
+                producto.setFoto(null);
+            }
             pService.crearProducto(producto);
 
             if (usuario.getRol() == Rol.Donante) {

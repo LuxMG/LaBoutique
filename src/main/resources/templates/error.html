@@ -16,15 +16,7 @@
     </head>
 
     <body>
-        <header th:fragment="header-index" class="header-index" id="header">
-            <nav class="container">
-                <div class="row">
-                    <a class="navbar-brand" th:href="@{/}"> 
-                        <img th:src="@{/img/logo_completo.png}" width="45"/>
-                    </a>
-                </div>
-            </nav> 
-        </header>
+        <header th:replace="${session.id != null} ? ~{fragments/header :: header} : ~{fragments/header-index :: header-index}"></header>
         <div style="text-align: center;">
             <h1 th:text="${codigo}" style="font-family: var(--raleway);"></h1>
             <h2 th:text="${mensaje == null ? 'Intenta nuevamente' : mensaje}" style="font-family: var(--raleway);"></h2>
